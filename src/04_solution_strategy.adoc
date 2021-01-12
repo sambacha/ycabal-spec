@@ -52,4 +52,11 @@ out-of-box
 .Questions
 
 Load Balancer - HAProxy or alt?s
+
+System Recovery 
+
+Incident Resposne Planning 
+
+Legal Questionsz - minimal
+
 ****

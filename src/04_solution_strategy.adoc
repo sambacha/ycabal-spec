@@ -5,7 +5,7 @@
 [role="arc42help"]
 ****
 .Contents
-A short summary and explanation of the fundamental decisions and solution strategies, that shape the system's architecture. These include
+Fundamental decisions and solution strategies, that shape the system's architecture.
 
 * technology decisions
 * decisions about the top-level decomposition of the system, e.g. usage of an architectural pattern or design pattern
@@ -21,6 +21,33 @@ KDB+ for Database Technology
 Redis for Network Management
 Terraform
 Docker for Hypervisor/Container
+DynamoDB/PostGres for Service/Logging Persistance
+
+
+
+=== RPC Layer 
+
+A list of URL of out Parity node should be kept in DynamoDB. There is also a
+special URL called leader that points to Infura/AlchemyAPI
+
+` eth_getBlockNumber` should be run on each of the nodes from the list every 60
+seconds. The result is compared with the leader. For the node to be deemed
+healthy it has to respond and be no more than 10 blocks behind Infura. The
+health status of each node is saved to DynamoDB/PostGres
+
+Change of health status of any node triggers regeneration of proxy config. Proxy
+config is simply an nginx .conf file that configures an upstream service which
+load-balances load between our nodes.
+
+If none of our nodes is healthy the generated config proxies all requests to [This is Open] as a fallback. 
+the config file is uploaded to S3 bucket.
+
+- Uploading config file to S3 bucket triggers update of ECS Service that runs
+nginx container with with generated config. Standard GitDevOps
+
+- Monitoring nodes
+The upside of using AWS services is that they come with default metrics
+out-of-box
 
 .Questions
 

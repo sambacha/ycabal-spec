@@ -1,0 +1,39 @@
+// header file for strategy-specification
+
+= YCabal
+:toc-title: Strategy Requirements and Design 
+// toc-title must follow document title without blank line
+
+
+:toc:
+
+:icons: font
+
+:caution-caption: Caution 
+:important-caption: Important 
+:note-caption: Note 
+:tip-caption: Tip
+:warning-caption: Warning 
+:appendix-caption: Glossary 
+:example-caption: Example 
+
+
+[small]#sam bacha <sam@freighttrust.com>
+Version {0.3.0}#
+
+
+
+include::01_introduction_and_goals.adoc[]
+
+include::02_architecture_constraints.adoc[]
+
+include::03_system_scope_and_context.adoc[]
+
+include::04_solution_strategy.adoc]
+
+include::09_design_decisions.adoc[]
+
+
+
+[appendix]
+include::12_glossary.adoc[]

@@ -1,0 +1,71 @@
+: numbered !:
+
+== About quality
+The quality of a product or system is very generally called
+_Set of properties or characteristics_ defined.
+
+In practice, some categories (generic terms) have been used for frequently occurring _quality requirements_
+(synonymous: quality goals) established, essentially shaped by the conceptual models of DIN / ISO 9126 and 25010.
+
+=== The categories
+
+* << changeability, changeability >>
+* << usability, usability >>
+* << efficiency, efficiency >>
+* << reliability, reliability >>
+* << operability, operability >>
+* << other, other (including functionality) >>
+
+
+=== Classification can be ambiguous
+
+Some quality goals or requirements belong to several
+"Generic terms" or categories - the assignment of the examples to
+Because of this, we sometimes found categories or chapters difficult.
+
+In case you have your specific quality requirements in the outline
+not find it, please look in the appendix: <<Q-Merkätze>> - find there
+An extensive table of the Q characteristics with their synonyms and
+Umbrella terms.
+
+=== Formulation of scenarios
+A (quality) scenario describes the behavior (1) of a system (3)
+when an event or stimulus occurs (2).
+
+==== (1) Behavior of a system
+The behavior can relate to software or hardware, or
+also refer to the persons, roles or organizations involved.
+
+Behavior should always be formulated _measurable or decidable_ in scenarios.
+
+==== (2) Event or stimulus
+A user initiates a function while working with the system, for example:
+
+* selects a menu item / function
+* clicks a button on a graphical user interface
+* starts processing
+
+A stakeholder changes something in the system, for example:
+
+* modified source code or configuration of the system
+* changes to the hardware of the system
+* changes the deployment of the system
+
+A stakeholder changes something in the processes or organizations involved.
+
+==== (3) system
+The term "system" is very broad here: This includes software,
+Software components, involved hardware, networks, middleware, databases,
+but also all the people, roles or organizations involved.
+
+
+
+=== sources
+
+
+The ideas for the scenarios and quality requirements listed here
+come from different sources and projects. I have all
+revised and largely anonymized. The explanations of
+Some quality features come from DIN / ISO 9126 or https://en.wikipedia.org/wiki/FURPS[FURPS-Modell+].
+
+include :: bibliography.adoc []

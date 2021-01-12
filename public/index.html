@@ -647,19 +647,40 @@ If you as an architect do not know how the quality of your work will be judged â
 <div class="content">
 <div class="paragraph">
 <div class="title">Contents</div>
-<p>Any requirement that constrains software architects in their freedom of design and implementation decisions or decision about the development process. These constraints sometimes go beyond individual systems and are valid for whole organizations and companies.</p>
+<p>Any requirement that constrains software architects in their freedom of design and implementation decisions or decision about the development process.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Constraints sometimes go beyond individual systems and are valid for whole organizations and companies.</pre>
+</div>
 </div>
 <div class="paragraph">
 <div class="title">Motivation</div>
 <p>Architects should know exactly where they are free in their design decisions and where they must adhere to constraints.
 Constraints must always be dealt with; they may be negotiable, though.</p>
 </div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>Simple tables of constraints with explanations.
-If needed you can subdivide them into
-technical constraints, organizational and political constraints and
-conventions (e.g. programming or versioning guidelines, documentation or naming conventions)</p>
+<div class="ulist">
+<div class="title">General Constraints</div>
+<ul>
+<li>
+<p>Downtime. If for any reason node has to be taken down for maintenance there will
+be no node left. There will be downtime when for example there is a need to
+upgrade a version of ParityGeth.</p>
+</li>
+<li>
+<p>Falling out of sync. Parity is great but not flaweless. It may occasionally fall
+out of sync for various reasons. Having multiple nodes allows us to temporarly
+re-route traffic from nodes which have fallen behind and query nodes which are
+in-sync.</p>
+</li>
+<li>
+<p>Distributing load. There is only a certain level of requests/second on json-rpc
+that a single Parity node can sustain. Json-rpc interface becomes slow over this
+level and Parity node falls out of sync. This is especially important if node(s)
+is used from web dapp interface and number, and you can observe daily spikes in
+user engagement.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>

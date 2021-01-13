@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0000154" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_0000001" name="" isExecutable="true">
+    <bpmn:sequenceFlow id="SequenceFlow_0000004" name="" sourceRef="StartEvent_0000002" targetRef="SubProcess_0000003" />
+    <bpmn:sequenceFlow id="SequenceFlow_0000068" name="" sourceRef="SubProcess_0000003" targetRef="SubProcess_0000067" />
+    <bpmn:sequenceFlow id="SequenceFlow_0000102" name="" sourceRef="SubProcess_0000067" targetRef="SubProcess_0000101" />
+    <bpmn:sequenceFlow id="SequenceFlow_0000106" name="" sourceRef="ConditionalEvent_0000104" targetRef="ScriptTask_0000105" />
+    <bpmn:sequenceFlow id="SequenceFlow_0000118" name="" sourceRef="SubProcess_0000101" targetRef="SubProcess_0000117" />
+    <bpmn:sequenceFlow id="SequenceFlow_0000153" name="" sourceRef="SubProcess_0000117" targetRef="EndEvent_0000152" />
+    <bpmn:startEvent id="StartEvent_0000002" name="">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="agent" value="none" />
+          <camunda:property name="option" value="buildDiscarder logRotator(artifactNumToKeepStr: &#39;10&#39;)" />
+          <camunda:property name="option" value="timeout(time: 1, unit: &#39;HOURS&#39;)" />
+          <camunda:property name="option" value="retry (1)" />
+          <camunda:property name="option" value="parallelsAlwaysFailFast()" />
+          <camunda:property name="trigger" value="cron (env.BRANCH_NAME == &#39;master&#39; ? &#39;@daily&#39; : &#39;&#39;)" />
+          <camunda:property name="environment.DOCKER_ARGS" value="&#39;--rm -u `id -u`&#39;" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_0000004</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:boundaryEvent id="ConditionalEvent_0000104" name="cleanup" cancelActivity="false" attachedToRef="SubProcess_0000101">
+      <bpmn:outgoing>SequenceFlow_0000106</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition>
+        <bpmn:condition xsi:type="bpmn:tFormalExpression">cleanup</bpmn:condition>
+      </bpmn:conditionalEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="EndEvent_0000152">
+      <bpmn:incoming>SequenceFlow_0000153</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="ScriptTask_0000105" name="deleteDir" scriptFormat="jenkins">
+      <bpmn:incoming>SequenceFlow_0000106</bpmn:incoming>
+      <bpmn:script>deleteDir()</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:subProcess id="SubProcess_0000003" name="Default Docker Stages" isExecutable="true">
+      <bpmn:incoming>SequenceFlow_0000004</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0000068</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_0000007" name="" sourceRef="StartEvent_0000005" targetRef="ExclusiveGateway_0000006" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000009" name="" sourceRef="ExclusiveGateway_0000006" targetRef="ExclusiveGateway_0000008" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000011" name="changeRequest target: &#39;stable&#39;expression { BRANCH_NAME ==~ /(production|staging)/ }beforeAgent true" sourceRef="ExclusiveGateway_0000006" targetRef="SubProcess_0000010">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="Groovy">changeRequest target: 'stable'
+expression { BRANCH_NAME ==~ /(production|staging)/ }
+beforeAgent true</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_0000013" name="" sourceRef="SubProcess_0000010" targetRef="ExclusiveGateway_0000008" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000019" name="" sourceRef="ExclusiveGateway_0000008" targetRef="SubProcess_0000018" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000028" name="" sourceRef="SubProcess_0000018" targetRef="SubProcess_0000027" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000032" name="" sourceRef="ConditionalEvent_0000030" targetRef="ScriptTask_0000031" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000040" name="" sourceRef="SubProcess_0000027" targetRef="SubProcess_0000039" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000053" name="" sourceRef="SubProcess_0000039" targetRef="SubProcess_0000052" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000066" name="" sourceRef="SubProcess_0000052" targetRef="EndEvent_0000065" />
+      <bpmn:startEvent id="StartEvent_0000005">
+        <bpmn:extensionElements>
+          <camunda:properties>
+            <camunda:property name="agent.docker.image" value="&#39;kieker/kieker-build:openjdk8&#39;" />
+            <camunda:property name="agent.docker.args" value="env.DOCKER_ARGS" />
+            <camunda:property name="agent.docker.label" value="&#39;kieker-slave-docker&#39;" />
+          </camunda:properties>
+        </bpmn:extensionElements>
+        <bpmn:outgoing>SequenceFlow_0000007</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000030" name="always" cancelActivity="false" attachedToRef="SubProcess_0000027">
+        <bpmn:outgoing>SequenceFlow_0000032</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">always</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:endEvent id="EndEvent_0000065">
+        <bpmn:incoming>SequenceFlow_0000066</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:scriptTask id="ScriptTask_0000031" name="junit" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000032</bpmn:incoming>
+        <bpmn:script>junit '**/build/test-results/test/*.xml'</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0000006" name="" default="SequenceFlow_0000009">
+        <bpmn:incoming>SequenceFlow_0000007</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000009</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_0000011</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0000008" name="">
+        <bpmn:incoming>SequenceFlow_0000009</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0000013</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000019</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:subProcess id="SubProcess_0000010" name="Precheck" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000011</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000013</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000015" name="" sourceRef="StartEvent_0000012" targetRef="ScriptTask_0000014" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000017" name="" sourceRef="ScriptTask_0000014" targetRef="EndEvent_0000016" />
+        <bpmn:startEvent id="StartEvent_0000012">
+          <bpmn:outgoing>SequenceFlow_0000015</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000016">
+          <bpmn:incoming>SequenceFlow_0000017</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000014" name="error" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000015</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000017</bpmn:outgoing>
+          <bpmn:script>error "It is not allowed to create pull requests towards the 'stable' branch. Create a new pull request towards the 'master' branch please."</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000018" name="Compile" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000019</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000028</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000022" name="" sourceRef="StartEvent_0000020" targetRef="ScriptTask_0000021" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000024" name="" sourceRef="ScriptTask_0000021" targetRef="ScriptTask_0000023" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000026" name="" sourceRef="ScriptTask_0000023" targetRef="EndEvent_0000025" />
+        <bpmn:startEvent id="StartEvent_0000020">
+          <bpmn:outgoing>SequenceFlow_0000022</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000025">
+          <bpmn:incoming>SequenceFlow_0000026</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000021" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000022</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000024</bpmn:outgoing>
+          <bpmn:script>sh './gradlew compileJava'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000023" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000024</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000026</bpmn:outgoing>
+          <bpmn:script>sh './gradlew compileTestJava'</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000027" name="Unit Test" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000028</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000040</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000034" name="" sourceRef="StartEvent_0000029" targetRef="ScriptTask_0000033" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000036" name="" sourceRef="ScriptTask_0000033" targetRef="ScriptTask_0000035" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000038" name="" sourceRef="ScriptTask_0000035" targetRef="EndEvent_0000037" />
+        <bpmn:startEvent id="StartEvent_0000029">
+          <bpmn:outgoing>SequenceFlow_0000034</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000037">
+          <bpmn:incoming>SequenceFlow_0000038</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000033" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000034</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000036</bpmn:outgoing>
+          <bpmn:script>sh './gradlew --parallel test'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000035" name="step" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000036</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000038</bpmn:outgoing>
+          <bpmn:script>step ([ $class : 'CloverPublisher', cloverReportDir : env.WORKSPACE + '/build/reports/clover', cloverReportFileName : 'clover.xml', healthyTarget : [ methodCoverage : 70, conditionalCoverage : 80, statementCoverage : 80 ], unhealthyTarget : [ methodCoverage : 50, conditionalCoverage : 50, statementCoverage : 50 ] ])</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000039" name="Static Analysis" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000040</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000053</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000043" name="" sourceRef="StartEvent_0000041" targetRef="ScriptTask_0000042" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000045" name="" sourceRef="ScriptTask_0000042" targetRef="ScriptTask_0000044" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000047" name="" sourceRef="ScriptTask_0000044" targetRef="ScriptTask_0000046" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000049" name="" sourceRef="ScriptTask_0000046" targetRef="ScriptTask_0000048" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000051" name="" sourceRef="ScriptTask_0000048" targetRef="EndEvent_0000050" />
+        <bpmn:startEvent id="StartEvent_0000041">
+          <bpmn:outgoing>SequenceFlow_0000043</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000050">
+          <bpmn:incoming>SequenceFlow_0000051</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000042" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000043</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000045</bpmn:outgoing>
+          <bpmn:script>sh './gradlew check'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000044" name="checkstyle" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000045</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000047</bpmn:outgoing>
+          <bpmn:script>checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'kieker-analysis\\build\\reports\\checkstyle\\*.xml,kieker-tools\\build\\reports\\checkstyle\\*.xml,kieker-monitoring\\build\\reports\\checkstyle\\*.xml,kieker-common\\build\\reports\\checkstyle\\*.xml', unHealthy: ''</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000046" name="findbugs" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000047</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000049</bpmn:outgoing>
+          <bpmn:script>findbugs canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', pattern: 'kieker-analysis\\build\\reports\\findbugs\\*.xml,kieker-tools\\build\\reports\\findbugs\\*.xml,kieker-monitoring\\build\\reports\\findbugs\\*.xml,kieker-common\\build\\reports\\findbugs\\*.xml', unHealthy: ''</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000048" name="pmd" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000049</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000051</bpmn:outgoing>
+          <bpmn:script>pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'kieker-analysis\\build\\reports\\pmd\\*.xml,kieker-tools\\build\\reports\\pmd\\*.xml,kieker-monitoring\\build\\reports\\pmd\\*.xml,kieker-common\\build\\reports\\pmd\\*.xml', unHealthy: ''</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000052" name="Distribution Build" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000053</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000066</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000056" name="" sourceRef="StartEvent_0000054" targetRef="ScriptTask_0000055" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000058" name="" sourceRef="ScriptTask_0000055" targetRef="ScriptTask_0000057" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000060" name="" sourceRef="ScriptTask_0000057" targetRef="ScriptTask_0000059" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000062" name="" sourceRef="ScriptTask_0000059" targetRef="ScriptTask_0000061" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000064" name="" sourceRef="ScriptTask_0000061" targetRef="EndEvent_0000063" />
+        <bpmn:startEvent id="StartEvent_0000054">
+          <bpmn:outgoing>SequenceFlow_0000056</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000063">
+          <bpmn:incoming>SequenceFlow_0000064</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000055" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000056</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000058</bpmn:outgoing>
+          <bpmn:script>sh './gradlew distribute'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000057" name="stash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000058</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000060</bpmn:outgoing>
+          <bpmn:script>stash includes: 'build/libs/*.jar', name: 'jarArtifacts'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000059" name="stash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000060</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000062</bpmn:outgoing>
+          <bpmn:script>stash includes: 'build/distributions/*', name: 'distributions'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000061" name="stash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000062</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000064</bpmn:outgoing>
+          <bpmn:script>stash includes: 'kieker-documentation/userguide/kieker-userguide.pdf', name: 'userguide'</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_0000067" name="Release Checks" isExecutable="true">
+      <bpmn:incoming>SequenceFlow_0000068</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0000102</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_0000071" name="" sourceRef="StartEvent_0000069" targetRef="ParallelGateway_0000070" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000074" name="" sourceRef="ParallelGateway_0000070" targetRef="SubProcess_0000073" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000075" name="" sourceRef="SubProcess_0000073" targetRef="ParallelGateway_0000072" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000079" name="" sourceRef="ConditionalEvent_0000077" targetRef="ScriptTask_0000078" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000087" name="beforeAgent trueanyOf {  branch &#39;master&#39;  changeRequest target: &#39;master&#39;}" sourceRef="ParallelGateway_0000070" targetRef="SubProcess_0000086">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="Groovy">beforeAgent true
+anyOf {
+  branch 'master'
+  changeRequest target: 'master'
+}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_0000089" name="" sourceRef="SubProcess_0000086" targetRef="ParallelGateway_0000072" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000092" name="" sourceRef="ConditionalEvent_0000090" targetRef="ScriptTask_0000091" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000100" name="" sourceRef="ParallelGateway_0000072" targetRef="EndEvent_0000099" />
+      <bpmn:startEvent id="StartEvent_0000069">
+        <bpmn:outgoing>SequenceFlow_0000071</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000077" name="cleanup" cancelActivity="false" attachedToRef="SubProcess_0000073">
+        <bpmn:outgoing>SequenceFlow_0000079</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">cleanup</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000090" name="cleanup" cancelActivity="false" attachedToRef="SubProcess_0000086">
+        <bpmn:outgoing>SequenceFlow_0000092</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">cleanup</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:endEvent id="EndEvent_0000099">
+        <bpmn:incoming>SequenceFlow_0000100</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:scriptTask id="ScriptTask_0000078" name="deleteDir" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000079</bpmn:incoming>
+        <bpmn:script>deleteDir()</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000091" name="deleteDir" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000092</bpmn:incoming>
+        <bpmn:script>deleteDir()</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:parallelGateway id="ParallelGateway_0000070" name="Release Checks">
+        <bpmn:incoming>SequenceFlow_0000071</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000074</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_0000087</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="ParallelGateway_0000072" name="">
+        <bpmn:incoming>SequenceFlow_0000075</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0000089</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000100</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:subProcess id="SubProcess_0000073" name="Release Check Short" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000074</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000075</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000081" name="" sourceRef="StartEvent_0000076" targetRef="ScriptTask_0000080" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000083" name="" sourceRef="ScriptTask_0000080" targetRef="ScriptTask_0000082" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000085" name="" sourceRef="ScriptTask_0000082" targetRef="EndEvent_0000084" />
+        <bpmn:startEvent id="StartEvent_0000076">
+          <bpmn:extensionElements>
+            <camunda:properties>
+              <camunda:property name="agent.docker.image" value="&#39;kieker/kieker-build:openjdk8&#39;" />
+              <camunda:property name="agent.docker.args" value="env.DOCKER_ARGS" />
+              <camunda:property name="agent.docker.label" value="&#39;kieker-slave-docker&#39;" />
+            </camunda:properties>
+          </bpmn:extensionElements>
+          <bpmn:outgoing>SequenceFlow_0000081</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000084">
+          <bpmn:incoming>SequenceFlow_0000085</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000080" name="unstash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000081</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000083</bpmn:outgoing>
+          <bpmn:script>unstash 'distributions'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000082" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000083</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000085</bpmn:outgoing>
+          <bpmn:script>sh './gradlew checkReleaseArchivesShort'</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000086" name="Release Check Extended" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000087</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000089</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000094" name="" sourceRef="StartEvent_0000088" targetRef="ScriptTask_0000093" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000096" name="" sourceRef="ScriptTask_0000093" targetRef="ScriptTask_0000095" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000098" name="" sourceRef="ScriptTask_0000095" targetRef="EndEvent_0000097" />
+        <bpmn:startEvent id="StartEvent_0000088">
+          <bpmn:extensionElements>
+            <camunda:properties>
+              <camunda:property name="agent.docker.image" value="&#39;kieker/kieker-build:openjdk8&#39;" />
+              <camunda:property name="agent.docker.args" value="env.DOCKER_ARGS" />
+              <camunda:property name="agent.docker.label" value="&#39;kieker-slave-docker&#39;" />
+            </camunda:properties>
+          </bpmn:extensionElements>
+          <bpmn:outgoing>SequenceFlow_0000094</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000097">
+          <bpmn:incoming>SequenceFlow_0000098</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000093" name="unstash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000094</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000096</bpmn:outgoing>
+          <bpmn:script>unstash 'distributions'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000095" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000096</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000098</bpmn:outgoing>
+          <bpmn:script>sh './gradlew checkReleaseArchives'</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_0000101" name="Archive Artifacts" isExecutable="true">
+      <bpmn:incoming>SequenceFlow_0000102</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0000118</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_0000108" name="" sourceRef="StartEvent_0000103" targetRef="ScriptTask_0000107" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000110" name="" sourceRef="ScriptTask_0000107" targetRef="ScriptTask_0000109" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000112" name="" sourceRef="ScriptTask_0000109" targetRef="ScriptTask_0000111" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000114" name="" sourceRef="ScriptTask_0000111" targetRef="ScriptTask_0000113" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000116" name="" sourceRef="ScriptTask_0000113" targetRef="EndEvent_0000115" />
+      <bpmn:startEvent id="StartEvent_0000103">
+        <bpmn:extensionElements>
+          <camunda:properties>
+            <camunda:property name="agent.label" value="&#39;kieker-slave-docker&#39;" />
+          </camunda:properties>
+        </bpmn:extensionElements>
+        <bpmn:outgoing>SequenceFlow_0000108</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="EndEvent_0000115">
+        <bpmn:incoming>SequenceFlow_0000116</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:scriptTask id="ScriptTask_0000107" name="unstash" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000108</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000110</bpmn:outgoing>
+        <bpmn:script>unstash 'jarArtifacts'</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000109" name="unstash" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000110</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000112</bpmn:outgoing>
+        <bpmn:script>unstash 'distributions'</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000111" name="unstash" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000112</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000114</bpmn:outgoing>
+        <bpmn:script>unstash 'userguide'</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000113" name="archiveArtifacts" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000114</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000116</bpmn:outgoing>
+        <bpmn:script>archiveArtifacts artifacts: 'build/distributions/*,kieker-documentation/userguide/kieker-userguide.pdf,build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true</bpmn:script>
+      </bpmn:scriptTask>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_0000117" name="Master Specific Stages" isExecutable="true">
+      <bpmn:incoming>SequenceFlow_0000118</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0000153</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_0000121" name="" sourceRef="StartEvent_0000119" targetRef="ParallelGateway_0000120" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000124" name="" sourceRef="ParallelGateway_0000120" targetRef="SubProcess_0000123" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000125" name="" sourceRef="SubProcess_0000123" targetRef="ParallelGateway_0000122" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000129" name="" sourceRef="ConditionalEvent_0000127" targetRef="ScriptTask_0000128" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000135" name="" sourceRef="ParallelGateway_0000120" targetRef="SubProcess_0000134" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000136" name="" sourceRef="SubProcess_0000134" targetRef="ParallelGateway_0000122" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000140" name="" sourceRef="ConditionalEvent_0000138" targetRef="ScriptTask_0000139" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000143" name="" sourceRef="ConditionalEvent_0000141" targetRef="ScriptTask_0000142" />
+      <bpmn:sequenceFlow id="SequenceFlow_0000151" name="" sourceRef="ParallelGateway_0000122" targetRef="EndEvent_0000150" />
+      <bpmn:startEvent id="StartEvent_0000119">
+        <bpmn:outgoing>SequenceFlow_0000121</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000127" name="cleanup" cancelActivity="false" attachedToRef="SubProcess_0000123">
+        <bpmn:outgoing>SequenceFlow_0000129</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">cleanup</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000138" name="always" cancelActivity="false" attachedToRef="SubProcess_0000134">
+        <bpmn:outgoing>SequenceFlow_0000140</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">always</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:boundaryEvent id="ConditionalEvent_0000141" name="cleanup" cancelActivity="false" attachedToRef="SubProcess_0000134">
+        <bpmn:outgoing>SequenceFlow_0000143</bpmn:outgoing>
+        <bpmn:conditionalEventDefinition>
+          <bpmn:condition xsi:type="bpmn:tFormalExpression">cleanup</bpmn:condition>
+        </bpmn:conditionalEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:endEvent id="EndEvent_0000150">
+        <bpmn:incoming>SequenceFlow_0000151</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:scriptTask id="ScriptTask_0000128" name="deleteDir" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000129</bpmn:incoming>
+        <bpmn:script>deleteDir()</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000139" name="test" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000140</bpmn:incoming>
+        <bpmn:script>test x</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:scriptTask id="ScriptTask_0000142" name="deleteDir" scriptFormat="jenkins">
+        <bpmn:incoming>SequenceFlow_0000143</bpmn:incoming>
+        <bpmn:script>deleteDir()</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:parallelGateway id="ParallelGateway_0000120" name="Master Specific Stages">
+        <bpmn:incoming>SequenceFlow_0000121</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000124</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_0000135</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="ParallelGateway_0000122" name="">
+        <bpmn:incoming>SequenceFlow_0000125</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0000136</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000151</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:subProcess id="SubProcess_0000123" name="Push to Stable" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000124</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000125</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000131" name="" sourceRef="StartEvent_0000126" targetRef="ScriptTask_0000130" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000133" name="" sourceRef="ScriptTask_0000130" targetRef="EndEvent_0000132" />
+        <bpmn:startEvent id="StartEvent_0000126">
+          <bpmn:extensionElements>
+            <camunda:properties>
+              <camunda:property name="agent.label" value="&#39;kieker-slave-docker&#39;" />
+            </camunda:properties>
+          </bpmn:extensionElements>
+          <bpmn:outgoing>SequenceFlow_0000131</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000132">
+          <bpmn:incoming>SequenceFlow_0000133</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000130" name="sh" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000131</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000133</bpmn:outgoing>
+          <bpmn:script>sh 'git push git@github.com:kieker-monitoring/kieker.git $(git rev-parse HEAD):stable'</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+      <bpmn:subProcess id="SubProcess_0000134" name="Upload Snapshot Version" isExecutable="true">
+        <bpmn:incoming>SequenceFlow_0000135</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0000136</bpmn:outgoing>
+        <bpmn:sequenceFlow id="SequenceFlow_0000145" name="" sourceRef="StartEvent_0000137" targetRef="ScriptTask_0000144" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000147" name="" sourceRef="ScriptTask_0000144" targetRef="ScriptTask_0000146" />
+        <bpmn:sequenceFlow id="SequenceFlow_0000149" name="" sourceRef="ScriptTask_0000146" targetRef="EndEvent_0000148" />
+        <bpmn:startEvent id="StartEvent_0000137">
+          <bpmn:extensionElements>
+            <camunda:properties>
+              <camunda:property name="agent.docker.image" value="&#39;kieker/kieker-build:openjdk8&#39;" />
+              <camunda:property name="agent.docker.args" value="env.DOCKER_ARGS" />
+              <camunda:property name="agent.docker.label" value="&#39;kieker-slave-docker&#39;" />
+            </camunda:properties>
+          </bpmn:extensionElements>
+          <bpmn:outgoing>SequenceFlow_0000145</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="EndEvent_0000148">
+          <bpmn:incoming>SequenceFlow_0000149</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:scriptTask id="ScriptTask_0000144" name="unstash" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000145</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000147</bpmn:outgoing>
+          <bpmn:script>unstash 'jarArtifacts'</bpmn:script>
+        </bpmn:scriptTask>
+        <bpmn:scriptTask id="ScriptTask_0000146" name="withCredentials" scriptFormat="jenkins">
+          <bpmn:incoming>SequenceFlow_0000147</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0000149</bpmn:outgoing>
+          <bpmn:script>withCredentials([ usernamePassword(credentialsId: 'artifactupload', usernameVariable: 'kiekerMavenUser', passwordVariable: 'kiekerMavenPassword') ]) {
+  sh './gradlew uploadArchives'
+}</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:subProcess>
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="Process_0000001_di" bpmnElement="Process_0000001">
+      <bpmndi:BPMNEdge id="SequenceFlow_0000153_di" bpmnElement="SequenceFlow_0000153">
+        <di:waypoint x="6634" y="453" />
+        <di:waypoint x="6659" y="453" />
+        <di:waypoint x="6716" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000118_di" bpmnElement="SequenceFlow_0000118">
+        <di:waypoint x="5582" y="453" />
+        <di:waypoint x="5607" y="453" />
+        <di:waypoint x="5632" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000106_di" bpmnElement="SequenceFlow_0000106">
+        <di:waypoint x="5600" y="345" />
+        <di:waypoint x="6659" y="90" />
+        <di:waypoint x="6684" y="90" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000102_di" bpmnElement="SequenceFlow_0000102">
+        <di:waypoint x="4738" y="453" />
+        <di:waypoint x="4763" y="453" />
+        <di:waypoint x="4788" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000068_di" bpmnElement="SequenceFlow_0000068">
+        <di:waypoint x="3686" y="453" />
+        <di:waypoint x="3711" y="453" />
+        <di:waypoint x="3736" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000004_di" bpmnElement="SequenceFlow_0000004">
+        <di:waypoint x="220" y="1072" />
+        <di:waypoint x="220" y="658" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000002_di" bpmnElement="StartEvent_0000002">
+        <dc:Bounds x="202" y="1072" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000152_di" bpmnElement="EndEvent_0000152">
+        <dc:Bounds x="6716" y="435" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000105_di" bpmnElement="ScriptTask_0000105">
+        <dc:Bounds x="6684" y="50" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000003_di" bpmnElement="SubProcess_0000003" isExpanded="true">
+        <dc:Bounds x="122" y="248" width="3564" height="410" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000066_di" bpmnElement="SequenceFlow_0000066">
+        <di:waypoint x="3564" y="518" />
+        <di:waypoint x="3589" y="518" />
+        <di:waypoint x="3614" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000053_di" bpmnElement="SequenceFlow_0000053">
+        <di:waypoint x="2720" y="518" />
+        <di:waypoint x="2745" y="518" />
+        <di:waypoint x="2770" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000040_di" bpmnElement="SequenceFlow_0000040">
+        <di:waypoint x="1876" y="518" />
+        <di:waypoint x="1901" y="518" />
+        <di:waypoint x="1926" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000032_di" bpmnElement="SequenceFlow_0000032">
+        <di:waypoint x="1894" y="410" />
+        <di:waypoint x="2745" y="338" />
+        <di:waypoint x="3117" y="338" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000028_di" bpmnElement="SequenceFlow_0000028">
+        <di:waypoint x="1332" y="518" />
+        <di:waypoint x="1357" y="518" />
+        <di:waypoint x="1382" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000019_di" bpmnElement="SequenceFlow_0000019">
+        <di:waypoint x="788" y="518" />
+        <di:waypoint x="813" y="518" />
+        <di:waypoint x="838" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000013_di" bpmnElement="SequenceFlow_0000013">
+        <di:waypoint x="688" y="518" />
+        <di:waypoint x="713" y="518" />
+        <di:waypoint x="738" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000011_di" bpmnElement="SequenceFlow_0000011">
+        <di:waypoint x="294" y="518" />
+        <di:waypoint x="319" y="518" />
+        <di:waypoint x="344" y="518" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="227" y="680" width="86" height="119" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000009_di" bpmnElement="SequenceFlow_0000009">
+        <di:waypoint x="279" y="493" />
+        <di:waypoint x="319" y="393" />
+        <di:waypoint x="516" y="393" />
+        <di:waypoint x="713" y="393" />
+        <di:waypoint x="753" y="493" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000007_di" bpmnElement="SequenceFlow_0000007">
+        <di:waypoint x="194" y="518" />
+        <di:waypoint x="219" y="518" />
+        <di:waypoint x="244" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000005_di" bpmnElement="StartEvent_0000005">
+        <dc:Bounds x="158" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000065_di" bpmnElement="EndEvent_0000065">
+        <dc:Bounds x="3614" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000031_di" bpmnElement="ScriptTask_0000031">
+        <dc:Bounds x="3117" y="298" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0000006_di" bpmnElement="ExclusiveGateway_0000006" isMarkerVisible="true">
+        <dc:Bounds x="244" y="493" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0000008_di" bpmnElement="ExclusiveGateway_0000008" isMarkerVisible="true">
+        <dc:Bounds x="738" y="493" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000010_di" bpmnElement="SubProcess_0000010" isExpanded="true">
+        <dc:Bounds x="344" y="428" width="344" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000017_di" bpmnElement="SequenceFlow_0000017">
+        <di:waypoint x="566" y="518" />
+        <di:waypoint x="591" y="518" />
+        <di:waypoint x="616" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000015_di" bpmnElement="SequenceFlow_0000015">
+        <di:waypoint x="416" y="518" />
+        <di:waypoint x="441" y="518" />
+        <di:waypoint x="466" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000012_di" bpmnElement="StartEvent_0000012">
+        <dc:Bounds x="380" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000016_di" bpmnElement="EndEvent_0000016">
+        <dc:Bounds x="616" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000014_di" bpmnElement="ScriptTask_0000014">
+        <dc:Bounds x="466" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000018_di" bpmnElement="SubProcess_0000018" isExpanded="true">
+        <dc:Bounds x="838" y="428" width="494" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000026_di" bpmnElement="SequenceFlow_0000026">
+        <di:waypoint x="1210" y="518" />
+        <di:waypoint x="1235" y="518" />
+        <di:waypoint x="1260" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000024_di" bpmnElement="SequenceFlow_0000024">
+        <di:waypoint x="1060" y="518" />
+        <di:waypoint x="1085" y="518" />
+        <di:waypoint x="1110" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000022_di" bpmnElement="SequenceFlow_0000022">
+        <di:waypoint x="910" y="518" />
+        <di:waypoint x="935" y="518" />
+        <di:waypoint x="960" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000020_di" bpmnElement="StartEvent_0000020">
+        <dc:Bounds x="874" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000025_di" bpmnElement="EndEvent_0000025">
+        <dc:Bounds x="1260" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000021_di" bpmnElement="ScriptTask_0000021">
+        <dc:Bounds x="960" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000023_di" bpmnElement="ScriptTask_0000023">
+        <dc:Bounds x="1110" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000027_di" bpmnElement="SubProcess_0000027" isExpanded="true">
+        <dc:Bounds x="1382" y="428" width="494" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000038_di" bpmnElement="SequenceFlow_0000038">
+        <di:waypoint x="1754" y="518" />
+        <di:waypoint x="1779" y="518" />
+        <di:waypoint x="1804" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000036_di" bpmnElement="SequenceFlow_0000036">
+        <di:waypoint x="1604" y="518" />
+        <di:waypoint x="1629" y="518" />
+        <di:waypoint x="1654" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000034_di" bpmnElement="SequenceFlow_0000034">
+        <di:waypoint x="1454" y="518" />
+        <di:waypoint x="1479" y="518" />
+        <di:waypoint x="1504" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000029_di" bpmnElement="StartEvent_0000029">
+        <dc:Bounds x="1418" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000037_di" bpmnElement="EndEvent_0000037">
+        <dc:Bounds x="1804" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000033_di" bpmnElement="ScriptTask_0000033">
+        <dc:Bounds x="1504" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000035_di" bpmnElement="ScriptTask_0000035">
+        <dc:Bounds x="1654" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000039_di" bpmnElement="SubProcess_0000039" isExpanded="true">
+        <dc:Bounds x="1926" y="428" width="794" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000051_di" bpmnElement="SequenceFlow_0000051">
+        <di:waypoint x="2598" y="518" />
+        <di:waypoint x="2623" y="518" />
+        <di:waypoint x="2648" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000049_di" bpmnElement="SequenceFlow_0000049">
+        <di:waypoint x="2448" y="518" />
+        <di:waypoint x="2473" y="518" />
+        <di:waypoint x="2498" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000047_di" bpmnElement="SequenceFlow_0000047">
+        <di:waypoint x="2298" y="518" />
+        <di:waypoint x="2323" y="518" />
+        <di:waypoint x="2348" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000045_di" bpmnElement="SequenceFlow_0000045">
+        <di:waypoint x="2148" y="518" />
+        <di:waypoint x="2173" y="518" />
+        <di:waypoint x="2198" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000043_di" bpmnElement="SequenceFlow_0000043">
+        <di:waypoint x="1998" y="518" />
+        <di:waypoint x="2023" y="518" />
+        <di:waypoint x="2048" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000041_di" bpmnElement="StartEvent_0000041">
+        <dc:Bounds x="1962" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000050_di" bpmnElement="EndEvent_0000050">
+        <dc:Bounds x="2648" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000042_di" bpmnElement="ScriptTask_0000042">
+        <dc:Bounds x="2048" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000044_di" bpmnElement="ScriptTask_0000044">
+        <dc:Bounds x="2198" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000046_di" bpmnElement="ScriptTask_0000046">
+        <dc:Bounds x="2348" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000048_di" bpmnElement="ScriptTask_0000048">
+        <dc:Bounds x="2498" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000052_di" bpmnElement="SubProcess_0000052" isExpanded="true">
+        <dc:Bounds x="2770" y="428" width="794" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000064_di" bpmnElement="SequenceFlow_0000064">
+        <di:waypoint x="3442" y="518" />
+        <di:waypoint x="3467" y="518" />
+        <di:waypoint x="3492" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000062_di" bpmnElement="SequenceFlow_0000062">
+        <di:waypoint x="3292" y="518" />
+        <di:waypoint x="3317" y="518" />
+        <di:waypoint x="3342" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000060_di" bpmnElement="SequenceFlow_0000060">
+        <di:waypoint x="3142" y="518" />
+        <di:waypoint x="3167" y="518" />
+        <di:waypoint x="3192" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000058_di" bpmnElement="SequenceFlow_0000058">
+        <di:waypoint x="2992" y="518" />
+        <di:waypoint x="3017" y="518" />
+        <di:waypoint x="3042" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000056_di" bpmnElement="SequenceFlow_0000056">
+        <di:waypoint x="2842" y="518" />
+        <di:waypoint x="2867" y="518" />
+        <di:waypoint x="2892" y="518" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000054_di" bpmnElement="StartEvent_0000054">
+        <dc:Bounds x="2806" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000063_di" bpmnElement="EndEvent_0000063">
+        <dc:Bounds x="3492" y="500" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000055_di" bpmnElement="ScriptTask_0000055">
+        <dc:Bounds x="2892" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000057_di" bpmnElement="ScriptTask_0000057">
+        <dc:Bounds x="3042" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000059_di" bpmnElement="ScriptTask_0000059">
+        <dc:Bounds x="3192" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000061_di" bpmnElement="ScriptTask_0000061">
+        <dc:Bounds x="3342" y="478" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000030_di" bpmnElement="ConditionalEvent_0000030">
+        <dc:Bounds x="1858" y="410" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000067_di" bpmnElement="SubProcess_0000067" isExpanded="true">
+        <dc:Bounds x="3736" y="198" width="1002" height="510" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000100_di" bpmnElement="SequenceFlow_0000100">
+        <di:waypoint x="4552" y="426" />
+        <di:waypoint x="4577" y="426" />
+        <di:waypoint x="4634" y="426" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000092_di" bpmnElement="SequenceFlow_0000092">
+        <di:waypoint x="4470" y="568" />
+        <di:waypoint x="4577" y="568" />
+        <di:waypoint x="4602" y="568" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000089_di" bpmnElement="SequenceFlow_0000089">
+        <di:waypoint x="4377.394366197183" y="478" />
+        <di:waypoint x="4477" y="426" />
+        <di:waypoint x="4502" y="426" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000087_di" bpmnElement="SequenceFlow_0000087">
+        <di:waypoint x="3908" y="568" />
+        <di:waypoint x="3933" y="568" />
+        <di:waypoint x="3958" y="568" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3825" y="620" width="90" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000079_di" bpmnElement="SequenceFlow_0000079">
+        <di:waypoint x="4470" y="318" />
+        <di:waypoint x="4577" y="318" />
+        <di:waypoint x="4602" y="318" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000075_di" bpmnElement="SequenceFlow_0000075">
+        <di:waypoint x="4452" y="338" />
+        <di:waypoint x="4477" y="338" />
+        <di:waypoint x="4512.795454545454" y="401" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000074_di" bpmnElement="SequenceFlow_0000074">
+        <di:waypoint x="3888.4347826086955" y="543" />
+        <di:waypoint x="3933" y="338" />
+        <di:waypoint x="3958" y="338" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000071_di" bpmnElement="SequenceFlow_0000071">
+        <di:waypoint x="3808" y="568" />
+        <di:waypoint x="3833" y="568" />
+        <di:waypoint x="3858" y="568" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000069_di" bpmnElement="StartEvent_0000069">
+        <dc:Bounds x="3772" y="550" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000099_di" bpmnElement="EndEvent_0000099">
+        <dc:Bounds x="4634" y="408" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000078_di" bpmnElement="ScriptTask_0000078">
+        <dc:Bounds x="4602" y="278" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000091_di" bpmnElement="ScriptTask_0000091">
+        <dc:Bounds x="4602" y="528" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_0000070_di" bpmnElement="ParallelGateway_0000070">
+        <dc:Bounds x="3858" y="543" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_0000072_di" bpmnElement="ParallelGateway_0000072">
+        <dc:Bounds x="4502" y="401" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000073_di" bpmnElement="SubProcess_0000073" isExpanded="true">
+        <dc:Bounds x="3958" y="248" width="494" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000085_di" bpmnElement="SequenceFlow_0000085">
+        <di:waypoint x="4330" y="338" />
+        <di:waypoint x="4355" y="338" />
+        <di:waypoint x="4380" y="338" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000083_di" bpmnElement="SequenceFlow_0000083">
+        <di:waypoint x="4180" y="338" />
+        <di:waypoint x="4205" y="338" />
+        <di:waypoint x="4230" y="338" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000081_di" bpmnElement="SequenceFlow_0000081">
+        <di:waypoint x="4030" y="338" />
+        <di:waypoint x="4055" y="338" />
+        <di:waypoint x="4080" y="338" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000076_di" bpmnElement="StartEvent_0000076">
+        <dc:Bounds x="3994" y="320" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000084_di" bpmnElement="EndEvent_0000084">
+        <dc:Bounds x="4380" y="320" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000080_di" bpmnElement="ScriptTask_0000080">
+        <dc:Bounds x="4080" y="298" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000082_di" bpmnElement="ScriptTask_0000082">
+        <dc:Bounds x="4230" y="298" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000086_di" bpmnElement="SubProcess_0000086" isExpanded="true">
+        <dc:Bounds x="3958" y="478" width="494" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000098_di" bpmnElement="SequenceFlow_0000098">
+        <di:waypoint x="4330" y="568" />
+        <di:waypoint x="4355" y="568" />
+        <di:waypoint x="4380" y="568" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000096_di" bpmnElement="SequenceFlow_0000096">
+        <di:waypoint x="4180" y="568" />
+        <di:waypoint x="4205" y="568" />
+        <di:waypoint x="4230" y="568" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000094_di" bpmnElement="SequenceFlow_0000094">
+        <di:waypoint x="4030" y="568" />
+        <di:waypoint x="4055" y="568" />
+        <di:waypoint x="4080" y="568" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000088_di" bpmnElement="StartEvent_0000088">
+        <dc:Bounds x="3994" y="550" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000097_di" bpmnElement="EndEvent_0000097">
+        <dc:Bounds x="4380" y="550" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000093_di" bpmnElement="ScriptTask_0000093">
+        <dc:Bounds x="4080" y="528" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000095_di" bpmnElement="ScriptTask_0000095">
+        <dc:Bounds x="4230" y="528" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000090_di" bpmnElement="ConditionalEvent_0000090">
+        <dc:Bounds x="4434" y="550" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000077_di" bpmnElement="ConditionalEvent_0000077">
+        <dc:Bounds x="4434" y="300" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000101_di" bpmnElement="SubProcess_0000101" isExpanded="true">
+        <dc:Bounds x="4788" y="363" width="794" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000116_di" bpmnElement="SequenceFlow_0000116">
+        <di:waypoint x="5460" y="453" />
+        <di:waypoint x="5485" y="453" />
+        <di:waypoint x="5510" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000114_di" bpmnElement="SequenceFlow_0000114">
+        <di:waypoint x="5310" y="453" />
+        <di:waypoint x="5335" y="453" />
+        <di:waypoint x="5360" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000112_di" bpmnElement="SequenceFlow_0000112">
+        <di:waypoint x="5160" y="453" />
+        <di:waypoint x="5185" y="453" />
+        <di:waypoint x="5210" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000110_di" bpmnElement="SequenceFlow_0000110">
+        <di:waypoint x="5010" y="453" />
+        <di:waypoint x="5035" y="453" />
+        <di:waypoint x="5060" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000108_di" bpmnElement="SequenceFlow_0000108">
+        <di:waypoint x="4860" y="453" />
+        <di:waypoint x="4885" y="453" />
+        <di:waypoint x="4910" y="453" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000103_di" bpmnElement="StartEvent_0000103">
+        <dc:Bounds x="4824" y="435" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000115_di" bpmnElement="EndEvent_0000115">
+        <dc:Bounds x="5510" y="435" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000107_di" bpmnElement="ScriptTask_0000107">
+        <dc:Bounds x="4910" y="413" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000109_di" bpmnElement="ScriptTask_0000109">
+        <dc:Bounds x="5060" y="413" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000111_di" bpmnElement="ScriptTask_0000111">
+        <dc:Bounds x="5210" y="413" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000113_di" bpmnElement="ScriptTask_0000113">
+        <dc:Bounds x="5360" y="413" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000117_di" bpmnElement="SubProcess_0000117" isExpanded="true">
+        <dc:Bounds x="5632" y="158" width="1002" height="590" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000151_di" bpmnElement="SequenceFlow_0000151">
+        <di:waypoint x="6448" y="386" />
+        <di:waypoint x="6473" y="386" />
+        <di:waypoint x="6530" y="386" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000143_di" bpmnElement="SequenceFlow_0000143">
+        <di:waypoint x="6366" y="636" />
+        <di:waypoint x="6473" y="658" />
+        <di:waypoint x="6498" y="658" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000140_di" bpmnElement="SequenceFlow_0000140">
+        <di:waypoint x="6366" y="528" />
+        <di:waypoint x="6473" y="528" />
+        <di:waypoint x="6498" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000136_di" bpmnElement="SequenceFlow_0000136">
+        <di:waypoint x="6273.394366197183" y="438" />
+        <di:waypoint x="6373" y="386" />
+        <di:waypoint x="6398" y="386" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000135_di" bpmnElement="SequenceFlow_0000135">
+        <di:waypoint x="5804" y="528" />
+        <di:waypoint x="5829" y="528" />
+        <di:waypoint x="5854" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000129_di" bpmnElement="SequenceFlow_0000129">
+        <di:waypoint x="6291" y="278" />
+        <di:waypoint x="6473" y="278" />
+        <di:waypoint x="6498" y="278" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000125_di" bpmnElement="SequenceFlow_0000125">
+        <di:waypoint x="6273" y="298" />
+        <di:waypoint x="6373" y="298" />
+        <di:waypoint x="6408.795454545454" y="361" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000124_di" bpmnElement="SequenceFlow_0000124">
+        <di:waypoint x="5784.434782608696" y="503" />
+        <di:waypoint x="5829" y="298" />
+        <di:waypoint x="5929" y="298" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000121_di" bpmnElement="SequenceFlow_0000121">
+        <di:waypoint x="5704" y="528" />
+        <di:waypoint x="5729" y="528" />
+        <di:waypoint x="5754" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000119_di" bpmnElement="StartEvent_0000119">
+        <dc:Bounds x="5668" y="510" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000150_di" bpmnElement="EndEvent_0000150">
+        <dc:Bounds x="6530" y="368" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000128_di" bpmnElement="ScriptTask_0000128">
+        <dc:Bounds x="6498" y="238" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000139_di" bpmnElement="ScriptTask_0000139">
+        <dc:Bounds x="6498" y="488" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000142_di" bpmnElement="ScriptTask_0000142">
+        <dc:Bounds x="6498" y="618" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_0000120_di" bpmnElement="ParallelGateway_0000120">
+        <dc:Bounds x="5754" y="503" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_0000122_di" bpmnElement="ParallelGateway_0000122">
+        <dc:Bounds x="6398" y="361" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000123_di" bpmnElement="SubProcess_0000123" isExpanded="true">
+        <dc:Bounds x="5929" y="208" width="344" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000133_di" bpmnElement="SequenceFlow_0000133">
+        <di:waypoint x="6151" y="298" />
+        <di:waypoint x="6176" y="298" />
+        <di:waypoint x="6201" y="298" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000131_di" bpmnElement="SequenceFlow_0000131">
+        <di:waypoint x="6001" y="298" />
+        <di:waypoint x="6026" y="298" />
+        <di:waypoint x="6051" y="298" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000126_di" bpmnElement="StartEvent_0000126">
+        <dc:Bounds x="5965" y="280" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000132_di" bpmnElement="EndEvent_0000132">
+        <dc:Bounds x="6201" y="280" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000130_di" bpmnElement="ScriptTask_0000130">
+        <dc:Bounds x="6051" y="258" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0000134_di" bpmnElement="SubProcess_0000134" isExpanded="true">
+        <dc:Bounds x="5854" y="438" width="494" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000149_di" bpmnElement="SequenceFlow_0000149">
+        <di:waypoint x="6226" y="528" />
+        <di:waypoint x="6251" y="528" />
+        <di:waypoint x="6276" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000147_di" bpmnElement="SequenceFlow_0000147">
+        <di:waypoint x="6076" y="528" />
+        <di:waypoint x="6101" y="528" />
+        <di:waypoint x="6126" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0000145_di" bpmnElement="SequenceFlow_0000145">
+        <di:waypoint x="5926" y="528" />
+        <di:waypoint x="5951" y="528" />
+        <di:waypoint x="5976" y="528" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0000137_di" bpmnElement="StartEvent_0000137">
+        <dc:Bounds x="5890" y="510" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0000148_di" bpmnElement="EndEvent_0000148">
+        <dc:Bounds x="6276" y="510" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000144_di" bpmnElement="ScriptTask_0000144">
+        <dc:Bounds x="5976" y="488" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0000146_di" bpmnElement="ScriptTask_0000146">
+        <dc:Bounds x="6126" y="488" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000141_di" bpmnElement="ConditionalEvent_0000141">
+        <dc:Bounds x="6330" y="600" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000138_di" bpmnElement="ConditionalEvent_0000138">
+        <dc:Bounds x="6330" y="510" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000127_di" bpmnElement="ConditionalEvent_0000127">
+        <dc:Bounds x="6255" y="260" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConditionalEvent_0000104_di" bpmnElement="ConditionalEvent_0000104">
+        <dc:Bounds x="5564" y="345" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

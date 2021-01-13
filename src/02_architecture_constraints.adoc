@@ -13,6 +13,28 @@ Any requirement that constrains software architects in their freedom of design a
 Architects should know exactly where they are free in their design decisions and where they must adhere to constraints.
 Constraints must always be dealt with; they may be negotiable, though.
 
+.Permissioning 
+
+A Allow List / White List of approved contract interactions only. 
+All transactions not involving predefined approved contracts in a 'registry' are dropped
+> Need clarification for this part as it relates to the incoming transaction handler/load balancer
+
+User Authentication must be minimal, if any.
+
+
+.Network State and Concensus  
+
+
+A successful reward scheme has to posses several properties. First, it has
+to incentivize information propagation and no duplication. That is, it will be in a node’s
+best interest to distribute the transaction to all its children without duplicating itself,
+as well as never duplicating when it authorizes. Second, at the end of the distribution
+phase most of the nodes have to be aware of the transaction. 
+
+Changing the order of transactions impacts state. This would substantially increase the effective confirmation time leading to instability and a higher rate of reverted transactions.
+
+
+
 .General Constraints
 
 - Downtime. If for any reason node has to be taken down for maintenance there will
@@ -32,5 +54,21 @@ is used from web dapp interface and number, and you can observe daily spikes in
 user engagement.
 
 
+.Database
+
+Data written to kernel buffers using the write(2) system call (or equivalent) that gives us data safety against process failure.
+
+Data committed to the disk using the fsync(2) system call (or equivalent) that gives us, virtually, data safety against complete system failure like a power outage. We actually know that there is no guarantee because of the possible disk controller caching, but we'll not consider this aspect because this is an invariant among all the common database systems. Also system administrators often can use specialized tools in order to control the exact behavior of the physical device.
+
+- Persistance Procedures at the system call level
+
+1: The client sends a write command to the database (data is in client's memory).
+2: The database receives the write (data is in server's memory).
+3: The database calls the system call that writes the data on disk (data is in the kernel's buffer).
+4: The operating system transfers the write buffer to the disk controller (data is in the disk cache).
+5: The disk controller actually writes the data 
+
+
+> Note on POSIX/Linux Kernel will take at least 30 seconds to write. This means that if there is a failure, all the data written in the latest 30 seconds can get potentially lost.
 
 ****

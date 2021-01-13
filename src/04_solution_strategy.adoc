@@ -23,8 +23,6 @@ Terraform
 Docker for Hypervisor/Container
 DynamoDB/PostGres for Service/Logging Persistance
 
-
-
 === RPC Layer 
 
 A list of URL of out Parity node should be kept in DynamoDB. There is also a

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>YCabal Specification</title>
+    <link>http://docs.backbonecabal.com/</link>
+    <description>Recent content on YCabal Specification</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>CommodityStream LLC. All rights reserved.</copyright>
+    
+	<atom:link href="http://docs.backbonecabal.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>http://docs.backbonecabal.com/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.backbonecabal.com/</guid>
+      <description>sam bacha &amp;lt;sam@freighttrust.com&amp;gt; Version {0.3.0}
+ </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,16 @@
+baseURL = "http://docs.backbonecabal.com"
+languageCode = "en-us"
+title = "YCabal Specification"
+theme = "antora-default-ui-hugo-theme"
+
+copyright = "CommodityStream LLC. All rights reserved."
+paginate = 3
+
+[markup]
+  [markup.asciidocext]
+    [markup.asciidocext.attributes]
+      "icons" = "font"
+      "source-highlighter" = "highlightjs"
+  [markup.highlight]
+    # Disable Goldmark Chroma syntax highlighter
+    codeFences = false

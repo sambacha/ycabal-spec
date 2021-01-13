@@ -1,0 +1,62 @@
++++
+title = "YCabal Design"
+date = "2021-01-11"
+categories = ["Spec"]
+tags = ["Documentation", "Proposal"]
++++
+:idprefix:
+:idseparator: -
+:!example-caption:
+:!table-caption:
+:page-pagination:
+
+
+= YCabal
+:toc-title: Strategy Requirements and Design 
+// toc-title must follow document title without blank line
+
+
+:toc:
+
+:icons: font
+
+:caution-caption: Caution 
+:important-caption: Important 
+:note-caption: Note 
+:tip-caption: Tip
+:warning-caption: Warning 
+:appendix-caption: Glossary 
+:example-caption: Example 
+
+
+[small]#sam bacha <sam@freighttrust.com>
+Version {0.3.0}#
+
+
+
+include::content/01_introduction_and_goals.adoc[]
+
+include::content/architecture/02_architecture_constraints.adoc[]
+
+include::content/architecture/03_system_scope_and_context.adoc[]
+
+include::content/architecture/04_solution_strategy.adoc[]
+
+include::content/design/05_building_block_view.adoc[]
+
+include::content/operations/06_runtime_view.adoc[]
+
+include::content/operations/07_deployment_view.adoc[]
+
+include::content/operations/08_concepts.adoc[]
+
+include::content/design/09_design_decisions.adoc[]
+
+include::content/risks/10_quality_scenarios.adoc[]
+
+include::content/risks/11_technical_risks.adoc[]
+
+
+
+[appendix]
+include::content/glossary/12_glossary.adoc[]

@@ -23,4 +23,15 @@ Various options:
 * List or table, ordered by importance and consequences or:
 * more detailed in form of separate sections per decision
 * ADR (architecture decision record) for every important decision
+
+.Kafka 
+1. Limit The Number of Clusters
+2. librdkafka based Client
+ see llink:https://cwiki.apache.org/confluence/display/KAFKA/Clients
+
+3. Avro as data format* 
+4. Model Events Not Commands
+5. Zookeeper?
+
+
 ****

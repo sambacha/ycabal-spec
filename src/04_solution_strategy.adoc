@@ -49,6 +49,37 @@ nginx container with with generated config. Standard GitDevOps
 The upside of using AWS services is that they come with default metrics
 out-of-box
 
+
+.Central Dogma (the 'black box')
+> the core guts of the backbone network
+
+
+Writing atomically to a database and a message broker can add unnecessary code complexity
+
+Message Broker unavailability would force decisions about each microservice's trade-offs between availability and consistency
+
++ *Solution*
+Separate the concern of managing inter-service communication by using an event-driven Message Relay
+
+- RedisGears can be used to easily implement the Transactional Outbox pattern by listening for events within 
+
+Redis databases and relaying event notifications (write-behind pattern) to a Message Broker for downstream inter-service communication
+Redis-based microservices would avoid code complexity, concerns with Message Broker unavailability, and performance overhead
+
+.Observability
+**Challenge**
+Observability, tracing, and auditing of Choreography-based Sagas is difficult across a decoupled chain of microservices
+
+Solution
+
+- Event Sourcing implies recording every microservice's state change as an immutable event; acting as a source of truth
+- It is composed of a Message Broker and Event Store
+
+- Based on the or dered sequence of events persisted in the event store, a microservice can replay/rebuild its system state by reprocessing recorded events at any time
+
+- Redis Streams is an immutable in-memory append-only log data structure perfectly suited and used as an Event Store
+- Visualizing a stream of events can provide real-time observability of the system's state and instant recovery/replay
+
 .Questions
 
 Load Balancer - HAProxy or alt?s

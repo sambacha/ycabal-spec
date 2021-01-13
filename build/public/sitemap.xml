@@ -3,20 +3,38 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://docs.backbonecabal.com/</loc>
-    <priority>0</priority>
+    <loc>http://docs.backbonecabal.com/categories/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.backbonecabal.com/categories/</loc>
+    <loc>http://docs.backbonecabal.com/tags/documentation/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.backbonecabal.com/tags/proposal/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.backbonecabal.com/categories/spec/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.backbonecabal.com/tags/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.backbonecabal.com/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.backbonecabal.com/</loc>
+    <lastmod>2021-01-11T00:00:00+00:00</lastmod>
   </url>
   
 </urlset>

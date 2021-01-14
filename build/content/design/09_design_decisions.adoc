@@ -29,12 +29,17 @@ Avoid redundancy. Refer to section 4, where you already captured the most import
 .Motivation
 Stakeholders of your system should be able to comprehend and retrace your decisions.
 
-.Form
-Various options:
+.Applications and Clients
 
-* List or table, ordered by importance and consequences or:
-* more detailed in form of separate sections per decision
-* ADR (architecture decision record) for every important decision
+* Parity / OpenEthereum client 
+
+* RLP Encoding and Decoding 
+- https://github.com/cburgdorf/rusty-rlp
+
+* Ethereumetl
+
+
+
 
 .Kafka 
 1. Limit The Number of Clusters

@@ -1,0 +1,18 @@
+{
+	"ethereum-mempool": {
+		"from": "string",
+		"to": "string",
+		"nonce": "integer",
+		"gas": "integer",
+		"gasPrice": "string",
+		"gasUsed": "string",
+		"value": "string",
+		"hash": "string",
+		"input": "string",
+		"v": "string",
+		"r": "string",
+		"s": "string",
+		"blockHash": "string",
+		"blockNumber": "string"
+	}
+}

@@ -1,0 +1,44 @@
+[[section-glossary]]
+== Glossary
+
+
+
+[role="arc42help"]
+****
+.Contents
+The most important domain and technical terms that your stakeholders use when discussing the system.
+
+You can also see the glossary as source for translations if you work in multi-language teams.
+
+.Motivation
+You should clearly define your terms, so that all stakeholders
+
+* have an identical understanding of these terms
+* do not use synonyms and homonyms
+
+.Form
+A table with columns <Term> and <Definition>.
+
+Potentially more columns in case you need translations.
+
+Block producers // Transaction Inclusion
+Block proposers are most analogous to traditional blockchain miners. It is critical that they preserve the censorship resistance that we see in blockchains today. However, instead of proposing blocks with an ordering, they simply propose a set of transactions to eventually be included before N blocks.
+
+Sequencers // Transaction Ordering
+Sequencers are elected by a smart contract managed auction run by the block producers called the MEVA contract. This auction assigns the right to sequence the last N transactions. If, within a timeout the sequencer has not submitted an ordering which is included by block proposers, a new sequencer is elected.
+
+
+e depth of a node is
+the number of nodes on the path from the root of the node’s tree (the seed) to the node.
+Let n=t*(d^(H)-1)/(d-1) be be the total number of nodes.
+
+
+
+****
+
+[options="header"]
+|===
+| Term         | Definition
+| Geth Transaction Pool     | https://github.com/ethereum/go-ethereum/blob/8592a575532e753776c2fa6ec0234294ac2c55a1/core/tx_pool.go
+| <Term-2>     | <definition-2>
+|===

@@ -1,12 +1,11 @@
-# YCabal Software Specification 
+# YCabal Software Specification
 
-> Design Document for YCabal 
+> Design Document for YCabal
 
+## Overview
 
-## Overview 
+`arc24` based methodology
 
-`arc24` based methodology 
-
-## License 
+## License
 
 NC-ND-2.5

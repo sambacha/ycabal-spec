@@ -7,19 +7,21 @@ This is an old proposal. See [Firehose Sync v0.2 here](https://notes.ethereum.or
 This syncing proposal builds on the "leaf sync" and "hybrid-warp" concepts. It combines the key benefits of the different approaches.
 
 - Leaf Sync:
-    - Fast on-the-fly leaf generation, because it does not require verifiable repsonses
+  - Fast on-the-fly leaf generation, because it does not require verifiable repsonses
 - Hybrid Warp:
-    - Incremental validation of leaf data
+  - Incremental validation of leaf data
 - Benefits in all:
-    - Opportunities to increase the throughput by changing disk layout
-    - Reduced bandwidth & request count
-    - Pivots faster than Fast Sync
+  - Opportunities to increase the throughput by changing disk layout
+  - Reduced bandwidth & request count
+  - Pivots faster than Fast Sync
 
 New benefits in Firehose:
+
 - Dynamic adjustment to trie size
 - Robust to trie imbalance
 
 Firehose Sync potentially comes at the cost of:
+
 - Slightly more bandwidth than leaf sync, for some of the inclusion proof data.
 - Maintaining the top layers of the trie in storage/memory, for a number of recent blocks. (may be difficult in TurboGeth)
 - More costly to generate/cache snapshots than leaf sync. [See the "Hasty Sync" for an option to mitigate](#Hasty-Firehose-Sync)
@@ -27,30 +29,35 @@ Firehose Sync potentially comes at the cost of:
 ## Background on Inspired Approaches
 
 ### Leaf Sync (aka Fast-Warp)
+
 :::info
 See [Martin's writeup](https://notes.ethereum.org/kphcc_CKT4a5sUs_zWVelA) for a full picture
 :::
 
 Some prototypes:
+
 - geth: https://github.com/karalabe/go-ethereum/tree/state-leaf-sync
 - parity: https://github.com/paritytech/parity-ethereum/tree/ng-fast-warp
 
 Fredrik's summary:
+
 > In a few words; it send chunks of the state á la warp sync, and then uses fast-sync to fill in the blanks/invalids that are caused by the state as a whole not being accurate as of the last block once the whole state has been downloaded
 > So imagine it’s like warp-syncing 90% of the state and filling in the last 10% with fast-sync
 > This allows for on-the-fly chunk generation, as opposed to generating the whole snapshot in a consistent way as warp-sync requires (which is also the main bottleneck for it)
 
 If you're familiar with Leaf Sync, then Firehose Sync is similar, but:
+
 - Does not inline storage, recurses into storage tries
 - Chunk size can be determined/modified on the fly, per chunk
 
-*Unknown at this time: How is the account trie chunk size determined? How about storage tries? How are the requests formatted? Can you batch requests/responses with multiple storage values?*
+_Unknown at this time: How is the account trie chunk size determined? How about storage tries? How are the requests formatted? Can you batch requests/responses with multiple storage values?_
 
 ### Hybrid Sync
 
 Alexey posted the Hybrid Sync proposal: https://github.com/ledgerwatch/eth_state/blob/master/sync/Hybrid_Sync.pdf
 
 If you're familiar with Hybrid Sync, then Firehose Sync is similar, but:
+
 - Does not pre-determine how the size of all key/value chunks
 - Permits chunks to be subdivided on the fly, if any one gets too big
 
@@ -60,15 +67,15 @@ If you're familiar with Hybrid Sync, then Firehose Sync is similar, but:
 
 One way to think about Firehose Sync is as a naive client requesting all the keys & values at once, and recursing down into the trie when that response would be too big. Something like:
 
-1) **Request** Give me the addresses and RLPs of every account at state root `0xa1b2`...
-2) **Response** Nope, that's too much. Here are some nodes: the root and each of its children.
-3) **Req** Looks like those nodes match the root :+1:, how about accounts with address hashes starting with `0x00`, same root?
-5) **Resp** Nope, still way too big. Here is the node at prefix `0x00`, and all its children
-6) **Req** Ok, I can tell these are the right nodes, based on the hashes in #2. I really want some accounts, though, can I have all the accounts whose hashes start with prefix `0x0000`?
-7) **Resp** No problem! Here are all the account RLPs whose hashes start with `0x0000`, and the last 30 bytes of the hash of their addresses
-8) **Req** Hooray! I can validate all the accounts by building them into a subtrie and comparing it to a hash received in #4
+1. **Request** Give me the addresses and RLPs of every account at state root `0xa1b2`...
+2. **Response** Nope, that's too much. Here are some nodes: the root and each of its children.
+3. **Req** Looks like those nodes match the root :+1:, how about accounts with address hashes starting with `0x00`, same root?
+4. **Resp** Nope, still way too big. Here is the node at prefix `0x00`, and all its children
+5. **Req** Ok, I can tell these are the right nodes, based on the hashes in #2. I really want some accounts, though, can I have all the accounts whose hashes start with prefix `0x0000`?
+6. **Resp** No problem! Here are all the account RLPs whose hashes start with `0x0000`, and the last 30 bytes of the hash of their addresses
+7. **Req** Hooray! I can validate all the accounts by building them into a subtrie and comparing it to a hash received in #4
 
-Firehose Sync *enables* the strategy above, but does not lock you into it. Also, the requester is only requesting one "thing" at a time here, but can batch requests, as seen below.
+Firehose Sync _enables_ the strategy above, but does not lock you into it. Also, the requester is only requesting one "thing" at a time here, but can batch requests, as seen below.
 
 Note that this whole protocol works exactly the same on storage tries.
 
@@ -82,15 +89,15 @@ The requests can be batched so that multiple prefixes and multiple root hashes m
 {
     # A request id is supplied, to match against the response
     "id": int,
-    
+
     # Requests are batched in a list under the single key: prefixes
     "prefixes": [
-    
+
         # Each list item is a two-element tuple
         (
             # The first element is the root hash being requested
             root_hash,
-        
+
             # The second element is a list of prefixes being requested
             [key_prefix, ...]
         ),
@@ -116,30 +123,32 @@ Some valid prefixes encodings:
 - `0x1FFF` -- The odd prefix `0xFFF`
 
 Some invalid prefix encodings:
+
 - `0x01` -- Must start with `0x00` or `0x1`
 - `0xF0` -- Also not marked as odd or even
 
-*This encoding works, but feels naive. Is there anything better out there?*
-
+_This encoding works, but feels naive. Is there anything better out there?_
 
 #### Example
+
 Say you want the accounts that (after hashing) have the prefixes `0xbeef` and `0x0ddba11`, at state root 0xaaa...aaa. Additionally, you want all the values in the storage trie with root 0xbbb...bbb. Your request would look like:
+
 ```
 {
     "id": 1,
-    
+
     "prefixes": [
         (
             # state root hash
             0xaaa...aaa,
-            
+
             # even-length 0xbeef and odd-length 0x0ddba11, encoded
             [0x00beef, 0x10ddba11]
         ),
         (
             # storage root hash
             0xbbb...bbb,
-            
+
             # ask for all values by requesting the empty prefix
             [0x]
         )
@@ -147,40 +156,37 @@ Say you want the accounts that (after hashing) have the prefixes `0xbeef` and `0
 }
 ```
 
-
 ### Response Command: `TrieData`
 
-
 The responder has the option of returning either:
-1) Some nodes in the subtrie starting at the requested prefix (with some flexibility on which nodes to return), OR
-2) The keys & values that are stored in that key prefix range
 
-
+1. Some nodes in the subtrie starting at the requested prefix (with some flexibility on which nodes to return), OR
+2. The keys & values that are stored in that key prefix range
 
 ```
 {
     # The ID to be used by the requestor to match the response
     "id": int,
-    
+
     # The response data, in the same ordering of the request
     "data": [
 
         # there is one element in this outer list for each state root requested
         [
-        
+
             # There is one 2-tuple for every prefix requested
             (
-            
+
                 # The responder may choose to reply with a list of trie nodes
                 [node, ...],
-                
+
                 # OR, the responder may reply with the keys & values
                 [
                     # A single key/value pair
                     (
                         # The prefix is omitted from the key
                         key_suffix,
-                        
+
                         # The RLP-encoded value stored in the trie
                         value
                     ),
@@ -193,6 +199,7 @@ The responder has the option of returning either:
     ]
 }
 ```
+
 The response must reuse the same ordering of root hashes and prefixes as used for the request. For each prefix, the responder chooses to send exactly one of: node data, or key/value data, or neither.
 
 If the suffix is odd-length (in nibbles), then left-pad with 0's to the nearest full byte. That means that a suffix length-4 of `0x0987` and suffix length-3 `0x987` are sent as the same bytes in a response. It's up to the requestor to recall the prefix length, so they can infer the suffix length.
@@ -200,20 +207,21 @@ If the suffix is odd-length (in nibbles), then left-pad with 0's to the nearest 
 #### Node Data Response Constraints
 
 Some constraints on the node data response:
-1) Response **must not** return any child nodes without also returning their parents. For example, if exactly one node is returned to a request for the empty prefix, it must be the root node.
-2) Response **must** return parent nodes before any child nodes. Child nodes may be in any order.
+
+1. Response **must not** return any child nodes without also returning their parents. For example, if exactly one node is returned to a request for the empty prefix, it must be the root node.
+2. Response **must** return parent nodes before any child nodes. Child nodes may be in any order.
 
 #### Example
-A response to the example request above might look like:
 
+A response to the example request above might look like:
 
 ```
 {
     "id": 1,
-    
+
     # This is a list of two elements, matching the `prefixes` request example
     "data": [
-    
+
         # All values in this first list correspond to
         # state root hash: 0xaaa...aaa
         [
@@ -221,34 +229,34 @@ A response to the example request above might look like:
             (
                 # Node data is not empty: the prefix was too short
                 [0xabc..., 0xdef...],
-                
+
                 # The second element must be empty if the first is not
                 []
             ),
-            
+
             # This 2-tuple is for the 0x0ddba11 prefix
             (
                 # Node data is empty: the prefix was long enough to get values
                 [],
-                
+
                 # This is the list of the key suffixes and values under 0x0ddba11
                 [
                     # This is a single key suffix and value pair
                     (0x09876..., 0x111...),
-                    
+
                     # Here, all keys start with 0x0, because they are odd-length
-                    
+
                     # Each key suffix must be 57 nibbles long, which
                     # rounds out to 29 bytes
                     (0x0a1b..., 0x1a2...),
                 ]),
         ],
-        
+
         # All values in this second list correspond to
         # storage root hash: 0xbbb...bbb
         [
             # The first (only) element in this list is for the empty prefix
-            
+
             # The responder returned nothing, perhaps it hit an internal timeout
             # An empty tuple is a valid response, as is ([], [])
             (),
@@ -257,24 +265,24 @@ A response to the example request above might look like:
 }
 ```
 
-
-
-
 ### Request Strategies
 
 Nothing about this protocol requires or prevents the following strategies, which clients might choose to adopt:
 
 #### Fast-Distrustful Strategy
+
 In the strategy, a requester starts requesting from the root, like the "casual example" above. It requests the values at `0x00` and so on. However, the chain changes over time, and at some point the connected nodes may no longer have the trie data available.
 
-At this point, the requestor needs to "pivot" to a new state root. So the requestor requests the empty prefix at the new state root. However, instead of asking for the `0x00` values *again*, the requestor skips to a prefix that was not retrieved in an earlier trie.
+At this point, the requestor needs to "pivot" to a new state root. So the requestor requests the empty prefix at the new state root. However, instead of asking for the `0x00` values _again_, the requestor skips to a prefix that was not retrieved in an earlier trie.
 
 The requestor considers this "stage" of sync complete when keys/values from all prefixes are downloaded, even if they come from different state roots. The follow-up stage is to use "traditional" fast sync to fix up the gaps.
 
 #### Anti-Fast Strategy
+
 A requestor client might choose not to implement fast sync, so they look for an alternative strategy. In this case, every time a pivot is required, the client would have to re-request from the empty prefix. For any key prefix that has not changed since the previous pivot, the client can still skip that whole subtree. Depending on how large the buckets are and how fast state is changing, the client may end up receiving many duplicate keys and values, repeatedly. It will probably involve more requests and more bandwidth consumed, than any other strategy.
 
 #### Fast-Optimistic Strategy
+
 A requestor can choose to ask for prefixes without having the proof from the trie. In this strategy, the nodes aren't any use, so the client would aim to choose a prefix that is long enough to get keys/values. This strategy appears very similar to fast-warp, because you can't verify the chunks along the way. It still has the added bonus of adapting to changing trie size and imbalance. If the requestor picks a prefix that is too short, the responder will reply in a way that indicates that the requester should pick a longer prefix.
 
 #### Fast-Earned-Trust Strategy
@@ -288,11 +296,12 @@ A requester might start up new peers, using the Fast-Distrustful Strategy. After
 Instead of trying to sync the whole state immediately, starting with arbitrary parts, download state guided by the recent headers. In short: pick a very recent header, download transactions, and start running them. Every time the EVM attempts to read state that is not present, pause execution and request the needed state. After running all the transactions in the block, select the canonical child header, and repeat.
 
 Some benefits of this strategy:
+
 - Very short ramp-up time to running transactions locally
 - Encourages cache alignment:
-    - Multiple requestors make similar requests, encouraging cache hits
-    - Responders can predict inbound requests
-    - Not only are specific accounts more likely to be requested; those accounts are requested at particular state roots
+  - Multiple requestors make similar requests, encouraging cache hits
+  - Responders can predict inbound requests
+  - Not only are specific accounts more likely to be requested; those accounts are requested at particular state roots
 
 It's entirely possible that it will take longer than the block time to execute a single block when you have a lot of read "misses." As you build more and more local data, you should eventually catch up.
 
@@ -300,7 +309,7 @@ What happens if the amount of state read in a single block is so big that you ca
 
 ### Response Strategies
 
-<!-- 
+<!--
 
 #### Sending breadth-first nodes
 It should be easier for the responder and more helpful for the requester to get a breadth of nodes, so that they don't waste time on nodes that are too deep. In other words, better to send this:
@@ -341,7 +350,7 @@ The responder responds with this scraggly tree:
 ```
     * (root)
  0 /
-  *   
+  *
    \ 1
     *
 
@@ -362,15 +371,15 @@ There is only one straightforward strategy: return all the keys and values in th
 
 ### Hasty Firehose Sync
 
-This is a potentially surprising strategy that is not *explicitly* forbidden.
+This is a potentially surprising strategy that is not _explicitly_ forbidden.
 
-When responding with keys/values, the responder might choose to give results that are *nearly* valid, but would fail a cryptographic check. Perhaps the values are from one block later, or the responder is reading from a data store that is "mid-block" or "mid-transaction". This enables some caching strategies that leaf sync was designed for.
+When responding with keys/values, the responder might choose to give results that are _nearly_ valid, but would fail a cryptographic check. Perhaps the values are from one block later, or the responder is reading from a data store that is "mid-block" or "mid-transaction". This enables some caching strategies that leaf sync was designed for.
 
 Naturally, this response strategy comes at the cost of verifiability. For the requestor to validate, they could fast sync against the subtree hash. This fast-verify process might find that 90% of the provided accounts were correct for the given root hash. Perhaps that is acceptable to the requestor, and they choose to keep the responder as a peer.
 
 For performance, requestors wouldn't fast-verify every response. The requesting client can choose how often to validate and how much accuracy to require.
 
-Of course any requesting clients that *don't* use this strategy would treat "Hasty Sync" peers as invalid and stop syncing from them.
+Of course any requesting clients that _don't_ use this strategy would treat "Hasty Sync" peers as invalid and stop syncing from them.
 
 This strategy is almost exactly like leaf sync. We don't have an exact spec for leaf sync at the moment, so the comparison is imprecise. The only obvious difference is that account storage is inlined during leaf sync. Firehose still treats storage as separate tries.
 
@@ -384,14 +393,13 @@ That suggests that Firehose would increase the number of commands from two to si
 
 ### Some Rejected Variations
 
-
 #### Even-length prefixes
 
 In this variant, odd-length prefixes are not allowed (sometimes saving a byte per requested prefix).
 
-In this scenario, when the responder gives back node data instead of accounts, she would have to always return the node and *all* of its children. Otherwise there would be no way to recurse down into the next layer, because you can't ask for the odd-length prefixed accounts.
+In this scenario, when the responder gives back node data instead of accounts, she would have to always return the node and _all_ of its children. Otherwise there would be no way to recurse down into the next layer, because you can't ask for the odd-length prefixed accounts.
 
-The potential value here depends on how meaningful that extra prefix nibble is during requests. Currently, the cost of *requiring* the responder to respond with no nodes or include all children is presumed to be too high.
+The potential value here depends on how meaningful that extra prefix nibble is during requests. Currently, the cost of _requiring_ the responder to respond with no nodes or include all children is presumed to be too high.
 
 Additionally, it is convenient for bucket sizes to be able to adjust up and down by 16x instead of 256x.
 

@@ -130,13 +130,13 @@ which aren't listed, i.e. clients should not require that any particular network
 used. Note that the Network ID may or may not correspond with the EIP-155 Chain ID used
 for transaction replay prevention.
 
-| ID | chain                         |
-|----|-------------------------------|
-| 0  | Olympic (disused)             |
-| 1  | Frontier (now mainnet)        |
-| 2  | Morden (disused)              |
-| 3  | Ropsten (current PoW testnet) |
-| 4  | [Rinkeby]                     |
+| ID  | chain                         |
+| --- | ----------------------------- |
+| 0   | Olympic (disused)             |
+| 1   | Frontier (now mainnet)        |
+| 2   | Morden (disused)              |
+| 3   | Ropsten (current PoW testnet) |
+| 4   | [Rinkeby]                     |
 
 For a community curated list of chain IDs, see <https://chainid.network>.
 
@@ -355,23 +355,23 @@ Version numbers below 60 were used during the Ethereum PoC development phase.
 - `0x17` for PoC-5
 - `0x1c` for PoC-6
 
-[RLPx]: ../rlpx.md
-[Status]: #status-0x00
-[NewBlockHashes]: #newblockhashes-0x01
-[Transactions]: #transactions-0x02
-[GetBlockHeaders]: #getblockheaders-0x03
-[BlockHeaders]: #blockheaders-0x04
-[GetBlockBodies]: #getblockbodies-0x05
-[BlockBodies]: #blockbodies-0x06
-[NewBlock]: #newblock-0x07
-[NewPooledTransactionHashes]: #newpooledtransactionhashes-0x08
-[GetPooledTransactions]: #getpooledtransactions-0x09
-[PooledTransactions]: #pooledtransactions-0x0a
-[GetNodeData]: #getnodedata-0x0d
-[NodeData]: #nodedata-0x0e
-[GetReceipts]: #getreceipts-0x0f
-[Receipts]: #receipts-0x10
-[Rinkeby]: https://rinkeby.io
-[EIP-2124]: https://eips.ethereum.org/EIPS/eip-2124
-[EIP-2364]: https://eips.ethereum.org/EIPS/eip-2364
-[EIP-2464]: https://eips.ethereum.org/EIPS/eip-2464
+[rlpx]: ../rlpx.md
+[status]: #status-0x00
+[newblockhashes]: #newblockhashes-0x01
+[transactions]: #transactions-0x02
+[getblockheaders]: #getblockheaders-0x03
+[blockheaders]: #blockheaders-0x04
+[getblockbodies]: #getblockbodies-0x05
+[blockbodies]: #blockbodies-0x06
+[newblock]: #newblock-0x07
+[newpooledtransactionhashes]: #newpooledtransactionhashes-0x08
+[getpooledtransactions]: #getpooledtransactions-0x09
+[pooledtransactions]: #pooledtransactions-0x0a
+[getnodedata]: #getnodedata-0x0d
+[nodedata]: #nodedata-0x0e
+[getreceipts]: #getreceipts-0x0f
+[receipts]: #receipts-0x10
+[rinkeby]: https://rinkeby.io
+[eip-2124]: https://eips.ethereum.org/EIPS/eip-2124
+[eip-2364]: https://eips.ethereum.org/EIPS/eip-2364
+[eip-2464]: https://eips.ethereum.org/EIPS/eip-2464

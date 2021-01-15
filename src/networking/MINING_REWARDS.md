@@ -23,15 +23,15 @@ Example: ./testdata/5/env.json:
 
 ```json
 {
-	"currentCoinbase": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-	"currentDifficulty": "0x20000",
-	"currentGasLimit": "0x750a163df65e8a",
-	"currentNumber": "1",
-	"currentTimestamp": "1000",
-	"ommers": [
-		{ "delta": 1, "address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
-		{ "delta": 2, "address": "0xcccccccccccccccccccccccccccccccccccccccc" }
-	]
+  "currentCoinbase": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "currentDifficulty": "0x20000",
+  "currentGasLimit": "0x750a163df65e8a",
+  "currentNumber": "1",
+  "currentTimestamp": "1000",
+  "ommers": [
+    { "delta": 1, "address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
+    { "delta": 2, "address": "0xcccccccccccccccccccccccccccccccccccccccc" }
+  ]
 }
 ```
 
@@ -39,16 +39,16 @@ When applying this, using a reward of 0x08 Output:
 
 ```json
 {
-	"alloc": {
-		"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
-			"balance": "0x88"
-		},
-		"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": {
-			"balance": "0x70"
-		},
-		"0xcccccccccccccccccccccccccccccccccccccccc": {
-			"balance": "0x60"
-		}
-	}
+  "alloc": {
+    "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+      "balance": "0x88"
+    },
+    "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": {
+      "balance": "0x70"
+    },
+    "0xcccccccccccccccccccccccccccccccccccccccc": {
+      "balance": "0x60"
+    }
+  }
 }
 ```

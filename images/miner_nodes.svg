@@ -1,0 +1,73 @@
+<svg width="681pt" height="206pt" viewBox="0.00 0.00 681.03 206.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202)">
+    <title>node_ops</title>
+    <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-202 677.0301,-202 677.0301,4 -4,4"></polygon>
+    <!-- node_ops -->
+    <g id="node1" class="node">
+    <title>node_ops</title>
+    <ellipse fill="#f0e68c" stroke="#000000" cx="265.3159" cy="-99" rx="70.0875" ry="18"></ellipse>
+    <text text-anchor="middle" x="265.3159" y="-94.8" font-family="Times,serif" font-size="14.00" fill="#000000">Node operators</text>
+    </g>
+    <!-- long_sync -->
+    <g id="node3" class="node">
+    <title>long_sync</title>
+    <polygon fill="#dda0dd" stroke="#000000" points="660.1777,-172.5442 660.1777,-187.4558 579.4224,-198 465.2171,-198 384.4618,-187.4558 384.4618,-172.5442 465.2171,-162 579.4224,-162 660.1777,-172.5442"></polygon>
+    <text text-anchor="middle" x="522.3198" y="-175.8" font-family="Times,serif" font-size="14.00" fill="#000000">Long time to sync a new node</text>
+    </g>
+    <!-- node_ops&#45;&gt;long_sync -->
+    <g id="edge2" class="edge">
+    <title>node_ops-&gt;long_sync</title>
+    <path fill="none" stroke="#000000" d="M292.7604,-115.7732C313.6694,-127.8401 343.5473,-143.5864 371.6094,-153 385.7704,-157.7504 400.9759,-161.7162 416.0851,-165.0131"></path>
+    <polygon fill="#000000" stroke="#000000" points="415.4834,-168.4629 425.9882,-167.0845 416.9166,-161.6112 415.4834,-168.4629"></polygon>
+    </g>
+    <!-- storage_devices -->
+    <g id="node4" class="node">
+    <title>storage_devices</title>
+    <polygon fill="#dda0dd" stroke="#000000" points="631.6845,-118.5442 631.6845,-133.4558 567.6201,-144 477.0194,-144 412.9551,-133.4558 412.9551,-118.5442 477.0194,-108 567.6201,-108 631.6845,-118.5442"></polygon>
+    <text text-anchor="middle" x="522.3198" y="-121.8" font-family="Times,serif" font-size="14.00" fill="#000000">Cost of storage devices</text>
+    </g>
+    <!-- node_ops&#45;&gt;storage_devices -->
+    <g id="edge3" class="edge">
+    <title>node_ops-&gt;storage_devices</title>
+    <path fill="none" stroke="#000000" d="M330.5011,-105.8481C356.8404,-108.6153 387.9112,-111.8795 417.288,-114.9657"></path>
+    <polygon fill="#000000" stroke="#000000" points="417.2867,-118.4847 427.5977,-116.0488 418.0181,-111.5231 417.2867,-118.4847"></polygon>
+    </g>
+    <!-- traffic -->
+    <g id="node5" class="node">
+    <title>traffic</title>
+    <polygon fill="#dda0dd" stroke="#000000" points="617.8799,-64.5442 617.8799,-79.4558 561.9021,-90 482.7375,-90 426.7596,-79.4558 426.7596,-64.5442 482.7375,-54 561.9021,-54 617.8799,-64.5442"></polygon>
+    <text text-anchor="middle" x="522.3198" y="-67.8" font-family="Times,serif" font-size="14.00" fill="#000000">High internet traffic</text>
+    </g>
+    <!-- node_ops&#45;&gt;traffic -->
+    <g id="edge4" class="edge">
+    <title>node_ops-&gt;traffic</title>
+    <path fill="none" stroke="#000000" d="M330.5011,-92.1519C359.2174,-89.135 393.5578,-85.5273 425.1954,-82.2036"></path>
+    <polygon fill="#000000" stroke="#000000" points="425.7822,-85.6613 435.3618,-81.1355 425.0508,-78.6996 425.7822,-85.6613"></polygon>
+    </g>
+    <!-- complex_ops -->
+    <g id="node6" class="node">
+    <title>complex_ops</title>
+    <polygon fill="#dda0dd" stroke="#000000" points="673.2408,-10.5442 673.2408,-25.4558 584.8333,-36 459.8062,-36 371.3987,-25.4558 371.3987,-10.5442 459.8062,0 584.8333,0 673.2408,-10.5442"></polygon>
+    <text text-anchor="middle" x="522.3198" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">Complex operations to run nodes</text>
+    </g>
+    <!-- node_ops&#45;&gt;complex_ops -->
+    <g id="edge5" class="edge">
+    <title>node_ops-&gt;complex_ops</title>
+    <path fill="none" stroke="#000000" d="M292.7604,-82.2268C313.6694,-70.1599 343.5473,-54.4136 371.6094,-45 384.5881,-40.6462 398.4442,-36.9514 412.2994,-33.8267"></path>
+    <polygon fill="#000000" stroke="#000000" points="413.3394,-37.1829 422.3754,-31.651 411.8619,-30.3406 413.3394,-37.1829"></polygon>
+    </g>
+    <!-- nodes -->
+    <g id="node2" class="node">
+    <title>nodes</title>
+    <polygon fill="#7cfc00" stroke="#000000" points="155.0331,-91.5442 155.0331,-106.4558 110.7934,-117 48.229,-117 3.9893,-106.4558 3.9893,-91.5442 48.229,-81 110.7934,-81 155.0331,-91.5442"></polygon>
+    <polygon fill="none" stroke="#000000" points="159.0337,-88.3856 159.0337,-109.6144 111.2637,-121 47.7588,-121 -.0112,-109.6144 -.0112,-88.3856 47.7588,-77 111.2637,-77 159.0337,-88.3856"></polygon>
+    <text text-anchor="middle" x="79.5112" y="-94.8" font-family="Times,serif" font-size="14.00" fill="#000000">Network nodes</text>
+    </g>
+    <!-- nodes&#45;&gt;node_ops -->
+    <g id="edge1" class="edge">
+    <title>nodes-&gt;node_ops</title>
+    <path fill="none" stroke="#000000" d="M159.1177,-99C167.5908,-99 176.2145,-99 184.6991,-99"></path>
+    <polygon fill="#000000" stroke="#000000" points="184.9599,-102.5001 194.9599,-99 184.9599,-95.5001 184.9599,-102.5001"></polygon>
+    </g>
+    </g>
+    </svg>

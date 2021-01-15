@@ -1,5 +1,4 @@
-#  Operational Risks from Miner and Network layer perspectives 
-
+# Operational Risks from Miner and Network layer perspectives
 
 Estimating cost of a transaction (challenge)
 

@@ -23,5 +23,3 @@ Data Encryption
 User Authentication & Authorization
 
 ![](images/AWS2.png)
-
-

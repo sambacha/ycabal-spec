@@ -187,7 +187,7 @@ If the Provider receives a subscription message from e.g. an `eth_subscribe` sub
 
 ```typescript
 interface EthSubscription extends ProviderMessage {
-  readonly type: 'eth_subscription';
+  readonly type: "eth_subscription";
   readonly data: {
     readonly subscription: string;
     readonly result: unknown;
@@ -343,7 +343,7 @@ Provider.request(args: RequestArguments): Promise<unknown>;
 The returned Promise resolves with the method's result or rejects with a [`ProviderRpcError`](#errors). For example:
 
 ```javascript
-Provider.request({ method: 'eth_accounts' })
+Provider.request({ method: "eth_accounts" })
   .then((accounts) => console.log(accounts))
   .catch((error) => console.error(error));
 ```
@@ -451,7 +451,7 @@ const ethereum = window.ethereum;
 
 // Example 1: Log chainId
 ethereum
-  .request({ method: 'eth_chainId' })
+  .request({ method: "eth_chainId" })
   .then((chainId) => {
     console.log(`hexadecimal string: ${chainId}`);
     console.log(`decimal number: ${parseInt(chainId, 16)}`);
@@ -463,8 +463,8 @@ ethereum
 // Example 2: Log last block
 ethereum
   .request({
-    method: 'eth_getBlockByNumber',
-    params: ['latest', true],
+    method: "eth_getBlockByNumber",
+    params: ["latest", true],
   })
   .then((block) => {
     console.log(`Block ${block.number}:`, block);
@@ -478,9 +478,9 @@ ethereum
 
 // Example 3: Log available accounts
 ethereum
-  .request({ method: 'eth_accounts' })
+  .request({ method: "eth_accounts" })
   .then((accounts) => {
-    console.log(`Accounts:\n${accounts.join('\n')}`);
+    console.log(`Accounts:\n${accounts.join("\n")}`);
   })
   .catch((error) => {
     console.error(
@@ -492,15 +492,15 @@ ethereum
 // Example 4: Log new blocks
 ethereum
   .request({
-    method: 'eth_subscribe',
-    params: ['newHeads'],
+    method: "eth_subscribe",
+    params: ["newHeads"],
   })
   .then((subscriptionId) => {
-    ethereum.on('message', (message) => {
-      if (message.type === 'eth_subscription') {
+    ethereum.on("message", (message) => {
+      if (message.type === "eth_subscription") {
         const { data } = message;
         if (data.subscription === subscriptionId) {
-          if ('result' in data && typeof data.result === 'object') {
+          if ("result" in data && typeof data.result === "object") {
             const block = data.result;
             console.log(`New block ${block.number}:`, block);
           } else {
@@ -519,14 +519,14 @@ ethereum
 
 // Example 5: Log when accounts change
 const logAccounts = (accounts) => {
-  console.log(`Accounts:\n${accounts.join('\n')}`);
+  console.log(`Accounts:\n${accounts.join("\n")}`);
 };
-ethereum.on('accountsChanged', logAccounts);
+ethereum.on("accountsChanged", logAccounts);
 // to unsubscribe
-ethereum.removeListener('accountsChanged', logAccounts);
+ethereum.removeListener("accountsChanged", logAccounts);
 
 // Example 6: Log if connection ends
-ethereum.on('disconnect', (code, reason) => {
+ethereum.on("disconnect", (code, reason) => {
   console.log(`Ethereum Provider connection closed: ${reason}. Code: ${code}`);
 });
 ```

@@ -81,7 +81,5 @@
       ]
     }
   },
-  "required": [
-    "ethereum-mempool"
-  ]
+  "required": ["ethereum-mempool"]
 }

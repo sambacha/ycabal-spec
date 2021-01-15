@@ -1,5 +1,4 @@
-Turbo Geth Types
-================
+# Turbo Geth Types
 
 This document will list each major types defined and used by Turbo-Geth.
 They are found in <span
@@ -7,8 +6,7 @@ class="title-ref">github.com/ledgerwatch/turbo-geth/core/types</span>
 and <span
 class="title-ref">github.com/ledgerwatch/turbo-geth/common</span>
 
-Address and Hash
-----------------
+## Address and Hash
 
 package: <span
 class="title-ref">github.com/ledgerwatch/turbo-geth/common</span>
@@ -24,8 +22,7 @@ repressents the 20 byte standard Ethereum Address
 
 Both Hash and Address are bytes arrays.
 
-Transaction
------------
+## Transaction
 
     type Transaction struct {
         data txdata
@@ -122,8 +119,7 @@ Transactions can be used.
 
 repressent an Ethereum Transaction.
 
-Block Header
-------------
+## Block Header
 
 package: <span
 class="title-ref">github.com/ledgerwatch/turbo-geth/core/types</span>
@@ -191,8 +187,7 @@ The gas used by the transactions included in the block.
 
 Block's timestamp.
 
-Block
------
+## Block
 
     type Block struct {
         header       *Header
@@ -229,8 +224,7 @@ Array of transaction included in the block.
 total difficulty accumulated up to the block. sum of all prev blocks
 difficulties + block difficulty.
 
-Account
--------
+## Account
 
 package: <span
 class="title-ref">github.com/ledgerwatch/turbo-geth/core/types/accounts</span>

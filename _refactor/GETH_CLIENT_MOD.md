@@ -1,12 +1,11 @@
 ---
 title: Go Ethereum Client Modifications
-description: Documentation on Geth fork 
+description: Documentation on Geth fork
 statuS: avtive
 version: 1.0.0
 ---
 
 <!-- source: https://github.com/blocknative/go-ethereum/blob/19e9976be25bb48a3ad7a9730254157e72a99786/TXPOOL-FEEDS.md -->
-
 
 ## Transaction Pool Feeds
 
@@ -55,15 +54,15 @@ threshold is reached the subscription will be discarded by the server.
 The reject reason corresponds to the error messages returned by Geth within the
 txpool. At the time of this writing, these include:
 
-* invalid sender
-* nonce too low
-* transaction underpriced
-* replacement transaction underpriced
-* insufficient funds for gas * price + value
-* intrinsic gas too low
-* exceeds block gas limit
-* negative value
-* oversized data
+- invalid sender
+- nonce too low
+- transaction underpriced
+- replacement transaction underpriced
+- insufficient funds for gas \* price + value
+- intrinsic gas too low
+- exceeds block gas limit
+- negative value
+- oversized data
 
 However it is possible that in the future Geth may add new error types that
 could be included by this response without modification to the rejection feed
@@ -109,12 +108,12 @@ threshold is reached the subscription will be discarded by the server.
 
 The following reasons may be included as reasons transactions were rejected:
 
-* underpriced-txs: Indicates the transaction's gas price is below the node's threshold.
-* low-nonce-txs: Indicates that the account nonce for the sender of this transaction has exceeded the nonce on this transction. That may happen when this transaction is included in a block, or when a replacement transaction is included in a block.
-* unpayable-txs: Indicates that the sender lacks sufficient funds to pay the intrinsic gas for this transaction
-* account-cap-txs: Indicates that this account has sent enough transactions to exceed the per-account limit on the node.
-* replaced-txs: Indicates that the transaction was dropped because a replacement transaction with the same nonce and higher gas has replaced it.
-* unexecutable-txs: Indicates that a transaction is no longer considered executable. This typically applies to queued transaction, when a dependent pending transaction was removed for a reason such as unpayable-txs.
-* truncating-txs: The transaction was dropped because the number of transactions in the mempool exceeds the allowable limit.
-* old-txs: The transaction was dropped because it has been in the mempool longer than the allowable period of time without inclusion in a block.
-* updated-gas-price: The node's minimum gas price was updated, and transactions below that price were dropped.
+- underpriced-txs: Indicates the transaction's gas price is below the node's threshold.
+- low-nonce-txs: Indicates that the account nonce for the sender of this transaction has exceeded the nonce on this transction. That may happen when this transaction is included in a block, or when a replacement transaction is included in a block.
+- unpayable-txs: Indicates that the sender lacks sufficient funds to pay the intrinsic gas for this transaction
+- account-cap-txs: Indicates that this account has sent enough transactions to exceed the per-account limit on the node.
+- replaced-txs: Indicates that the transaction was dropped because a replacement transaction with the same nonce and higher gas has replaced it.
+- unexecutable-txs: Indicates that a transaction is no longer considered executable. This typically applies to queued transaction, when a dependent pending transaction was removed for a reason such as unpayable-txs.
+- truncating-txs: The transaction was dropped because the number of transactions in the mempool exceeds the allowable limit.
+- old-txs: The transaction was dropped because it has been in the mempool longer than the allowable period of time without inclusion in a block.
+- updated-gas-price: The node's minimum gas price was updated, and transactions below that price were dropped.

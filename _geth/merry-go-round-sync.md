@@ -23,14 +23,14 @@ If chain reorgs occur, and the timings of recent Ethereum blocks change as a res
 the reorgs to be used to disrupt the sync. Imaginge the tick started at block A (height H), and then due to reorg, block A
 was replaced by block B (also height H).
 
- * If timestamp(B) < timestamp(A), the tick does not shorten, but proceeds until timestamp(A) + tick_duration.
+- If timestamp(B) < timestamp(A), the tick does not shorten, but proceeds until timestamp(A) + tick_duration.
 
- * If timestamp(B) >= timestamp(A), the tick gets extended to proceed until timestamp(B) + tick_duration.
+- If timestamp(B) >= timestamp(A), the tick gets extended to proceed until timestamp(B) + tick_duration.
 
- As one would guess, we try to distribute the entire Ethereum state into as many pieces as many ticks there are in one cycle.
- Each piece would be exchanged over the duration of one tick. Obviously, we would like to make the distribution as even as possible.
- Therefore, there is still a concern about situations when the blocks are coming in quick sucession, and the ticks corresponding
- to those blocks would largely overlap.
+As one would guess, we try to distribute the entire Ethereum state into as many pieces as many ticks there are in one cycle.
+Each piece would be exchanged over the duration of one tick. Obviously, we would like to make the distribution as even as possible.
+Therefore, there is still a concern about situations when the blocks are coming in quick sucession, and the ticks corresponding
+to those blocks would largely overlap.
 
 ## Sync schedule
 

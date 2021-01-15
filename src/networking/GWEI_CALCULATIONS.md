@@ -4,7 +4,6 @@ version: active
 tags: ethereum, gas, gwei
 ---
 
-
 # Efficient gas calculation algorithm for EVM
 
 This article describes how to efficiently calculate gas and check stack requirements for Ethereum Virtual Machine (EVM) instructions.
@@ -78,19 +77,19 @@ This is done as follows:
 
 \`\`\`python
 class Instruction:
-    base\_gas\_cost = 0
-    stack\_required = 0
-    stack\_change = 0
+base_gas_cost = 0
+stack_required = 0
+stack_change = 0
 
 class BasicBlock:
-    base\_gas\_cost = 0
-    stack\_required = 0
-    stack\_max\_growth = 0
+base_gas_cost = 0
+stack_required = 0
+stack_max_growth = 0
 
-def collect\_basic\_block\_requirements(basic\_block):
-    stack\_change = 0
-    for instruction in basic\_block:
-        basic\_block.base\_gas\_cost += instruction.base\_gas\_cost
+def collect_basic_block_requirements(basic_block):
+stack_change = 0
+for instruction in basic_block:
+basic_block.base_gas_cost += instruction.base_gas_cost
 
         current\_stack\_required = instruction.stack\_required - stack\_change
         basic\_block.stack\_required = max(basic\_block.stack\_required, current\_stack\_required)
@@ -98,6 +97,7 @@ def collect\_basic\_block\_requirements(basic\_block):
         stack\_change += instruction.stack\_change
 
         basic\_block.stack\_max\_growth = max(basic\_block.stack\_max\_growth, stack\_change)
+
 \`\`\`
 
 ### Checking basic block requirements
@@ -106,19 +106,20 @@ During execution, before executing an instruction that starts a basic block, the
 
 \`\`\`python
 class ExecutionState:
-    gas\_left = 0
-    stack = \[\]
+gas_left = 0
+stack = \[\]
 
-def check\_basic\_block\_requirements(state, basic\_block):
-    state.gas\_left -= basic\_block.base\_gas\_cost
-    if state.gas\_left < 0:
-        raise OutOfGas()
+def check_basic_block_requirements(state, basic_block):
+state.gas_left -= basic_block.base_gas_cost
+if state.gas_left < 0:
+raise OutOfGas()
 
     if len(state.stack) < basic\_block.stack\_required:
         raise StackUnderflow()
 
     if len(state.stack) + basic\_block.stack\_max\_growth > 1024:
         raise StackOverflow()
+
 \`\`\`
 
 ## Misc

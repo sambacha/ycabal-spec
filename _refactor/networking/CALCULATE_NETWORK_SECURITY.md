@@ -3,7 +3,6 @@ title: Calculating Network Security
 version: active
 ---
 
-
 # Calculating Network Security
 
 Yonatan Sompolinsky and Aviv Zohar suggested in [1] an elegant model to relate network delay to network security, and this model is also used in the work of Rafael Pass, Lior Seeman and Abhi Shelat [2]. We briefly explain this model below, because we shall study it theoretically and validate it by empirical measurements to reach the suggested lower gas cost for Calldata.

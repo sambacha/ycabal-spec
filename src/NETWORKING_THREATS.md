@@ -5,16 +5,14 @@ status: draft, active
 version: 0.5.0
 ---
 
-
 # Virtual Mempool Networking Risk Assesments
 
-## Networking/Topology Vulnerabilities 
-
+## Networking/Topology Vulnerabilities
 
 ### Uncapped incoming connections
 
 Uncapped incoming connections: This vulnerability-
-ity was in the Geth client prior to its version 1.8  Each
+ity was in the Geth client prior to its version 1.8 Each
 node can have a total number of maxpeers (with a default
 value 25) connections at any point in time, and can initiate
 up to ⌊(1+maxpeers)∕2⌋ outgoing TCP connections with the
@@ -27,10 +25,9 @@ vulnerability has been eliminated in Geth v1.8 by enforcing
 an upper limit on the number of incoming TCP connections
 to a node, with a default value ⌊maxpeers∕3⌋ = 8.
 
-
 ### Public peer selection
 
-Public peer selection (36): This vulnerability was detected in 
+Public peer selection (36): This vulnerability was detected in
 Geth client prior to its version 1.8 . Recall that
 the Ethereum P2P network uses a modiﬁed Kademlia DHT
 for node discovery and that each node maintains a routing

@@ -1,4 +1,5 @@
-Service Level Architecture View
+### Service Level Architecture View
+
 The financial exchange employs a microservices architecture with independent services interacting with one another to provide a full order management system with a price-time priority orderbook. The figure below shows a high level view of the service level architecture. There are two types of services.
 
 Application Services

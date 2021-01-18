@@ -1,4 +1,11 @@
+---
+title: MEV Statistics Summary 
+description: Reference file and snippets from whitepapers
+---
+
 # MEV Statistics and Landscape Summary
+
+
 
     source material and summary
     Quantifying Blockchain Extractable Value: How dark is the forest?
@@ -66,13 +73,6 @@ TransactXforY: A liquidity taker can tradeδxof assetX, increasing the available
 \end{equation*}
 
 of assetY, decreasing the available liquidity of assetY(cf.Equation 3).cx(·),cy(·) represent the trade fees inassetXandYrespectively.f(·) calculates the amountof assetYpurchased by the liquidity taker. EachAMM exchange may chose a custom pricing functionf(·) for governing the asset exchange [1]. Note thatthe exchange asset pricing cannot be determined bya simple constant, as the market dynamics of pur-chasing and selling power must be modeled withinthe exchange (i.e. the more assets on would want topurchase, the higher the fees).
-
-Strategy Number of Blocks Ratio
-Empty Block 55,545 0.0234
-Order per Gas Price 1,862,800 0.7853
-Order per Parity Default 384,150 0.1620
-Unknown Ordering 69,589 0.0293
-Total 2,372,084 1.0000
 
 ### Transaction Payload Size
 

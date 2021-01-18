@@ -8,13 +8,13 @@ For variables accepting an enum value, if the user provides a value the SDK does
 
 ## General SDK Configuration
 
-| Name                     | Description                                       | Default                           | Notes                               |
-| ------------------------ | ------------------------------------------------- | --------------------------------- | ----------------------------------- |
-| OTEL_RESOURCE_ATTRIBUTES | Key-value pairs to be used as resource attributes |                                   | See [Resource SDK](./resource/sdk.md#specifying-resource-information-via-an-environment-variable) for more details. |
-| OTEL_LOG_LEVEL           | Log level used by the SDK logger                  | "info"                            |                                     |
-| OTEL_PROPAGATORS         | Propagators to be used as a comma separated list  | "tracecontext,baggage"            | Values MUST be deduplicated in order to register a `Propagator` only once. |
-| OTEL_TRACE_SAMPLER       | Sampler to be used for traces                     | "parentbased_always_on"                       | See [Sampling](./trace/sdk.md#sampling) |
-| OTEL_TRACE_SAMPLER_ARG   | String value to be used as the sampler argument   |                                   | The specified value will only be used if OTEL_TRACE_SAMPLER is set. Each Sampler type defines its own expected input, if any. Invalid or unrecognized input MUST be logged and MUST be otherwise ignored, i.e. the SDK MUST behave as if OTEL_TRACE_SAMPLER_ARG is not set.  |
+| Name                     | Description                                       | Default                 | Notes                                                                                                                                                                                                                                                                       |
+| ------------------------ | ------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OTEL_RESOURCE_ATTRIBUTES | Key-value pairs to be used as resource attributes |                         | See [Resource SDK](./resource/sdk.md#specifying-resource-information-via-an-environment-variable) for more details.                                                                                                                                                         |
+| OTEL_LOG_LEVEL           | Log level used by the SDK logger                  | "info"                  |                                                                                                                                                                                                                                                                             |
+| OTEL_PROPAGATORS         | Propagators to be used as a comma separated list  | "tracecontext,baggage"  | Values MUST be deduplicated in order to register a `Propagator` only once.                                                                                                                                                                                                  |
+| OTEL_TRACE_SAMPLER       | Sampler to be used for traces                     | "parentbased_always_on" | See [Sampling](./trace/sdk.md#sampling)                                                                                                                                                                                                                                     |
+| OTEL_TRACE_SAMPLER_ARG   | String value to be used as the sampler argument   |                         | The specified value will only be used if OTEL_TRACE_SAMPLER is set. Each Sampler type defines its own expected input, if any. Invalid or unrecognized input MUST be logged and MUST be otherwise ignored, i.e. the SDK MUST behave as if OTEL_TRACE_SAMPLER_ARG is not set. |
 
 Known values for OTEL_PROPAGATORS are:
 
@@ -78,18 +78,18 @@ See [OpenTelemetry Protocol Exporter Configuration Options](./protocol/exporter.
 
 ## Prometheus Exporter
 
-| Name                          | Description                     | Default                      |
-| ----------------------------- | --------------------------------| ---------------------------- |
-| OTEL_EXPORTER_PROMETHEUS_HOST | Host used by the Prometheus exporter | All addresses: "0.0.0.0"|
-| OTEL_EXPORTER_PROMETHEUS_PORT | Port used by the Prometheus exporter | 9464                    |
+| Name                          | Description                          | Default                  |
+| ----------------------------- | ------------------------------------ | ------------------------ |
+| OTEL_EXPORTER_PROMETHEUS_HOST | Host used by the Prometheus exporter | All addresses: "0.0.0.0" |
+| OTEL_EXPORTER_PROMETHEUS_PORT | Port used by the Prometheus exporter | 9464                     |
 
 ## Exporter Selection
 
 We define environment variables for setting a single exporter per signal.
 
-| Name          | Description                                                                  | Default |
-| ------------- | ---------------------------------------------------------------------------- | ------- |
-| OTEL_TRACE_EXPORTER | Trace exporter to be used | "otlp"  |
+| Name                  | Description                 | Default |
+| --------------------- | --------------------------- | ------- |
+| OTEL_TRACE_EXPORTER   | Trace exporter to be used   | "otlp"  |
 | OTEL_METRICS_EXPORTER | Metrics exporter to be used | "otlp"  |
 
 Known values for OTEL_TRACE_EXPORTER are:

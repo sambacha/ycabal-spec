@@ -1,7 +1,7 @@
-:docbook: book
 
+= Maidenlane/YCabal Software Design and Specification
+:toc:
 
-= Introduction
 
 This resource is broken into the two main parts of the solution:
 

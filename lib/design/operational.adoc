@@ -1,5 +1,14 @@
 = Operational Requirements
 
+
+== Developer Notice
+
+!!! note 
+> Testing Documents are Broken into their relevent sections, this is a general overview
+of the Implementation as it relates specifically to the Geth (go-ethereum) client only
+
+
+
 The implementation discussed in previous sections relates directly to the software changes required to help operationalize Ethereum clients.
 There are also ongoing operational processes that will be required to maintain a cluster of master / replica nodes.
 

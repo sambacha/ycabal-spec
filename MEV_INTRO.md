@@ -1,5 +1,6 @@
 # MEV Statistics and Landscape Summary
 
+    source material and summary
     Quantifying Blockchain Extractable Value: How dark is the forest?
     https://arxiv.org/abs/2101.05511
 
@@ -97,20 +98,7 @@ Total 2,372,084 1.0000
 | mean      | 209         | 171         | 181      | 55              | 52.8          |
 | std.      | 157         | 76          | 62       | 58.8            | 50.4          |
 
-## Statistics of the profitable arbitrage trades
 
-| **Pct %** | **Latency** | **Latency** | \*\*\*\* | **Provisioned** | **Bandwidth** |
-| --------- | ----------- | ----------- | -------- | --------------- | ------------- |
-|           | [1]         | [2]         | Model    | [2]             |               |
-| 10        | 99          | 92          | 95.5     | 3.4             | 3.4           |
-| 20        | 116         | -           | 116      | -               | 6.8           |
-| 33        | 151         | 125         | 138      | 11.2            | 11.2          |
-| 50        | 208         | 152         | 180      | 29.4            | 29.4          |
-| 67        | 231         | 200         | 216      | 68.3            | 68.3          |
-| 80        | 247         | -           | 247      | -               | 111.3         |
-| 90        | 285         | 276         | 281      | 144.4           | 144.4         |
-| mean      | 209         | 171         | 181      | 55              | 52.8          |
-| std.      | 157         | 76          | 62       | 58.8            | 50.4          |
 
 https://etherscan.io/tx/0x07729d7826e2335a88ac1ae23aa9463a3183c6dc6e7a7ba485c244f473a9be87
 7, the trader executes the arbitrage in the following order:
@@ -131,10 +119,10 @@ whichindicates that these transactions likely perform back-running.
 
 From block 11503300 (Dec-22-2020 12:39:48 PM +UTC) to 11548969 (Dec-29-2020
 12:39:58 PM +UTC),
-the chain recorded 8,285,218transactions. When comparing those with the
+the chain recorded 8,285,218 transactions. When comparing those with the
 transactions we ob-served on the network layer, we find that 136,143 mined
 transactionswere not broadcast prior to being mined.
-We hence can concludethat1.64%of the transactions are being privately.
+We hence can concludethat1.64% of the transactions are being privately.
 
 #### misc transcations
 

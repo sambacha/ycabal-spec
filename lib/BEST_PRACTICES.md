@@ -22,11 +22,11 @@ as well as hide or reveal the details and rationale.
 
 You can also add a "?" and some `&`-separated parameters:
 
-- `details=true` : Show criterion details (clarifications)
-- `rationale=true` : Show the criterion rationale
+* `details=true` : Show criterion details (clarifications)
+* `rationale=true` : Show the criterion rationale
   (why this criterion is included in the set of criteria).
   This option only applies to the English locale.
-- `autofill=true` : Show ideas for how to automatically determine this.
+* `autofill=true` : Show ideas for how to automatically determine this.
   This option only applies to the English locale.
 
 For now, we've kept the old criteria text below, so you're not
@@ -102,7 +102,7 @@ so this relatively short badge life should not be a barrier.
 We plan to add new criteria but mark them as "future" criteria, so that
 projects can add that information and maintain their badge.
 
-Feedback is _very_ welcome via the
+Feedback is *very* welcome via the
 [GitHub site as issues or pull requests](https://github.com/coreinfrastructure/best-practices-badge).
 There is also a
 [mailing list for general discussion](https://lists.coreinfrastructure.org/mailman/listinfo/cii-badges).
@@ -139,51 +139,51 @@ The additional term SUGGESTED is added, as follows:
 We assume that you are already familiar with
 software development and running a FLOSS project;
 if not, see introductory materials such as
-[_Producing Open Source Software_ by Karl Fogel](http://producingoss.com/).
+[*Producing Open Source Software* by Karl Fogel](http://producingoss.com/).
 
 ## Terminology
 
-A _project_ is an active entity that has project member(s) and produces
+A *project* is an active entity that has project member(s) and produces
 project result(s).
 Its member(s) use project sites to coordinate and disseminate result(s).
 A project does not need to be a formal legal entity.
 Key terms relating to project are:
 
-- Project _members_ are the
-  group of one or more people or companies who work together
-  to attempt to produce project results.
-  Some FLOSS projects may have different kinds of members, with different
-  roles, but that's outside our scope.
-- Project _results_ are what the project members work together
-  to produce as their end goal. Normally this is software,
-  but project results may include other things as well.
-  Criteria that refer to "software produced by the project"
-  are referring to project results.
-- Project _sites_ are the sites dedicated to supporting the development
-  and dissemination of project results, and include
-  the project website, repository, and download sites where applicable
-  (see <a href="#sites_https">sites_https</a>).
-- The project _website_, aka project homepage, is the main page
-  on the world wide web (WWW) that a new user would typically visit to see
-  information about the project; it may be the same as the project's
-  repository site (this is often true on GitHub).
-- The project _repository_ manages and stores the project results
-  and revision history of the project results.
-  This is also referred to as the project _source repository_,
-  because we only require managing and storing of the editable versions,
-  not of automatically generated results
-  (in many cases generated results are not stored in a repository).
+*   Project *members* are the
+    group of one or more people or companies who work together
+    to attempt to produce project results.
+    Some FLOSS projects may have different kinds of members, with different
+    roles, but that's outside our scope.
+*   Project *results* are what the project members work together
+    to produce as their end goal. Normally this is software,
+    but project results may include other things as well.
+    Criteria that refer to "software produced by the project"
+    are referring to project results.
+*   Project *sites* are the sites dedicated to supporting the development
+    and dissemination of project results, and include
+    the project website, repository, and download sites where applicable
+    (see <a href="#sites_https">sites_https</a>).
+*   The project *website*, aka project homepage, is the main page
+    on the world wide web (WWW) that a new user would typically visit to see
+    information about the project; it may be the same as the project's
+    repository site (this is often true on GitHub).
+*   The project *repository* manages and stores the project results
+    and revision history of the project results.
+    This is also referred to as the project *source repository*,
+    because we only require managing and storing of the editable versions,
+    not of automatically generated results
+    (in many cases generated results are not stored in a repository).
 
 ## Current criteria: Best Practices for FLOSS
 
-Here are the current criteria. Note that:
+Here are the current criteria.  Note that:
 
-- Text inside square brackets is the short name of the criterion.
-- In a few cases rationale is also included.
-- We expect that there will be a few other fields for the
+* Text inside square brackets is the short name of the criterion.
+* In a few cases rationale is also included.
+* We expect that there will be a few other fields for the
   project name, description, project URL, repository URL (which may be the
   same as the project URL), and license(s).
-- In some cases N/A ("not applicable") may be an appropriate and permitted
+* In some cases N/A ("not applicable") may be an appropriate and permitted
   response.
 
 In some cases we automatically test and fill in information
@@ -467,34 +467,34 @@ There is an implied criterion that we should mention here:
 
 ## A note on good cryptographic practices
 
-_Note_: These criteria do not always apply because some software has no
+*Note*: These criteria do not always apply because some software has no
 need to directly use cryptographic capabilities.
 A "project security mechanism" is a security mechanism provided
 by the delivered project's software.
 
 ## Non-criteria
 
-We do _not_ require any specific products or services, and in
+We do *not* require any specific products or services, and in
 general do not require any particular technology.
-In particular, we do _not_ require
+In particular, we do *not* require
 proprietary tools, services, or technology,
 since many [free software](https://www.gnu.org/philosophy/free-sw.en.html)
 developers would reject such criteria.
-For example, we intentionally do _not_ require git or GitHub.
+For example, we intentionally do *not* require git or GitHub.
 We also do not require or forbid any particular programming language.
 We do require that additional measures be taken for certain
-_kinds_ of programming languages, but that is different.
+*kinds* of programming languages, but that is different.
 This means that as new tools and capabilities become available,
 projects can quickly switch to them without failing to meet any criteria.
 
-We _do_ provide guidance and help for common cases.
-The criteria _do_ sometimes identify
+We *do* provide guidance and help for common cases.
+The criteria *do* sometimes identify
 common methods or ways of doing something
 (especially if they are FLOSS), since that information
 can help people understand and meet the criteria.
 We also created an "easy on-ramp" for projects using git on GitHub,
 since that is a common case.
-But note that nothing _requires_ git or GitHub.
+But note that nothing *requires* git or GitHub.
 We would welcome good patches that help provide an "easy on-ramp" for
 projects on other repository platforms;
 GitLab was one of the first projects with a badge.
@@ -506,7 +506,7 @@ Many FLOSS projects are small, and we do not want to disenfranchise them.
 
 We do not plan to require active user discussion within a project.
 Some highly mature projects rarely change and thus may have little activity.
-We _do_, however, require that the project be responsive
+We *do*, however, require that the project be responsive
 if vulnerabilities are reported to the project (see above).
 
 ## Uniquely identifying a project
@@ -517,7 +517,7 @@ we can use that id to uniquely identify project entries.
 However, that doesn't help people who searching for the project
 and do not already know that id.
 
-The _real_ name of a project, for our purposes, is the
+The *real* name of a project, for our purposes, is the
 URL for its repository, and where that is not available, the
 project "front page" URL can help find it.
 Most projects have a human-readable name, and we provide a search
@@ -550,10 +550,10 @@ The paper [Open badges for education: what are the implications at the
 intersection of open systems and badging?](http://www.researchinlearningtechnology.net/index.php/rlt/article/view/23563)
 identifies three general reasons for badging systems (all are valid for this):
 
-1. Badges as a motivator of behavior. We hope that by identifying
+1. Badges as a motivator of behavior.  We hope that by identifying
    best practices, we'll encourage projects to implement those
    best practices if they do not do them already.
-2. Badges as a pedagogical tool. Some projects may not be aware
+2. Badges as a pedagogical tool.  Some projects may not be aware
    of some of the best practices applied by others,
    or how they can be practically applied.
    The badge will help them become aware of them and ways to implement them.
@@ -565,7 +565,7 @@ identifies three general reasons for badging systems (all are valid for this):
 
 We have chosen to use self-certification, because this makes it
 possible for a large number of projects (even small ones) to
-participate. There's a risk that projects may make false claims,
+participate.  There's a risk that projects may make false claims,
 but we think the risk is small, and users can check the claims for themselves.
 
 ## Improving the criteria
@@ -573,7 +573,7 @@ but we think the risk is small, and users can check the claims for themselves.
 We are hoping to get good suggestions and feedback from the public;
 please contribute!
 
-We launched with a single badge level called _passing_.
+We launched with a single badge level called *passing*.
 For higher level badges, see [other](./other.md).
 
 You may also want to see the "[background](./background.md)" file
@@ -585,22 +585,22 @@ about the BadgeApp application.
 
 Project participation and interface:
 
-- [CONTRIBUTING.md](../CONTRIBUTING.md) - How to contribute to this project
-- [INSTALL.md](INSTALL.md) - How to install/quick start
-- [governance.md](governance.md) - How the project is governed
-- [roadmap.md](roadmap.md) - Overall direction of the project
-- [background.md](background.md) - Background research
-- [api](api.md) - Application Programming Interface (API), inc. data downloads
+* [CONTRIBUTING.md](../CONTRIBUTING.md) - How to contribute to this project
+* [INSTALL.md](INSTALL.md) - How to install/quick start
+* [governance.md](governance.md) - How the project is governed
+* [roadmap.md](roadmap.md) - Overall direction of the project
+* [background.md](background.md) - Background research
+* [api](api.md) - Application Programming Interface (API), inc. data downloads
 
 Criteria:
 
-- [Criteria for passing badge](https://bestpractices.coreinfrastructure.org/criteria/0)
-- [Criteria for all badge levels](https://bestpractices.coreinfrastructure.org/criteria)
+* [Criteria for passing badge](https://bestpractices.coreinfrastructure.org/criteria/0)
+* [Criteria for all badge levels](https://bestpractices.coreinfrastructure.org/criteria)
 
 Development processes and security:
 
-- [requirements.md](requirements.md) - Requirements (what's it supposed to do?)
-- [design.md](design.md) - Architectural design information
-- [implementation.md](implementation.md) - Implementation notes
-- [testing.md](testing.md) - Information on testing
-- [security.md](security.md) - Why it's adequately secure (assurance case)
+* [requirements.md](requirements.md) - Requirements (what's it supposed to do?)
+* [design.md](design.md) - Architectural design information
+* [implementation.md](implementation.md) - Implementation notes
+* [testing.md](testing.md) - Information on testing
+* [security.md](security.md) - Why it's adequately secure (assurance case)

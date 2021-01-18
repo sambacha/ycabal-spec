@@ -1,9 +1,11 @@
 ---
-title: MEV Statistics Summary
+title: MEV Statistics Summary 
 description: Reference file and snippets from whitepapers
 ---
 
 # MEV Statistics and Landscape Summary
+
+
 
     source material and summary
     Quantifying Blockchain Extractable Value: How dark is the forest?
@@ -11,32 +13,21 @@ description: Reference file and snippets from whitepapers
 
 > Profit, Exposure and the extent of penetration into the market
 
-<br>
 For fixed spread liquidations pro-tocols, such as Aave, Compound, and dYdX (66%
 of the DeFi lendingmarket), we find that the past 16,031 liquidations yield an
-accu-mulative **profit of 20.18M USD** over the entire existence of those protocols
-(19months).
-
-**28.80M USD over 2 years.** for backrunning.
+accu-mulative profit of 20.18M USD over the entire existence of thoseprotocols
+(19months). 28.80M USD over 2 years.
 
 We find that 12.71% of these liquidationsback-run the price oracle
 update transaction, while 87.29% attempt to front-run competing liquidators.
 
-**For arbitrage**, we identify 789 smart contracts performing 51,415 trades, realizing a
-**total profit of 7.11M USD?**.
+For arbitrage, we identify 789 smart contracts performing 51,415 trades, realizing a
+total profitof 7.11M USD.
 
-<br>
-**Expected Execution Price** \(( E [P]):\) When a liquidity taker issues a trade on \(X / Y,\) the taker wishes to execute the trade with the expected execution 
-price \(E [P]\) (based on the AMM algorithm and \(X / Y\) state) given the expected slippage.
-<br>
-
-**Execution Price** \((P):\) During the time difference between a liquidity taker issuing a transaction, and the transaction being executed (e.g. mined in a  
-block), the state of the AMM market \(X / Y\) may change.
+Expected Execution Price \(( E [P]):\) When a liquidity taker issues a trade on \(X / Y,\) the taker wishes to execute the trade with the expected execution price \(E [P]\) (based on the AMM algorithm and \(X / Y\) state) given the expected slippage.
+Execution Price \((P):\) During the time difference between a liquidity taker issuing a transaction, and the transaction being executed (e.g. mined in a block), the state of the AMM market \(X / Y\) may change.
 This state change may induce unexpected slippage resulting in an execution price \(P \neq E [P]\).
-
-<br>
-
-**Unexpected Price Slippage** \((P- E [P]):\) is the difference between \(P\) and \(E [P]\). Unexpected Slippage Rate \(\left(\frac{P- E [P]}{ E [P]}\right):\) is \(\quad\) the unexpected slippage over the expected price.
+Unexpected Price Slippage \((P- E [P]):\) is the difference between \(P\) and \(E [P]\). Unexpected Slippage Rate \(\left(\frac{P- E [P]}{ E [P]}\right):\) is \(\quad\) the unexpected slippage over the expected price.
 \begin{equation*} \delta\_{x} \end{equation*}
 
 ## DEX/AMM Parameters
@@ -70,26 +61,18 @@ AddLiquidity: A liquidity provider deposits [δxof assetX], and δy of assetY in
 
 (1)RemoveLiquidity:A liquidity provider withdrawsδxofassetX, andδyof assetYfrom the correspondingliquidity pools
 
-TransactXforY: A liquidity taker can tradeδxof assetX, increasing the available liquidity of assetX, in exchange forδy=f(δx−cx(·))−cy(·) of assetY, decreasing the available liquidity of assetY represent the trade fees inassetXandYrespectively.
-
-f(·) calculates the amountof assetYpurchased by the liquidity taker.
-
-Each AMM exchange may chose a custom pricing functionf(·) for governing the asset exchange [1].
+TransactXforY: A liquidity taker can tradeδxof assetX, increasing the available liquidity of assetX, inexchange forδy=f(δx−cx(·))−cy(·) of assetY, decreasing the available liquidity of assetY(cf.Equation
+3).cx(·),cy(·) represent the trade fees inassetXandYrespectively.f(·) calculates the amountof assetYpurchased by the liquidity taker. EachAMM exchange may chose a custom pricing functionf(·) for governing the asset exchange [1].
 Note thatthe exchange asset pricing cannot be determined bya simple constant, as the market dynamics of pur-chasing and selling power must be modeled withinthe exchange (i.e. the more assets on would want topurchase, the higher the fees)
 
 ### TransactXforY
 
-**TransactXforY:** A liquidity taker can tradeδxof assetX, increasing the available liquidity of assetX, in exchange  
+TransactXforY: A liquidity taker can tradeδxof assetX, increasing the available liquidity of assetX, in exchange  
 \begin{equation*}
 (x, y) \frac{\text { Transact } X \text { for } Y\left(\delta*{x}\right)}{\delta*{x} \in R ^{+}}\left(x+\delta*{x}, y-f\left(\delta*{x}-c*{x}(\cdot)\right)+c*{y}(\cdot)\right)
 \end{equation*}
 
-of assetY, decreasing the available liquidity of assetY(cf.Equation 3).cx(·),cy(·) represent the trade fees inassetXandYrespectively.f(·) calculates the amountof
-assetYpurchased by the liquidity taker.
-
-Each AMM exchange may chose a custom pricing functionf(·) for governing the asset exchange. Note thatt he exchange asset
-pricing cannot be determined bya simple constant, as the market dynamics of pur-chasing and selling power must be modeled withinthe exchange (i.e. the more assets
-on would want topurchase, the higher the fees).
+of assetY, decreasing the available liquidity of assetY(cf.Equation 3).cx(·),cy(·) represent the trade fees inassetXandYrespectively.f(·) calculates the amountof assetYpurchased by the liquidity taker. EachAMM exchange may chose a custom pricing functionf(·) for governing the asset exchange [1]. Note thatthe exchange asset pricing cannot be determined bya simple constant, as the market dynamics of pur-chasing and selling power must be modeled withinthe exchange (i.e. the more assets on would want topurchase, the higher the fees).
 
 ### Transaction Payload Size
 
@@ -115,15 +98,12 @@ on would want topurchase, the higher the fees).
 | mean      | 209         | 171         | 181      | 55              | 52.8          |
 | std.      | 157         | 76          | 62       | 58.8            | 50.4          |
 
-<<<<<<< HEAD:lib/MEV_INTRO.md
 
-=======
 
-> > > > > > > e96a3af82f0a09ff9170811fbeec6078707705a2:MEV_INTRO.md
-> > > > > > > https://etherscan.io/tx/0x07729d7826e2335a88ac1ae23aa9463a3183c6dc6e7a7ba485c244f473a9be87
-> > > > > > > 7, the trader executes the arbitrage in the following order:
-> > > > > > > WETH→BOXT→UNI→USDT→USDN→UNI→WETH. This arbitrage strategy consistsof two
-> > > > > > > triangular arbitrages:(i)WETH→BOXT→UNI→WETH;(ii)UNI→USDT→USDN→UNI
+https://etherscan.io/tx/0x07729d7826e2335a88ac1ae23aa9463a3183c6dc6e7a7ba485c244f473a9be87
+7, the trader executes the arbitrage in the following order:
+WETH→BOXT→UNI→USDT→USDN→UNI→WETH. This arbitrage strategy consistsof two
+triangular arbitrages:(i)WETH→BOXT→UNI→WETH;(ii)UNI→USDT→USDN→UNI
 
 https://etherscan.io/tx/0x2c79cdd1a16767e90d55a1598c833f77c609e972ea0fa7622b70a67646a681a5
 the trader first swaps400ETH for1040COMP on Uniswap v2, thenswaps1040COMP

@@ -4,20 +4,19 @@ description:
 version:
 ---
 
-
 ## Introduction
 
 This resource is broken into the two main parts of the solution:
 
 1. Application and Aggregation layers == YCabal / Backbone Cabal
-2. Network and Operational Layers == Maidenlane 
+2. Network and Operational Layers == Maidenlane
 
 - YCabal concerns itself with MEV/BEV extraction and other opportunities
 
-- Maidenlane is the execution and routing platform that strategies such as 
-YCabal can work on
+- Maidenlane is the execution and routing platform that strategies such as
+  YCabal can work on
 
-## YCabal 
+## YCabal
 
 > Monopolizing transaction flow for arbitrage batching with miner support
 
@@ -26,7 +25,7 @@ purposes of arbitrage by controlling transaction ordering.
 
 Right now every user sends a transaction directly to the network mempool and
 thus give away the arbitrage, front-running, back-running opportunities to
-miners(or random bots). 
+miners(or random bots).
 
 YCabal creates a virtualized mempool (i.e. a MEV-relay network) that aggregates
 transactions (batching), such transactions include:
@@ -37,10 +36,10 @@ Auctions <br>
 etc <br>
 
 #### TL;DR - Users can opt in and send transactions to YCabal and in return for
+
 not having to pay for gas for their transaction we batch process it and take the
 arbitrage profit from it. Risk by inventory price risk is carried by a Vault,
 where Vault depositers are returned the profit the YCabal realizes
-
 
 ## Efficiency by Aggregation
 
@@ -53,26 +52,24 @@ activites:
 - Order trades in different directions sequentially to produce positive slippage
 - Backrun Trades
 - Frontrun Trades
-- At least 21k in the base cost on every transaction is saved 
+- At least 21k in the base cost on every transaction is saved
 
 > **If we have access to transactions before the network we can generate value
-because we can calculate future state, off-chain**
-
+> because we can calculate future state, off-chain**
 
 > Think of this as creating a Netting Settlement System (whereas blockchains are
-a real time gross settlement system)
+> a real time gross settlement system)
 
 ## User Capture
 
 The whole point of Backbone Cabal is to maximize profits from user actions which
-gets distributed for free to miners and bots. 
+gets distributed for free to miners and bots.
 We intent to extract this value and provide these profits as `**cashback**` to
 users.
 
 **For example**: A SushiSwap trader who loses `X%` to slippage during his trade
-can now get `X-Y %` slippage on his trade, because we were able to 
-*both* frontrun *and* backrun their trade and give him the arbitrage profits. 
-
+can now get `X-Y %` slippage on his trade, because we were able to
+_both_ frontrun _and_ backrun their trade and give him the arbitrage profits.
 
 ### Service Level Architecture View
 
@@ -100,4 +97,3 @@ Data Encryption
 User Authentication & Authorization
 
 ![](images/AWS2.png)
-

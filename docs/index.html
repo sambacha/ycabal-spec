@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Introduction</title>
+<title>Abriged Document Spec</title>
 <style>
 @import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.0/css/font-awesome.css);
 /* normalize.css v2.1.1 | MIT License | git.io/normalize */
@@ -2084,70 +2084,44 @@ h6 > a.anchor {
 </head>
 <body class="article">
 <div id="header">
-<h1>Introduction</h1>
+<h1>Abriged Document Spec</h1>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_ycabal">YCabal</a></li>
-<li><a href="#_efficiency_by_aggregation">Efficiency by Aggregation</a>
-<ul class="sectlevel2">
-<li><a href="#_user_capture">User Capture</a></li>
-<li><a href="#_service_level_architecture_view">Service Level Architecture View</a></li>
-<li><a href="#_aws_deployment">AWS Deployment</a></li>
-<li><a href="#_application_security">Application Security</a></li>
-</ul>
-</li>
-<li><a href="#_abriged_requirements_specification">Abriged Requirements Specification</a></li>
 <li><a href="#_acknowledgments">Acknowledgments</a></li>
-<li><a href="#_about_quality">About quality</a>
+<li><a href="#_links">Links</a></li>
+<li><a href="#_notice">Notice</a></li>
+<li><a href="#_overview">Overview</a>
 <ul class="sectlevel2">
-<li><a href="#_the_categories">The categories</a></li>
-<li><a href="#_classification_can_be_ambiguous">Classification can be ambiguous</a></li>
-<li><a href="#_formulation_of_scenarios">Formulation of scenarios</a></li>
-</ul>
-</li>
-<li><a href="#_approach">Approach</a></li>
-<li><a href="#_change_data_capture">Change Data Capture</a>
-<ul class="sectlevel3">
+<li><a href="#_additional_points_of_specilization">Additional points of specilization</a></li>
 <li><a href="#_replaying_write_operations">Replaying Write Operations</a></li>
 </ul>
 </li>
-<li><a href="#_preliminary_implementation">Preliminary Implementation</a></li>
-<li><a href="#_other_models_considered">Other Models Considered</a>
+<li><a href="#_proposed_implementation">Proposed Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#_higher_level_change_data_capture">Higher Level Change Data Capture</a></li>
-<li><a href="#_shared_key_value_store">Shared Key Value Store</a></li>
-<li><a href="#_extended_peer_to_peer_model">Extended Peer-To-Peer Model .</a></li>
-<li><a href="#_replica_codebase_and_risks_with_geth">Replica Codebase and Risks with Geth</a></li>
+<li><a href="#_other_models_considered">Other Models Considered</a></li>
 </ul>
 </li>
 <li><a href="#_design_goals">Design Goals</a>
-<ul class="sectlevel1">
+<ul class="sectlevel2">
 <li><a href="#_health_checks">Health Checks</a></li>
+</ul>
+</li>
 <li><a href="#_service_initialization">Service Initialization</a></li>
-<li><a href="#_load_balancing">Load Balancing</a></li>
+<li><a href="#_load_balancing">Load Balancing</a>
+<ul class="sectlevel2">
 <li><a href="#_reduced_computational_requirements">Reduced Computational Requirements</a></li>
+<li><a href="#_implementation">Implementation</a></li>
 </ul>
 </li>
-<li><a href="#_implementation_and_testing">Implementation and Testing</a>
-<ul class="sectlevel1">
-<li><a href="#_developer_notice">Developer Notice</a>
+<li><a href="#_backend_functions_to_implement">Backend Functions To Implement</a>
 <ul class="sectlevel2">
-<li><a href="#_overview">Overview</a></li>
-<li><a href="#_go_ethereum_requirements">Go Ethereum Requirements</a></li>
-<li><a href="#_sendtx">SendTx()</a></li>
+<li><a href="#_subscribe_event_apis">Subscribe Event APIs</a></li>
+<li><a href="#_transaction_pool_methods">Transaction Pool Methods</a></li>
 </ul>
 </li>
-<li><a href="#_transaction_emitters">Transaction Emitters</a>
-<ul class="sectlevel2">
-<li><a href="#_security_considerations">Security Considerations</a></li>
-</ul>
-</li>
-<li><a href="#_operational_requirements">Operational Requirements</a>
-<ul class="sectlevel2">
-<li><a href="#_developer_notice_2">Developer Notice</a></li>
-</ul>
-</li>
+<li><a href="#_transaction_emitters">Transaction Emitters</a></li>
+<li><a href="#_publicly_hosted_ethereum_rpc_nodes">Publicly Hosted Ethereum RPC Nodes</a></li>
 <li><a href="#_cluster_initialization">Cluster Initialization</a>
 <ul class="sectlevel2">
 <li><a href="#_master_initialization">Master initialization</a></li>
@@ -2164,16 +2138,15 @@ h6 > a.anchor {
 <li><a href="#_periodic_cluster_refreshes">Periodic Cluster Refreshes</a></li>
 <li><a href="#_multiple_clusters">Multiple Clusters</a></li>
 <li><a href="#_high_availability">High Availability</a></li>
-<li><a href="#definition-1---half-liquid-asset">Definition 1 - Half Liquid asset.</a></li>
-<li><a href="#definition-2---preferable-liquidity-path">Definition 2 - Preferable liquidity path.</a></li>
-<li><a href="#_definition_3_super_liquidity">Definition 3 - Super Liquidity</a></li>
 </ul>
 </li>
-<li><a href="#_super_liquidity_tranche">Super Liquidity Tranche</a>
+<li><a href="#_greypool">GreyPool</a>
 <ul class="sectlevel2">
-<li><a href="#_manifold_finance">Manifold Finance</a></li>
-</ul>
-</li>
+<li><a href="#_transaction_pool_feeds">Transaction Pool Feeds</a></li>
+<li><a href="#_dropped_transactions">Dropped Transactions</a></li>
+<li><a href="#_mev_geth">MEV-Geth</a></li>
+<li><a href="#_operational_topics_concerning_strategies_etc">Operational Topics (concerning strategies, etc)</a></li>
+<li><a href="#_super_liquidity_manifolds_and_abstract_liquid_tranches">Super Liquidity Manifolds and Abstract Liquid Tranches</a></li>
 </ul>
 </li>
 </ul>
@@ -2182,177 +2155,11 @@ h6 > a.anchor {
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph">
-<p>This resource is broken into the two main parts of the solution:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Application and Aggregation layers == YCabal / Backbone Cabal</p>
-</li>
-<li>
-<p>Network and Operational Layers == Maidenlane</p>
-<div class="ulist">
-<ul>
-<li>
-<p>YCabal concerns itself with MEV/BEV extraction and other opportunities</p>
-</li>
-<li>
-<p>Maidenlane is the execution and routing platform that strategies such as
-YCabal can work on</p>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_ycabal">YCabal</h2>
-<div class="sectionbody">
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p>Monopolizing transaction flow for arbitrage batching with miner support</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>This is a strategy that realizes profit by smart transaction batching for the
-purposes of arbitrage by controlling transaction ordering.</p>
-</div>
-<div class="paragraph">
-<p>Right now every user sends a transaction directly to the network mempool and
-thus give away the arbitrage, front-running, back-running opportunities to
-miners(or random bots).</p>
-</div>
-<div class="paragraph">
-<p>YCabal creates a virtualized mempool (i.e. a MEV-relay network) that aggregates
-transactions (batching), such transactions include:</p>
-</div>
-<div class="paragraph">
-<p>DEX trades &lt;br&gt;
-Interactions with protocols &lt;br&gt;
-Auctions &lt;br&gt;
-etc &lt;br&gt;</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>TL;DR - Users can opt in and send transactions to YCabal and in return for
-not having to pay for gas for their transaction we batch process it and take the
-arbitrage profit from it. Risk by inventory price risk is carried by a Vault,
-where Vault depositers are returned the profit the YCabal realizes</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_efficiency_by_aggregation">Efficiency by Aggregation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>By leveraging batching, miner transaction flow, and providing additional
-performant utilities (e.g. faster calculations for finalizing),
-we can realize the following potential avenues for realizing profitable
-activites:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Meta Transaction Funtionality</p>
-</li>
-<li>
-<p>Order trades in different directions sequentially to produce positive slippage</p>
-</li>
-<li>
-<p>Backrun Trades</p>
-</li>
-<li>
-<p>Frontrun Trades</p>
-</li>
-<li>
-<p>At least 21k in the base cost on every transaction is saved</p>
-</li>
-</ul>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>If we have access to transactions before the network we can generate value
-because we can calculate future state, off-chain, and withold transactions</strong></p>
-</div>
-</blockquote>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>Think of this as creating a Netting Settlement System (whereas blockchains are
-a real time gross settlement system)</p>
-</div>
-</blockquote>
-</div>
-<div class="sect2">
-<h3 id="_user_capture">User Capture</h3>
-<div class="paragraph">
-<p>The whole point of Backbone Cabal is to maximize profits from user actions which
-gets distributed for free to miners and bots.
-We intent to extract this value and provide these profits as <code><strong>cashback</strong></code> to
-users.</p>
-</div>
-<div class="paragraph">
-<p><strong>For example</strong>: A SushiSwap trader who loses <code>X%</code> to slippage during his trade
-can now get <code>X-Y %</code> slippage on his trade, because we were able to
-<strong>both</strong> frontrun <strong>and</strong> backrun their trade and give him the arbitrage profits.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_service_level_architecture_view">Service Level Architecture View</h3>
-<div class="paragraph">
-<p>The financial exchange employs a microservices architecture with independent services interacting with one another to provide a full order management system with a price-time priority orderbook. The figure below shows a high level view of the service level architecture. There are two types of services.</p>
-</div>
-<div class="paragraph">
-<p>Application Services
-Infrastructure Services
-The application services implement the business logic of the financial exchange while the infrastructure services support the distributed environment under which the application services run and collaborate with one another.</p>
-</div>
-<div class="paragraph">
-<p>![](/images/overview_1.png)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_aws_deployment">AWS Deployment</h3>
-<div class="paragraph">
-<p>Similar to the localhost configuration the application properties for each service is configured with the combination of spring profile named aws and the matching atlas-xxxxx-aws.yml in the configuration git repository where xxxxx is the service name.</p>
-</div>
-<div class="paragraph">
-<p>The AWS deployment architecture is shown in the figure below. Each Application Service and Configuration Service run in a dedicated t2.micro EC2 instance.</p>
-</div>
-<div class="paragraph">
-<p>![](images/AWS.png)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_application_security">Application Security</h3>
-<div class="paragraph">
-<p>There are two parts to application security</p>
-</div>
-<div class="paragraph">
-<p>Data Encryption
-User Authentication &amp; Authorization</p>
-</div>
-<div class="paragraph">
-<p>![](images/AWS2.png)</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_abriged_requirements_specification">Abriged Requirements Specification</h2>
-<div class="sectionbody">
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>The remainder of this document is the <code>Abriged Requirements Specification</code></p>
+<p>v0.6.0
+Copyright 2021 CommodityStream, LLC ALll Rights Reserved</p>
 </div>
 </blockquote>
 </div>
@@ -2361,163 +2168,144 @@ User Authentication &amp; Authorization</p>
 <div class="sect1">
 <h2 id="_acknowledgments">Acknowledgments</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>KX Systems / First Derivative</p>
-</li>
-<li>
-<p>EtherCattle group</p>
-</li>
-<li>
-<p>Blocknative</p>
-</li>
-<li>
-<p>and many more</p>
-</li>
-</ul>
+<div id="sources" class="paragraph">
+<p>blocknative
+ethcattle
+pegasys tech
+41north
+freight trust
+aldera tech
+rovide services
+whitelbock</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_about_quality">About quality</h2>
+<h2 id="_links">Links</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The quality of a product or system is very generally called
-<em>Set of properties or characteristics</em> defined.</p>
+<p><a href="https://t.me/manifoldfinance" class="bare">https://t.me/manifoldfinance</a></p>
 </div>
 <div class="paragraph">
-<p>In practice, some categories (generic terms) have been used for frequently occurring <em>quality requirements</em>
-(synonymous: quality goals) established, essentially shaped by the conceptual models of DIN / ISO 9126 and 25010.</p>
-</div>
-<div class="sect2">
-<h3 id="_the_categories">The categories</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>&lt;&lt; changeability, changeability &gt;&gt;</p>
-</li>
-<li>
-<p>&lt;&lt; usability, usability &gt;&gt;</p>
-</li>
-<li>
-<p>&lt;&lt; efficiency, efficiency &gt;&gt;</p>
-</li>
-<li>
-<p>&lt;&lt; reliability, reliability &gt;&gt;</p>
-</li>
-<li>
-<p>&lt;&lt; operability, operability &gt;&gt;</p>
-</li>
-<li>
-<p>&lt;&lt; other, other (including functionality) &gt;&gt;</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_classification_can_be_ambiguous">Classification can be ambiguous</h3>
-<div class="paragraph">
-<p>Some quality goals or requirements belong to several
-"Generic terms" or categories - We try and make clear that
-some of them are more <strong>qualitative</strong> in nature.</p>
-</div>
-<div class="paragraph">
-<p>Specific quality requirements are outlined in the appendix.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_formulation_of_scenarios">Formulation of scenarios</h3>
-<div class="paragraph">
-<p>A (quality) scenario describes the behavior (1) of a system (3)
-when an event or stimulus occurs (2).</p>
-</div>
-<div class="sect3">
-<h4 id="_1_behavior_of_a_system">(1) Behavior of a system</h4>
-<div class="paragraph">
-<p>The behavior can relate to software or hardware, or
-also refer to the persons, roles or organizations involved.</p>
-</div>
-<div class="paragraph">
-<p>Behavior should always be formulated <em>measurable or decidable</em> in scenarios.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_2_event_or_stimulus">(2) Event or stimulus</h4>
-<div class="paragraph">
-<p>A user initiates a function while working with the system, for example:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>selects a menu item / function</p>
-</li>
-<li>
-<p>clicks a button on a graphical user interface</p>
-</li>
-<li>
-<p>starts processing</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>A stakeholder changes something in the system, for example:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>modified source code or configuration of the system</p>
-</li>
-<li>
-<p>changes to the hardware of the system</p>
-</li>
-<li>
-<p>changes the deployment of the system</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>A stakeholder changes something in the processes or organizations involved.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_3_system">(3) system</h4>
-<div class="paragraph">
-<p>The term "system" is very broad here: This includes software,
-Software components, involved hardware, networks, middleware, databases,
-but also all the people, roles or organizations involved.</p>
-</div>
-</div>
+<p><a href="https://github.com/manifoldfinance" class="bare">https://github.com/manifoldfinance</a>
+<a href="https://github.com/backbonecabal" class="bare">https://github.com/backbonecabal</a>
+<a href="https://github.com/maidenlane" class="bare">https://github.com/maidenlane</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_approach">Approach</h2>
+<h2 id="_notice">Notice</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>This document does not discuss crypto-mechanics or other cryptoassets. For information on incentives, distribution,
+and other important information, please reach out to us.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_change_data_capture">Change Data Capture</h2>
+<h2 id="_overview">Overview</h2>
 <div class="sectionbody">
-<div class="quoteblock">
-<blockquote>
 <div class="paragraph">
-<p>Note This Section Contains Information not made in this document</p>
+<p>Maidenlane is divided into 3 segments</p>
 </div>
-</blockquote>
+<div class="ulist">
+<ul>
+<li>
+<p>[1]  Network and Transactional Scheduling</p>
+</li>
+<li>
+<p>[2] Lambda/Data Analysis</p>
+</li>
+<li>
+<p>[3] Tracing, Logging and State Management</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Concerns itself with routing, provisioning, consumer facing aspects of
+offering a permissioned 'clearing/settlement' gateway (whicih is how we describe
+our relationship with mining pools and end users, we do not use the term 'MEV'
+or 'BEV'). An example of a solution that would belong to this category is
+utilizing mainland China DNS Servers to ensure reduced latency when mining nodes
+joing the permissioned network and are querying the DNS Service to find the
+network topology, as we do not utilize the DHT table of the public network, nor
+would we want to utilize it in a private fashion as it would divulgue network
+mapping and reduce overall security.</p>
+</li>
+<li>
+<p>Deals with the Matching engine proper, 'lambda' or 'delta' calculations, and
+transaction arrangement. The heart of this system utilizes an in-emory database
+called KDB+, with its programming language, Q. This is not open source. KDB+
+requires a commerical license for running their 64bit database, which starts at
+25,000 a year.</p>
+</li>
+<li>
+<p>Our current logging and tracing utilities are being redesigned with a new
+framework and approach that is being used by IOHK (Cardano Foundation), called
+<code>Convariant Functor Tracing</code>. Our existing stack however is being re-implemented
+to use NixOS as a Package and build service, along with utilizing Dhall for
+configuration. We do not use Kubernetes for [2] or [3].</p>
+</li>
+</ol>
 </div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_additional_points_of_specilization">Additional points of specilization</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[Geth]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>modified for enhanced capture at both the filter and data type level</p>
+</li>
+<li>
+<p>embedded changes to offer reduced latency
+*</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>[Parity]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Services RLP decoding for incoming messages. A Seperate service runs for
+this</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>[Kafka]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Kafka directly interfaces over RPC, there is no need to place a
+Geth/Parity node infront of Kafka in order to process or transform incoming
+transactions, etc.</p>
+</li>
+<li>
+<p>Everything utilizes Avro</p>
+</li>
+<li>
+<p>While we have currently implemented a Kafka logger, we have defined an
+abstract interface that could theoretically support a wide variety of messaging
+systems.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_capturing_write_operations">Capturing Write Operations</h4>
 <div class="paragraph">
-<p>After considering several different approaches to meet our :ref:<code>design-goals</code>, we settled on a Change Data Capture approach (CDC).</p>
-</div>
-<div class="paragraph">
-<p>The idea is to hook into the database interface on one node, capture all write operations, and write them to a transaction log that can be replayed by other nodes.</p>
-</div>
-<div class="paragraph">
-<p>Capturing Write Operations</p>
-</div>
-<div class="paragraph">
-<p>In the Go Ethereum codebase, there is a <code>Database</code> interface which must support the following operations:</p>
+<p>In the Go Ethereum codebase, there is a <code>Database</code> interface which must support
+the following operations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2564,169 +2352,169 @@ but also all the people, roles or organizations involved.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>We have created a simple CDC wrapper, which proxies operations to the standard databases supported by Go Ethereum, and records <code>Put</code>, <code>Delete</code>, and <code>Batch.Write</code> operations through a <code>LogProducer</code> interface.
-At present, we have implemented a <code>KafkaLogProducer</code> to record write operations to a Kafka topic.</p>
+<p>We have created a simple CDC wrapper, which proxies operations to the standard
+databases supported by Go Ethereum, and records <code>Put</code>, <code>Delete</code>, and
+<code>Batch.Write</code> operations through a <code>LogProducer</code> interface.
+At present, we have implemented a <code>KafkaLogProducer</code> to record write operations
+to a Kafka topic.</p>
 </div>
 <div class="paragraph">
-<p>The performance impact to the Go Ethereum server is minimal.</p>
+<p>The performance impact to the Go Ethereum server is minimal.
+The CDC wrapper is light weight, proxying requests to the underlying database
+with minimal overhead.
+Writing to the Kafka topic is handled asynchronously, so write operations are
+unlikely to be delayed substantially due to logging.
+Read operations will be virtually unaffected by the wrapper.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_replaying_write_operations">Replaying Write Operations</h3>
+<div class="paragraph">
+<p>We also have a modified Go Ethereum service which uses a <code>LogConsumer</code> interface
+to pull logs from Kafka and replay them into  KDB+</p>
 </div>
 <div class="paragraph">
-<p>The CDC wrapper is light weight, proxying requests to the underlying database with minimal overhead.
-Writing to the Kafka topic is handled asynchronously, so write operations are unlikely to be delayed substantially due to logging.</p>
-</div>
-<div class="paragraph">
-<p>Read operations will be virtually unaffected by the wrapper.</p>
-</div>
-<div class="paragraph">
-<p>While we have currently implemented a Kafka logger, we have defined an abstract interface that could theoretically support a wide variety of messaging systems.</p>
+<p>The index of the last written record is also recorded in the database, allowing
+the service to resume in the event that it is restarted.</p>
 </div>
 <div class="sect3">
-<h4 id="_replaying_write_operations">Replaying Write Operations</h4>
+<h4 id="_preliminary_implementation">Preliminary Implementation</h4>
 <div class="paragraph">
-<p>We also have a modified Go Ethereum service which uses a <code>LogConsumer</code> interface to pull logs from Kafka and replay them into a local LevelDB database.
-The index of the last written record is also recorded in the database, allowing the service to resume in the event that it is restarted.</p>
+<p>In the current implementation we simply disable peer-to-peer connections on the
+node and populate the database via Kafka logs.
+Other than that it functions as a normal Go Ethereum node.</p>
+</div>
+<div class="paragraph">
+<p>The RPC service in its current state is semi-functional.
+Many RPC functions default to querying the state trie at the "latest" block.
+However, which block is deemed to be the "latest" is normally determined by the
+peer-to-peer service.
+When a new block comes in it is written to the database, but the hash of the
+latest block is kept in memory.
+Without the peer-to-peer service running the service believes that the "latest"
+block has not updated since the process initialized and read the block out of
+the database.
+If RPC functions are called specifying the target block, instead of implicitly
+asking for the latest block, it will look for that information in the database
+and serve it correctly.</p>
+</div>
+<div class="paragraph">
+<p>Despite preliminary successes, there are several potential problems with the
+current approach.
+A normal Go Ethereum node, even one lacking peers, assumes that it is
+responsible for maintaining its database.
+Occasionally this will lead to replicas attempting to upgrade indexes or prune
+the state trie.
+This is problematic because the same operations can be expected to come from the
+write log of the source node.
+Thus we need an approach where we can ensure that the read replicas will make no
+effort to write to their own database.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preliminary_implementation">Preliminary Implementation</h2>
+<h2 id="_proposed_implementation">Proposed Implementation</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_other_models_considered">Other Models Considered</h3>
 <div class="paragraph">
-<p>In the current implementation we simply disable peer-to-peer connections on the node and populate the database
-via Kafka logs. Other than that it functions as a normal Go Ethereum node.</p>
+<p>This section documents several other approaches we considered to achieving our
+:ref:<code>design-goals</code>.
+This is not required reading for understanding subsequent sections, but may help
+offer some context for the current design.</p>
+</div>
+<div class="sect3">
+<h4 id="_higher_level_change_data_capture">Higher Level Change Data Capture</h4>
+<div class="paragraph">
+<p>Rather than capturing data as it is written to the database, one option we
+considered was capturing data as it was written to the State Trie, Blockchain,
+and Transaction Pool.
+The advantage of this approach is that the change data capture stream would be
+reflective of high level operations, and not dependent on low level
+implementation details regarding how the data gets written to a database.
+One disadvantage is that it would require more invasive changes to
+consensus-critical parts of the codebase, creating more room for errors that
+could effect the network as a whole.
+Additionally, because those changes would have been made throughout the Go
+Ethereum codebase it would be harder to maintain if Go Ethereum does not
+incorporate our changes.
+The proposed implementation requires very few changes to core Go Ethereum
+codebase, and primarily leverages APIs that should be relatively easy to
+maintain compatibility with.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shared_key_value_store">Shared Key Value Store</h4>
+<div class="paragraph">
+<p>Before deciding on a change-data-capture replication system, one option we
+considered was to use a scalable key value store, which could be written to by
+one Ethereum node and read by many.
+Some early prototypes were developed under this model, but they all had
+significant performance limitations when it came to validating blocks.
+The Ethereum State Trie requires several read operations to retrieve a single
+piece of information.
+These read operations are practical when made against a local disk, but
+latencies become prohibitively large when the state trie is stored on a
+networked key value store on a remote system.
+This made it infeasible for an Ethereum node to process transactions at the
+speeds necessary to keep up with the network.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_extended_peer_to_peer_model">Extended Peer-To-Peer Model</h4>
+<div class="paragraph">
+<p>One option we explored was to add an extended protocol on top of the standard
+Ethereum peer-to-peer protocol, which would sync the blockchain and state trie
+from a trusted list of peers without following the rigorous validation
+procedures.
+This would have been a substantially more complex protocol than the one we are
+proposing, and would have put additional strain on the other nodes in the
+system.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_replica_codebase_from_scratch">Replica Codebase from Scratch</h4>
+<div class="paragraph">
+<p>One option we considered was to use Change Data Capture to record change logs,
+but write a new system from the ground-up to consume the captured information.
+Part of the appeal of this approach was that we have developers interested in
+contributing to the project who don&#8217;t have a solid grasp of Go, and the replica
+could have been developed in a language more accessible to our contributors.
+The biggest problem with this approach, particularly with the low level CDC, is
+that we would be tightly coupled to implementation details of how Go Ethereum
+writes to LevelDB, without having a shared codebase for interpreting that data.
+A minor change to how Go Ethereum stores data could break our replicas in subtle
+ways that might not be caught until bad data was served in production.</p>
 </div>
 <div class="paragraph">
-<p>The RPC service in its current state is semi-functional.</p>
+<p>In the proposed implementation we will depend not only on the underlying data
+storage schema, but also the code Go Ethereum uses to interpret that data.
+If Go Ethereum changes their schema <em>and</em> changes their code to match while
+maintaining API compatibility, it should be transparent to the replicas.
+It is also possible that Go Ethereum changes their APIs in a way that breaks
+compatibility, but in that case we should find ourselves unable to compile the
+replica without fixing the dependency, and shouldn&#8217;t see surprises on a running
+system.</p>
 </div>
 <div class="paragraph">
-<p>Many RPC functions default to querying the state trie at the "latest" block.
-However, which block is deemed to be the "latest" is normally determined by the peer-to-peer service.
-When a new block comes in it is written to the database, but the hash of the latest block is kept in memory.
-Without the peer-to-peer service running the service believes that the "latest" block has not updated since the
-process initialized and read the block out of the database.</p>
+<p>Finally, by building the replica service in Go as an extension to the existing
+Go Ethereum codebase, there is a reasonable chance that we could get the
+upstream Go Ethereum project to integrate our extensions.
+It is very unlikely that they would integrate our read replica extensions if the
+read replica is a separate project written in another language.</p>
 </div>
-<div class="paragraph">
-<p>If RPC functions are called specifying the target block, instead of implicitly asking for the latest block, it will look for that information in the database and serve it correctly.</p>
 </div>
-<div class="paragraph">
-<p>Despite preliminary successes, there are several potential problems with the current approach.
-A normal Go Ethereum node, even one lacking peers, assumes that it is responsible for maintaining its database.
-Occasionally this will lead to replicas attempting to upgrade indexes or prune the state trie.
-This is problematic because the same operations can be expected to come from the write log of the source node.
-Thus we need an approach where we can ensure that the read replicas will make no effort to write to their own database.</p>
-</div>
-<div class="paragraph">
-<p>Proposed Implementation ,</p>
-</div>
-<div class="paragraph">
-<p>Go Ethereum offers a standard <code>Backend</code> interface, which is used by the RPC interface to retrieve the data needed
-to offer the standard RPC function calls.
-Currently there are two main implementations of the standard Backend interface, one for full Ethereum nodes, and
-one for light Ethereum nodes.</p>
-</div>
-<div class="paragraph">
-<p>We propose to write a third implementation for replica Ethereum nodes.</p>
-</div>
-<div class="paragraph">
-<p>We believe we can offer the core functionality required by RPC function calls based entirely on the database state, without needing any of the standard syncing capabilities.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>See <code>TurboGeth: FireHose</code> for more information</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>Once that backend is developed, we can launch it as a separate service, which will not attempt to do things like database upgrades, and which will not attempt to establish peer-to-peer connections.</p>
-</div>
-<div class="paragraph">
-<p>Under the hood, it will mostly leverage existing APIs for retrieving information from the database.
-This should limit our exposure to changes in the database breaking our code unexpectedly.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_other_models_considered">Other Models Considered</h2>
+<h2 id="_design_goals">Design Goals</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>This section documents several other approaches we considered to achieving our :ref:<code>design-goals</code>.
-This is not required reading for understanding subsequent sections, but may help offer some context for the current design.</p>
-</div>
 <div class="sect2">
-<h3 id="_higher_level_change_data_capture">Higher Level Change Data Capture</h3>
-<div class="paragraph">
-<p>Rather than capturing data as it is written to the database, one option we considered was capturing data as it was written to the State Trie, Blockchain, and Transaction Pool.</p>
-</div>
-<div class="paragraph">
-<p>The advantage of this approach is that the change data capture stream would be reflective of high level operations, and not dependent on low level implementation details regarding how the data gets written to a database.</p>
-</div>
-<div class="paragraph">
-<p>One disadvantage is that it would require more invasive changes to consensus-critical parts of the codebase, creating more room for errors that could effect the network as a whole.
-Additionally, because those changes would have been made throughout the Go Ethereum codebase it would be harder to maintain if Go Ethereum does not incorporate our changes.
-The proposed implementation requires very few changes to core Go Ethereum codebase, and primarily leverages APIs that should be relatively easy to maintain compatibility with.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_shared_key_value_store">Shared Key Value Store</h3>
-<div class="paragraph">
-<p>Before deciding on a change-data-capture replication system, one option we considered was to use a scalable key value store, which could be written to by one Ethereum node and read by many.
-Some early prototypes were developed under this model, but they all had significant performance limitations when it came to validating blocks.
-The Ethereum State Trie requires several read operations to retrieve a single piece of information.
-These read operations are practical when made against a local disk, but latencies become prohibitively large when the state trie is stored on a networked key value store on a remote system.
-This made it infeasible for an Ethereum node to process transactions at the speeds necessary to keep up with the network.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_extended_peer_to_peer_model">Extended Peer-To-Peer Model .</h3>
-<div class="paragraph">
-<p>One option we explored was to add an extended protocol on top of the standard Ethereum peer-to-peer protocol, which would sync the blockchain and state trie from a trusted list of peers without following the rigorous validation procedures.
-This would have been a substantially more complex protocol than the one we are proposing, and would have put additional strain on the other nodes in the system.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_replica_codebase_and_risks_with_geth">Replica Codebase and Risks with Geth</h3>
-<div class="paragraph">
-<p>One option we considered was to use Change Data Capture to record change logs, but write a new system from the ground-up to consume the captured information.</p>
-</div>
-<div class="paragraph">
-<p>The biggest problem with this approach, particularly with the low level CDC, is that we would be tightly coupled
-to implementation details of how Go Ethereum writes to LevelDB, without having a shared codebase for interpreting
-that data.</p>
-</div>
-<div class="paragraph">
-<p>A minor change to how Go Ethereum stores data could break our replicas in subtle ways that might not be caught
-until bad data was served in production.</p>
-</div>
-<div class="paragraph">
-<p>If Go Ethereum changes their schema <em>and</em> changes their code to match while maintaining API compatibility, it
-should be transparent to the replicas.</p>
-</div>
-<div class="paragraph">
-<p>It is also possible that Go Ethereum changes their APIs in a way that breaks compatibility, but in that case we
-should find ourselves unable to compile the replica without fixing the dependency, and shouldn&#8217;t see surprises on
-a running system.</p>
-</div>
-<div class="paragraph">
-<p>Finally, by building the replica service in Go as an extension to the existing Go Ethereum codebase, there is a
-reasonable chance that we could get the upstream Go Ethereum project to integrate our extensions.
-It is very unlikely that they would integrate our read replica extensions if the read replica is a separate
-project written in another language.</p>
-</div>
-</div>
-</div>
-</div>
-<h1 id="_design_goals" class="sect0">Design Goals</h1>
-<div class="paragraph">
-<p>The primary goal of the Ether Cattle intiative is to provide access to Ethereum
-RPC services with minimal operational complexity and cost.
-Ideally this will be achieved by enhancing an existing Ethereum client with
-capabilities that simplify the operational challenges.</p>
-</div>
-<div class="sect1">
-<h2 id="_health_checks">Health Checks</h2>
-<div class="sectionbody">
+<h3 id="_health_checks">Health Checks</h3>
 <div class="paragraph">
 <p>A major challenge with existing Ethereum nodes is evaluating the health of an
 individual node.
@@ -2735,6 +2523,7 @@ state trie at the highest block, and are able to serve RPC requests relating to
 that state.
 If a node is more than a couple of blocks behind the network, it should be
 considered unhealthy.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2788,10 +2577,12 @@ This requires a stateful session, which depends on having a single Ethereum node
 serve each successive request relating to a specific subscription.</p>
 </div>
 <div class="paragraph">
-<p>For now this can be addressed on the client application using <code>Provider
-Engine's Filter Subprovider
-&lt;https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;</code>
-The Filter Subprovider mimics the functionality of installing a filter on a node
+<p>For now this can be addressed on the client application using <code>Provider Engine&#8217;s
+Filter Subprovider
+&lt;<a href="https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+" class="bare">https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+</a></code></p>
+</div>
+<div class="paragraph">
+<p>The Filter Subprovider mimics the functionality of installing a filter on a node
 and requesting updates about the subscription by making a series of stateless
 calls against the RPC server.
 Over the long term it might be beneficial to add a shared database that would
@@ -2799,11 +2590,8 @@ allow the load balanced RPC nodes to manage filters on the server side instead
 of the client side, but due to the existence of the Filter Subprovider that is
 not necessary in the short term.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_reduced_computational_requirements">Reduced Computational Requirements</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_reduced_computational_requirements">Reduced Computational Requirements</h3>
 <div class="paragraph">
 <p>As discussed in :ref:<code>initialization</code>, a collection of nodes managed by a
 single operator do not have the same trust model amongst themselves as nodes in
@@ -2816,18 +2604,8 @@ lower resource requirements to serve RPC requests, allowing flexible scaling and
 redundancy.</p>
 </div>
 </div>
-</div>
-<h1 id="_implementation_and_testing" class="sect0">Implementation and Testing</h1>
-<div class="sect1">
-<h2 id="_developer_notice">Developer Notice</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>!!! note
-&gt; Testing Documents are Broken into their relevent sections, this is a general overview
-of the Implementation as it relates specifically to the Geth (go-ethereum) client only</p>
-</div>
 <div class="sect2">
-<h3 id="_overview">Overview</h3>
+<h3 id="_implementation">Implementation</h3>
 <div class="paragraph">
 <p>In <code>go-ethereum/internal/ethapi/backend.go</code>, a Backend interface is specified.
 Objects filling this interface can be passed to <code>ethapi.GetAPIs()</code> to return
@@ -2840,20 +2618,22 @@ Ethereum nodes and one for Light Ethereum nodes that depend on the LES protocol.
 the necessary information to ethapi.GetAPIs() to in turn provide the RPC APIs.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_go_ethereum_requirements">Go Ethereum Requirements</h3>
-<div class="sect3">
-<h4 id="_backend_functions_to_implement">Backend Functions To Implement</h4>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backend_functions_to_implement">Backend Functions To Implement</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>This section explores each of the 26 methods required by the Backend interface.
 This is an initial pass, and attempts to implement these methods may prove more
 difficult than described below.</p>
 </div>
 <div class="paragraph">
-<p>Downloader must return a <code><strong>go-ethereum/eth/downloader.Downloader</strong></code> object.</p>
+<p>Downloader()</p>
 </div>
 <div class="paragraph">
-<p>Normally the <code>Downloader</code> object is responsible for managing relationships with
+<p>Downloader must return a <code>*go-ethereum/eth/downloader.Downloader</code> object.
+Normally the <code>Downloader</code> object is responsible for managing relationships with
 remote peers, and synchronizing the block from remote peers.
 As our replicas will receive data directly via Kafka, the Downloader object
 won&#8217;t see much use.
@@ -2867,47 +2647,47 @@ specific Downloader object, we could stub out at Downloader that provided the
 Unfortunately the Downloader requires a specific object constructed with the
 following properties:</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_mode_syncmode_an_integer_indicating_whether_the_syncmode_is_fast_full_or_light"><code>mode SyncMode</code> - An integer indicating whether the SyncMode is Fast, Full, or Light</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_statedb_ethdb_database_an_interface_to_leveldb"><code>stateDb ethdb.Database</code> - An interface to LevelDB.</h4>
-<div class="paragraph">
-<p>Our backend will neeed a Database instance, so this should be easy.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_mux_event_typemux_used_only_for_syncing_with_peers"><code>mux <strong>event.TypeMux</strong></code> - Used only for syncing with peers.</h4>
-<div class="paragraph">
-<p>If we avoid calling Downloader.Synchronize(), it appears this can safely be nil.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_chain_blockchain_an_object_providing_the_downloader_blockchain_interface"><code>chain BlockChain</code> - An object providing the downloader.BlockChain interface.</h4>
-<div class="paragraph">
-<p>If we only need to support Downloader.Progress(), and we set SyncMode to
+<div class="ulist">
+<ul>
+<li>
+<p><code>{mode SyncMode}</code> - An integer indicating whether the SyncMode is Fast, Full,
+or Light.
+We can probably specify "light" for our purposes.</p>
+</li>
+<li>
+<p><code>{stateDb ethdb.Database}</code> - An interface to LevelDB.
+Our backend will neeed a Database instance, so this should be easy.</p>
+</li>
+<li>
+<p><code>{mux *event.TypeMux}</code> - Used only for syncing with peers.
+If we avoid calling Downloader.Synchronize(), it appears this can safely be nil.</p>
+</li>
+<li>
+<p>{<code>chain BlockChain}</code> - An object providing the downloader.BlockChain
+interface.
+If we only need to support Downloader.Progress(), and we set SyncMode to
 LightSync, this can be nil.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_lightchain_lightchain_an_object_providing_the_downloader_lightchain"><code>lightchain LightChain</code> - An object providing the downloader.LightChain</h4>
-<div class="paragraph">
-<p>interface.
+</li>
+<li>
+<p><code>{lightchain LightChain}</code> - An object providing the downloader.LightChain
+interface.
 If we only need to support Downloader.Progress(), and we set SyncMode to
 LightSync, we will need to stub this out and provide CurrentHeader() with the
-correct blocknumber.
-====  <code>dropPeer peerDropFn</code> - Only used when syncing with peers.
+correct blocknumber.</p>
+</li>
+<li>
+<p><code>{dropPeer peerDropFn}</code> - Only used when syncing with peers.
 If we avoid calling Downloader.Synchronize(), this can be <code>func(string) {}</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Constructing a <code>Downloader</code> with the preceding arguments should provide the
 capabilities we need to offer the <code>eth_progress</code> RPC call.</p>
 </div>
+<div class="paragraph">
+<p>ProtocolVersion() .</p>
 </div>
-<div class="sect3">
-<h4 id="_protocolversion">ProtocolVersion()</h4>
 <div class="paragraph">
 <p>This just needs to return an integer indicating the protocol version.
 This tells us what version of the peer-to-peer protocol the Ethereum client is
@@ -2915,63 +2695,64 @@ using.
 As replicas will not use a peer-to-peer protocol, it might make sense for this
 to be a value like <code>-1</code>.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_suggestprice">SuggestPrice()</h4>
 <div class="paragraph">
-<p>Should return a <code>big.Int</code> gas price for a transaction.
-This can use <code><strong>go-ethereum/eth/gasprice.Oracle</strong></code> to provide the same values a
+<p>SuggestPrice()</p>
+</div>
+<div class="paragraph">
+<p>Should return a <code>{big.Int}</code> gas price for a transaction.
+This can use <code>{go-ethereum/eth/gasprice.Oracle}</code> to provide the same values a
 stanard Ethereum node would provide.
 Note, however, that gasprice.Oracle requires a Backend object of its own, so
 implementing SuggestPrice() will need to wait until the following backend
 methods have been implemented:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HeaderByNumber()</code></p>
+</li>
+<li>
+<p><code>BlockByNumber()</code></p>
+</li>
+<li>
+<p><code>ChainConfig()</code></p>
+</li>
+</ul>
 </div>
-<div class="sect3">
-<h4 id="_headerbynumber"><code>HeaderByNumber()</code></h4>
-
-</div>
-<div class="sect3">
-<h4 id="_blockbynumber"><code>BlockByNumber()</code></h4>
-
-</div>
-<div class="sect3">
-<h4 id="_chainconfig"><code>ChainConfig()</code></h4>
-
-</div>
-<div class="sect3">
-<h4 id="_chaindb">ChainDb().</h4>
 <div class="paragraph">
-<p>Our backend will need to be constructed with an <code>ethdb.Database</code> object, which
+<p><strong>ChainDb()</strong></p>
+</div>
+<div class="paragraph">
+<p>Our backend will need to be constructed with an {<code>ethdb.Database}</code> object, which
 will be it&#8217;s primary source for much of the information about the blockchain and
 state.
 This method will return that object.</p>
 </div>
 <div class="paragraph">
 <p>For replicas, it might be prudent to have a wrapper that provides the
-<code>ethdb.Database</code> interface, but errors on any write operations, as we want to
+<code>{ethdb.Database}</code> interface, but errors on any write operations, as we want to
 ensure that all write operations to the primary database come from the
 replication process.</p>
 </div>
+<div class="paragraph">
+<p>*EventMux() *</p>
 </div>
-<div class="sect3">
-<h4 id="_eventmux">EventMux()</h4>
 <div class="paragraph">
 <p>This seem to be used by peer-to-peer systems.
 I can&#8217;t find anything in the RPC system that depends on <code>EventMux()</code>, so I think
 we can return <code>nil</code> for the Replica backend.</p>
 </div>
 <div class="paragraph">
-<p>AccountManager()</p>
+<p>*AccountManager() *</p>
 </div>
 <div class="paragraph">
-<p>This returns an <code><strong>accounts.Manager</strong></code> object, which manages access to Ethereum
+<p>This returns an <code>*accounts.Manager</code> object, which manages access to Ethereum
 wallets and other secret data.
 This would be used by the Private Ethereum APIs, which our Replicas will not
 implement.
 Services that need to manage accounts in conjunction with replica RPC nodes
-should utilize client side account managers such as <code>Web3 Provider Engine
-&lt;https://www.npmjs.com/package/web3-provider-engine&gt;</code></p>
+should utilize client side account managers such as <code>+Web3 Provider Engine
+&lt;<a href="https://www.npmjs.com/package/web3-provider-engine&gt;+" class="bare">https://www.npmjs.com/package/web3-provider-engine&gt;+</a></code>_.</p>
 </div>
 <div class="paragraph">
 <p>In a future phase we may decide to implement an AccountManager service for
@@ -2979,7 +2760,7 @@ replica nodes, but this would require serious consideration for how to securely
 store credentials and share them across the replicas in a cluster.</p>
 </div>
 <div class="paragraph">
-<p>SetHead().</p>
+<p><strong>SetHead()</strong></p>
 </div>
 <div class="paragraph">
 <p>This is used by the private debug APIs, allowing developers to set the
@@ -2988,10 +2769,10 @@ Replicas should not be able to roll back the blockchain to an earlier state, so
 this method should be a no-op.</p>
 </div>
 <div class="paragraph">
-<p>HeaderByNumber()</p>
+<p>*HeaderByNumber() *</p>
 </div>
 <div class="paragraph">
-<p>HeaderByNumber needs to return a <code><strong>core/types.Header</strong></code> object corresponding to
+<p>HeaderByNumber needs to return a <code>*core/types.Header</code> object corresponding to
 the specified block number.
 This will need to get information from the database.
 It might be possible to leverage in-memory caches to speed up these data
@@ -3003,10 +2784,10 @@ peer-to-peer protocol manager.</p>
 <code>core.GetHeader()</code> to get the Block Number.</p>
 </div>
 <div class="paragraph">
-<p>BlockByNumber()</p>
+<p><strong>BlockByNumber()</strong></p>
 </div>
 <div class="paragraph">
-<p>BlockByNumber needs to return a <code><strong>core/types.Block</strong></code> object corresponding to the
+<p>BlockByNumber needs to return a <code>*core/types.Block</code> object corresponding to the
 specified block number.
 This will need to get information from the database.
 It might be possible to leverage in-memory caches to speed up these data
@@ -3018,10 +2799,10 @@ peer-to-peer protocol manager.</p>
 <code>core.GetBlock()</code> to get the Block Number.</p>
 </div>
 <div class="paragraph">
-<p>StateAndHeaderByNumber() .</p>
+<p><strong>StateAndHeaderByNumber()</strong></p>
 </div>
 <div class="paragraph">
-<p>Needs to return a <code><strong>core/state.StateDB</strong></code> object and a <code><strong>core/types.Header</strong></code> object
+<p>Needs to return a <code>*core/state.StateDB</code> object and a <code>*core/types.Header</code> object
 corresponding to the specified block number.</p>
 </div>
 <div class="paragraph">
@@ -3030,15 +2811,15 @@ Then the stateDB object can be created with <code>core/state.New()</code> given 
 from the retrieved header and the ethdb.Database.</p>
 </div>
 <div class="paragraph">
-<p>GetBlock()</p>
+<p>*GetBlock() *</p>
 </div>
 <div class="paragraph">
-<p>Needs to return a <code><strong>core/types.Block</strong></code> given a <code>common.Hash</code>.
+<p>Needs to return a <code>*core/types.Block</code> given a <code>common.Hash</code>.
 This should be able to use <code>core.GetBlockNumber()</code> to get the block number for
-the hash, and <code>core.GetBlock()</code> to retrieve the <code><strong>core/types.Block</strong></code>.</p>
+the hash, and <code>core.GetBlock()</code> to retrieve the <code>*core/types.Block</code>.</p>
 </div>
 <div class="paragraph">
-<p>GetReceipts()</p>
+<p><strong>GetReceipts()</strong></p>
 </div>
 <div class="paragraph">
 <p>Needs to return a <code>core/types.Receipts</code> given a <code>common.Hash</code>.
@@ -3046,39 +2827,42 @@ This should be able to use <code>core.GetBlockNumber()</code> to get the block n
 the hash, and <code>core.GetBlockReceipts()</code> to retrieve the <code>core/types.Receipts</code>.</p>
 </div>
 <div class="paragraph">
-<p>GetTd() .</p>
+<p><strong>GetTd()</strong></p>
 </div>
 <div class="paragraph">
-<p>Needs to return a <code><strong>big.Int</code> given a <code>common.Hash</code></strong>.
+<p>Needs to return a <code>*big.Int</code> given a <code>common.Hash</code>.
 This should be able to use <code>core.GetBlockNumber()</code> to get the block number for
 the hash, and <code>core.GetTd()</code> to retrieve the total difficulty.</p>
 </div>
 <div class="paragraph">
-<p>GetEVM()</p>
+<p>*GetEVM() *</p>
 </div>
 <div class="paragraph">
-<p>Needs to return a <code><strong>core/vm.EVM</strong></code>.</p>
+<p>Needs to return a <code>*core/vm.EVM</code>.</p>
 </div>
 <div class="paragraph">
 <p>This requires a <code>core.ChainContext</code> object, which in turn needs to implement:</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_engine_a_conensus_engine_instance"><code>Engine()</code> - A conensus engine instance.</h4>
-<div class="paragraph">
-<p>This should reflect the conensus engine of the server the replica is
+<div class="ulist">
+<ul>
+<li>
+<p><code>Engine()</code> - A conensus engine instance.
+This should reflect the conensus engine of the server the replica is
 replicating.
 This would be Ethash for Mainnet, but may be Clique or eventually Casper for
-other networks.
-==== <code>GetHeader()</code> - Can proxy <code>backend.GetHeader()</code></p>
+other networks.</p>
+</li>
+<li>
+<p><code>GetHeader()</code> - Can proxy <code>backend.GetHeader()</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Beyond the construction of a new <code>ChainContext</code>, this should be comparable to
 the implementation of eth/api_backend.go&#8217;s <code>GetEVM()</code></p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_subscribe_event_apis">Subscribe Event APIs</h4>
+<div class="sect2">
+<h3 id="_subscribe_event_apis">Subscribe Event APIs</h3>
 <div class="paragraph">
 <p>The following methods exist as part of the Event Filtering system.</p>
 </div>
@@ -3099,32 +2883,37 @@ the implementation of eth/api_backend.go&#8217;s <code>GetEVM()</code></p>
 </ul>
 </div>
 <div class="paragraph">
-<p>As discussed in :ref:<code>load-balancing</code>, the initial implementation of the
-replica service will not support the filtering APIs.
-As such, these methods can be no-ops that simply return <code>nil</code>.
+<p>As discussed in <code>load-balancing</code>, the initial implementation of the replica
+service will not support the filtering APIs.</p>
+</div>
+<div class="paragraph">
+<p>As such, these methods can be no-ops that simply return <code>nil</code>.
 In the future we may implement these methods, but it will need to be a
 completely new implementation to support filtering on the cluster instead of
 individual replicas.</p>
 </div>
+<div class="paragraph">
+<p>*SendTx() *</p>
+</div>
+<div class="paragraph">
+<p>As replica nodes will not have peer-to-peer connections, they will not be able
+to send transactions to the network via conventional methods.</p>
+</div>
+<div class="paragraph">
+<p>Instead, we propose that the replica will simply queue transactions onto a Kafka
+topic.
+Independent from the replica service we can have consumers of the transaction
+topic emit the transactions to the network using different methods.</p>
+</div>
+<div class="paragraph">
+<p>The scope of implementing <code>SendTx()</code> is limited to placing the transaction onto
+a Kafka topic.
+Processing those events and emitting them to the network will be discused in
+:ref:<code>tx-emitters</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendtx">SendTx()</h3>
-<div class="paragraph">
-<p>As replica nodes will not have peer-to-peer connections, they will not be able
-to send transactions to the network via conventional methods.
-Instead, we propose that the replica will simply queue transactions onto a Kafka
-topic.
-Independent from the replica service we can have consumers of the transaction
-topic emit the transactions to the network using different methods.
-The scope of implementing <code>SendTx()</code> is limited to placing the transaction onto
-a Kafka topic.
-Processing those events and emitting them to the network will be discused in
-<code>tx-emitters</code></p>
-</div>
-<div class="paragraph">
-<p>Transaction Pool Methods .</p>
-</div>
+<h3 id="_transaction_pool_methods">Transaction Pool Methods</h3>
 <div class="paragraph">
 <p>The transaction pool in Go Ethereum is kept in memory, rather than in the
 LevelDB database.
@@ -3162,7 +2951,7 @@ for both pending and queued transactions.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>ChainConfig()</p>
+<p>ChainConfig() .</p>
 </div>
 <div class="paragraph">
 <p>The ChainConfig property will likely be provided to the Replica Backend as the
@@ -3180,6 +2969,9 @@ use that to invoke <code>backend.GetBlock()</code> to retrieve the current block
 block in memory.
 If we track when the <code>LatestBlock</code> key in LevelDB gets updated, we can clear the
 in-memory cache as updates come in.</p>
+</div>
+<div class="paragraph">
+<p>_tx-emitters:</p>
 </div>
 </div>
 </div>
@@ -3229,8 +3021,9 @@ network</p>
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_security_considerations">Security Considerations</h3>
+<div class="paragraph">
+<p>Security Considerations</p>
+</div>
 <div class="paragraph">
 <p>The security concerns relating to emitting transactions are different than the
 concerns for read operations.
@@ -3244,28 +3037,122 @@ the same assurances that transactions will be emitted to the network as RPC
 nodes.
 Thus, some organizations may decide to transmit transactions through APIs like
 Infura and Etherscan even though they choose not to trust those services for
-state data.</p>
+state data.
+= Introduction</p>
 </div>
+<div class="paragraph">
+<p>For a service to be treated as a commodity, it typically has the following
+properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It can be load-balanced, and any instance can serve any request as well as any
+other instance.</p>
+</li>
+<li>
+<p>It has simple health checks that can indicate when an instance should be
+removed from the load balancer pool.</p>
+</li>
+<li>
+<p>When a new instance is started it does not start serving requests until it is
+healthy.</p>
+</li>
+<li>
+<p>When a new instance is started it reaches a healthy state quickly.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Eisting Ethereum nodes don&#8217;t fit well into this model:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Certain API calls are stateful, meaning the same instance must serve multiple
+successive requests and cannot be transparently replaced.</p>
+</li>
+<li>
+<p>There are numerous ways in which an Ethereum node can be unhealthy, some of
+which are difficult to determine.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>A node might be unhealthy because it does not have any peers</p>
+</li>
+<li>
+<p>A node might have peers, but still not receive new blocks</p>
+</li>
+<li>
+<p>A node might be starting up, and have yet to reach a healthy state</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>When a new instance is started it generally starts serving on RPC immediately,
+even though it has yet to sync the blockchain.
+If the load balancer serves request to this instance it will serve outdated
+information.</p>
+</li>
+<li>
+<p>When new instances are started, they must discover peers, download and
+validate blocks, and update the state trie.
+This takes hours under the best circumstances, and days under extenuating
+circumstances.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As a result it is often easier to spend time troubleshooting the problems on a
+particular instance and get that instance healthy again, rather than replace it
+with a fresh instance.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_operational_requirements">Operational Requirements</h2>
+<h2 id="_publicly_hosted_ethereum_rpc_nodes">Publicly Hosted Ethereum RPC Nodes</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_developer_notice_2">Developer Notice</h3>
 <div class="paragraph">
-<p>!!! note
-&gt; Testing Documents are Broken into their relevent sections, this is a general overview
-of the Implementation as it relates specifically to the Geth (go-ethereum) client only</p>
+<p>Many organizations are currently using publicly hosted Ethereum RPC nodes such
+as Infura.
+While these services are very helpful, there are several reasons organizations
+may not wish to depend on third party Ethereum RPC nodes.</p>
 </div>
 <div class="paragraph">
-<p>The implementation discussed in previous sections relates directly to the software changes required to help operationalize Ethereum clients.
-There are also ongoing operational processes that will be required to maintain a cluster of master / replica nodes.</p>
+<p>First, the Ethereum RPC protocol does not provide enough information to
+authenticate state data provided by the RPC node.
+This means that publicly hosted nodes could serve inaccurate information with no
+way for the client to know.
+This puts public RPC providers in a position where they could potentially abuse
+their clients' trust for profit.
+It also makes them a target for hackers who might wish to serve inaccurate state
+informatino.</p>
+</div>
+<div class="paragraph">
+<p>Second, it means that a fundamental part of an organization&#8217;s system depends on
+a third party that offers no SLA.
+RPC hosts like Infura are generally available on a best effort basis, but have
+been known to have significant outages.
+And should Infura ever cease operations, consumers of their service would need
+to rapidly find an alternative provider.</p>
+</div>
+<div class="paragraph">
+<p>Hosting their own Ethereum nodes is the surest way for an organization to
+address both of these concerns, but currently has significant operational
+challenges.
+We intend to help address the operational challenges so that more organizations
+can run their own Ethereum nodes.
+= Operational Requirements</p>
+</div>
+<div class="paragraph">
+<p>The implementation discussed in previous sections relates directly to the
+software changes required to help operationalize Ethereum clients.
+There are also ongoing operational processes that will be required to maintain a
+cluster of master / replica nodes.</p>
 </div>
 <div class="paragraph">
 <p>{cluster-initialization}</p>
-</div>
 </div>
 </div>
 </div>
@@ -3273,13 +3160,16 @@ There are also ongoing operational processes that will be required to maintain a
 <h2 id="_cluster_initialization">Cluster Initialization</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Initializing a cluster comprised of a master and one or more replicas requires a few steps.</p>
+<p>Initializing a cluster comprised of a master and one or more replicas requires a
+few steps.</p>
 </div>
 <div class="sect2">
 <h3 id="_master_initialization">Master initialization</h3>
 <div class="paragraph">
-<p>Before standing up any replicas or configuring the master to send logs to Kafka, the master should be synced with the blockchain.
-In most circumstances, this should be a typical Geth fast sync with standard garbage collection arguments.</p>
+<p>Before standing up any replicas or configuring the master to send logs to Kafka,
+the master should be synced with the blockchain.
+In most circumstances, this should be a typical Geth fast sync with standard
+garbage collection arguments.</p>
 </div>
 <div class="paragraph">
 <p>{_leveldb-snapshots}</p>
@@ -3292,15 +3182,20 @@ In most circumstances, this should be a typical Geth fast sync with standard gar
 <div class="sectionbody">
 <div class="paragraph">
 <p>Once the master is synced, the LevelDB directory needs to be snapshotted.
-This will become the basis of both the subsequent master and the replica servers.</p>
+This will become the basis of both the subsequent master and the replica
+servers.</p>
 </div>
 <div class="sect2">
 <h3 id="_replication_master_configuration">Replication Master Configuration</h3>
 <div class="paragraph">
-<p>Once synced and ready for replication, the master needs to be started with the garbage collection mode of "archive".
-Without the "archive" garbage collection mode, the state trie is kept in memory, and not written to either LevelDB or Kafka immediately.
-If state data is not written to Kafka immediately, the replicas have only the chain data and cannot do state lookups.
-The master should also be configured with a Kafka broker and topic for logging write operations.</p>
+<p>Once synced and ready for replication, the master needs to be started with the
+garbage collection mode of "archive".
+Without the "archive" garbage collection mode, the state trie is kept in memory,
+and not written to either LevelDB or Kafka immediately.
+If state data is not written to Kafka immediately, the replicas have only the
+chain data and cannot do state lookups.
+The master should also be configured with a Kafka broker and topic for logging
+write operations.</p>
 </div>
 </div>
 </div>
@@ -3309,67 +3204,103 @@ The master should also be configured with a Kafka broker and topic for logging w
 <h2 id="_replica_configuration">Replica Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Replicas should be created with a copy of the LevelDB database snapshotted in :ref:<code>leveldb-snapshots</code>.
-When executed, the replica service should be pointed to the same Kafka broker and topic as the master.
-Any changes written by the master since the LevelDB snapshot will be pulled from Kafka before the Replica starts serving HTTP requests.</p>
+<p>Replicas should be created with a copy of the LevelDB database snapshotted in
+:ref:<code>leveldb-snapshots</code>.
+When executed, the replica service should be pointed to the same Kafka broker
+and topic as the master.
+Any changes written by the master since the LevelDB snapshot will be pulled from
+Kafka before the Replica starts serving HTTP requests.</p>
 </div>
 <div class="sect2">
 <h3 id="_periodic_replica_snapshots">Periodic Replica Snapshots</h3>
 <div class="paragraph">
-<p>When new replicas are scaled up, they will connect to Kafka to pull any changes not currently reflected in their local database.
-The software manages this by storing the Kafka offset of each write operation as it persists to LevelDB, and when a new replica starts up it will replay any write operations more recent than the offset of the last saved operation.
-However this assumes that Kafka will have the data to resume from that offset, and in practice Kafka periodically discards old data.
-Without intervention, a new replica will eventually spin up to find that Kafka no longer has the data required for it to resume.</p>
+<p>When new replicas are scaled up, they will connect to Kafka to pull any changes
+not currently reflected in their local database.
+The software manages this by storing the Kafka offset of each write operation as
+it persists to LevelDB, and when a new replica starts up it will replay any
+write operations more recent than the offset of the last saved operation.
+However this assumes that Kafka will have the data to resume from that offset,
+and in practice Kafka periodically discards old data.
+Without intervention, a new replica will eventually spin up to find that Kafka
+no longer has the data required for it to resume.</p>
 </div>
 <div class="paragraph">
 <p>The solution for this is fairly simple.
-We need to snapshot the replicas more frequently than Kafka fully cycles out data.
-Each snapshot should reflect the latest data in Kafka at the time the snapshot was taken, and any new replicas created from that snapshot will be able to resume so long as Kafka still has the offset from the time the snapshot was taken.</p>
+We need to snapshot the replicas more frequently than Kafka fully cycles out
+data.
+Each snapshot should reflect the latest data in Kafka at the time the snapshot
+was taken, and any new replicas created from that snapshot will be able to
+resume so long as Kafka still has the offset from the time the snapshot was
+taken.</p>
 </div>
 <div class="paragraph">
 <p>The mechanisms for taking snapshots will depend on operational infrastructure.
-The implementation will vary between cloud providers or on-premises infrastructure management tools, and will be up to each team to implement (though we may provide additional documentation and tooling for specific providers).</p>
+The implementation will vary between cloud providers or on-premises
+infrastructure management tools, and will be up to each team to implement
+(though we may provide additional documentation and tooling for specific
+providers).</p>
 </div>
 <div class="paragraph">
-<p>Administrators should be aware of Kafka&#8217;s retention period, and be sure that snapshots are taken more frequently than the retention period, leaving enough time to troubleshoot failed snapshots before Kafka runs out</p>
+<p>Administrators should be aware of Kafka&#8217;s retention period, and be sure that
+snapshots are taken more frequently than the retention period, leaving enough
+time to troubleshoot failed snapshots before Kafka runs out</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_periodic_cluster_refreshes">Periodic Cluster Refreshes</h3>
 <div class="paragraph">
-<p>Because replication requires the master to write to LevelDB with a garbage collection mode of "archive", the disk usage for each node of a cluster can grow fairly significantly after the initial sync.
-When disk usage begins to become a problem, the entire cluster can be refreshed following the :ref:<code>cluster-initialization</code> process.</p>
+<p>Because replication requires the master to write to LevelDB with a garbage
+collection mode of "archive", the disk usage for each node of a cluster can grow
+fairly significantly after the initial sync.
+When disk usage begins to become a problem, the entire cluster can be refreshed
+following the :ref:<code>cluster-initialization</code> process.</p>
 </div>
 <div class="paragraph">
-<p>Both clusters can run concurrently while the second cluster is brought up, but it is important that the two clusters use separate LevelDB snapshots and separate Kafka partitions to stay in sync (they can use the same Kafka broker, if it is capable of handling the traffic).</p>
+<p>Both clusters can run concurrently while the second cluster is brought up, but
+it is important that the two clusters use separate LevelDB snapshots and
+separate Kafka partitions to stay in sync (they can use the same Kafka broker,
+if it is capable of handling the traffic).</p>
 </div>
 <div class="paragraph">
-<p>As replicas for the new cluster are spun up, they will only start serving HTTP requests once they are synced with their respective Kafka partition.
-Assuming your load balancer only attempts to route requests to a service once it has passed health checks, both clusters can co-exist behind the load balancer concurrently.</p>
+<p>As replicas for the new cluster are spun up, they will only start serving HTTP
+requests once they are synced with their respective Kafka partition.
+Assuming your load balancer only attempts to route requests to a service once it
+has passed health checks, both clusters can co-exist behind the load balancer
+concurrently.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_multiple_clusters">Multiple Clusters</h3>
 <div class="paragraph">
-<p>Just as multiple clusters can co-exist during a refresh, multiple clusters can co-exist for stability purposes.
+<p>Just as multiple clusters can co-exist during a refresh, multiple clusters can
+co-exist for stability purposes.
 Within a single cluster, the master server is a single point of failure.
-If the master gets disconnected from its peers or fails for other reasons, its peers will not get updates and become stale.
-A new master can be created from the last LevelDB snapshot, but that will take time during which the replicas will be stale.</p>
+If the master gets disconnected from its peers or fails for other reasons, its
+peers will not get updates and become stale.
+A new master can be created from the last LevelDB snapshot, but that will take
+time during which the replicas will be stale.</p>
 </div>
 <div class="paragraph">
-<p>With multiple clusters, when a master is determined to be unhealthy its replicas could be removed from the load balancer to avoid stale data, and additional clusters could continue to serve current data.</p>
+<p>With multiple clusters, when a master is determined to be unhealthy its replicas
+could be removed from the load balancer to avoid stale data, and additional
+clusters could continue to serve current data.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_high_availability">High Availability</h3>
 <div class="paragraph">
-<p>A single cluster provides several operational benefits over running conventional Ethereum nodes, but the master server is still a single point of failure.
-Using data stored in Kafka, the master can recover much more quickly than a node that needed to sync from peers, but that can still lead to a period of time where the replicas are serving stale data.</p>
+<p>A single cluster provides several operational benefits over running conventional
+Ethereum nodes, but the master server is still a single point of failure.
+Using data stored in Kafka, the master can recover much more quickly than a node
+that needed to sync from peers, but that can still lead to a period of time
+where the replicas are serving stale data.</p>
 </div>
 <div class="paragraph">
-<p>To achieve high availability requires multiple clusters with independent masters and their own replicas.
+<p>To achieve high availability requires multiple clusters with independent masters
+and their own replicas.
 Multiple replica clusters can share a high-availability Kafka cluster.
-The following formula can be used to determine the statistical availability of a cluster:</p>
+The following formula can be used to determine the statistical availability of a
+cluster:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -3385,10 +3316,12 @@ The following formula can be used to determine the statistical availability of a
 <div class="ulist">
 <ul>
 <li>
-<p><code>mtbf</code> - Mean Time Between Failures - The average amount of time between failures of a master server</p>
+<p><code>mtbf</code> - Mean Time Between Failures - The average amount of time between
+failures of a master server</p>
 </li>
 <li>
-<p><code>mttr</code> - Mean Time To Recovery - The average amount of time it takes to replace a master server after a failure</p>
+<p><code>mttr</code> - Mean Time To Recovery - The average amount of time it takes to
+replace a master server after a failure</p>
 </li>
 <li>
 <p><code>N</code> - The number of independently operating clusters</p>
@@ -3397,154 +3330,396 @@ The following formula can be used to determine the statistical availability of a
 </div>
 <div class="paragraph">
 <p>The values of <code>mtbf</code> and <code>mttr</code> will depend on your operational environment.
-With our AWS CloudFormation templates, we have established an <code>mttr</code> of 45 minutes when snapshotting daily.
-We have not gathered enough data to establish a mtbf, but with two independent clusters and a 45 minute <code>mttr</code>, EC2&#8217;s regional SLA becomes the bounding factor of availability if the <code>mtbf</code> is greater than two weeks.</p>
+With our AWS CloudFormation templates, we have established an <code>mttr</code> of 45
+minutes when snapshotting daily.
+We have not gathered enough data to establish a mtbf, but with two independent
+clusters and a 45 minute <code>mttr</code>, EC2&#8217;s regional SLA becomes the bounding factor
+of availability if the <code>mtbf</code> is greater than two weeks.</p>
 </div>
 <div class="paragraph">
-<p>This formula focuses only on the availability of masters - it assumes that each master has multiple independent replicas.
-If a master only has a single replica, that will hurt the <code>mtbf</code> of the cluster as a whole.
-== Maidenlane SLT: Super Liquidity Tranches</p>
-</div>
-<div class="paragraph">
-<p>Super-liquidity tranche (SLT) system is a mathematical construct,
-defined below to describe an efficient digital market model. Assets that
-are traded on such market $^{1}$ may benefit from the trade option
-against at least one super-liquid exchange medium.</p>
-</div>
-<div class="paragraph">
-<p>Consider an abstract liquid tranche (ALT) system as a weighted directed
-graph $G:=(V, E, w),$ where set of vertices $V,|V| \leq| N |$ contains
-digital representation of all tradeable assets in $G,$ set of edges
-$E=\{e \in V \times V:$ $w(e)&gt;0}$ represents all possible atomic $^{3}$
-asymmetric $^{80}$ trades, which are weighted by the function $w: E
-\rightarrow R ^\{+}$ corresponding to the price of some trade $e \in E$</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="definition-1---half-liquid-asset">Definition 1 - Half Liquid asset.</h3>
-<div class="paragraph">
-<p>Vertex $v \in V$ represents half-liquid asset $^\{2$ iff either
-$\operatorname{deg}^\{-}(v)=0$ (source) or
-$\operatorname{deg}^\{}(v)=0($ sink $),$ where
-$\operatorname\{deg}^\{(-1)}: V \rightarrow N$ is respectively a number
-of tail ends (indegree) and a number of head ends (outdegree) from
-vertices adjacent to $v$</p>
-</div>
-<div class="sect3">
-<h4 id="corollary-11---liquid-vertex">Corollary 1.1 - liquid vertex</h4>
-<div class="paragraph">
-<p>Any liquid vertex $v \in V$ has both $\operatorname{deg}^\{-}(v) \geq
-1$ and $\operatorname{deg}^\{+}(v) \geq 1$.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="corollary-12---liquid-graph">Corollary 1.2 - liquid graph</h4>
-<div class="paragraph">
-<p>If there exists a strongly connected subgraph $G^\{\prime} \subseteq G$
-s.t. all of its vertices are liquid, then $G^\{\prime}$ is called liquid
-graph.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="corollary-13---k-liquid-graph">Corollary 1.3 - k-liquid graph</h4>
-<div class="paragraph">
-<p>If $G^\{\prime} \subseteq G$ is a k-connected liquid graph, then
-$G^\{\prime}$ is called $k$ -liquid.</p>
-</div>
-<div class="paragraph">
-<p>Trade paths can have different liquidity preferences. For example, if a
-path $(s, v): s, v \in V$ on graph $G$ has preferable liquidity when
-compared to any other path $\left(s^\{\prime}, v\right): s^\{\prime}, v
-\in V,$ then $(s, v)$ is a shorter or equally weighted</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="definition-2---preferable-liquidity-path">Definition 2 - Preferable liquidity path.</h3>
-<div class="paragraph">
-<p>Let $S \subset V \times V$ contain all shortest paths from vertex $s$ to
-vertex $t: \forall s, t \in V$. Also let vertex $v \in V$ have the
-maximal $^{1}$ betweenness centrality measure</p>
-</div>
-<div class="paragraph">
-<p>$C_{B}(v):=\sum_\{s \neq t \neq v \in V} \frac\{\sigma_\{s
-t}(v)}\{\sigma_\{s t}}: \forall(s, t) \in S,$ where $\sigma_\{s
-t}:=\sum_\{(s, t) \in S} \sum_\{e \in(s, t)} w(e)$ and $\sigma_\{s
-t}(v)$</p>
-</div>
-<div class="paragraph">
-<p>is a sum of only those shortest paths in $S$ which contain $v$. We say
-that $(s, t) \in S$ is a path with preferable liquidity if it ends with
-$v,$ i.e. $t=v$</p>
-</div>
-<div class="paragraph">
-<p>In order to capture a desired super-liquidity property of an always
-preferable asset in an ALT-system $G,$ we need to identify such asset
-not only as a preferable "exit" (sink) vertex, but also as the one that
-can be consequently traded for any other liquid asset in $G$ at the most
-attractive price.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_definition_3_super_liquidity">Definition 3 - Super Liquidity</h3>
-<div class="paragraph">
-<p>A liquid vertex $v \in V\left(G^\{\prime}\right)$ of a complete liquid
-subgraph $G^\{\prime} \subseteq G$ is called a super-liquid vertex iff
-any preferable liquidity path $p=(s, v)$ can be almost surely continued
-with an efficient trade for any other liquid $u \in
-V\left(G^\{\prime}\right), u \neq v$ in such a way that $\sum_\{e \in(s,
-u)} w(e) \leq \sum_\{e \in(s, v)} w(e)+\sum_\{e \in(v, u)} w(e)$ and
-$(s, u)$ is a shortest path.</p>
-</div>
-<div class="sect3">
-<h4 id="corollary-31---super-liquid-graph">Corollary 3.1 - Super Liquid graph</h4>
-<div class="paragraph">
-<p>A complete liquid subgraph $G^\{\prime} \subseteq G$ is called a
-super-liquid graph iff $G^\{\prime}$ contains a super-liquid vertex.</p>
-</div>
+<p>This formula focuses only on the availability of masters - it assumes that each
+master has multiple independent replicas.
+If a master only has a single replica, that will hurt the <code>mtbf</code> of the cluster
+as a whole.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_super_liquidity_tranche">Super Liquidity Tranche</h2>
+<h2 id="_greypool">GreyPool</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In general, unless $C_{B}(v)$ has a maximum value on $G,$ there could
-be a group of vertices with the maximal betweenness centrality score
-$M=\left\{v \in V: C_{B}(v)=\max \left(C_{B}(V)\right)\right} .$ In
-that case definitions are adopted to consider $\forall v \in M$.</p>
-</div>
-<div class="paragraph">
-<p>Last definition of a super-liquid graph provides us with a starting
-point for the future framework of the super-liquidity tranche (SLT)
-system that can in theory allow efficient price trading. However there
-is no practical duality between super-liquid and illiquid assets.
-Instead, we can choose to link super-liquid vertex with a controlled
-liquidity asset, that has a programmable dynamic pricing model. Such
-subgraph is called a 'Hyper' (HLT) liquidity tranche with at least two
-liquid tokens (vertices).</p>
-</div>
-<div class="paragraph">
-<p>[1] Maidenlane is in essence a concensus bound, matching, clearing and
-settlement engine.</p>
-</div>
-<div class="paragraph">
-<p>[2] <em>note</em></p>
-</div>
-<div class="paragraph">
-<p>[3] <em>note</em></p>
+<p>Stratum WebSocket with TLS (uri) `stratumss:// `</p>
 </div>
 <div class="sect2">
-<h3 id="_manifold_finance">Manifold Finance</h3>
+<h3 id="_transaction_pool_feeds">Transaction Pool Feeds</h3>
+<div class="paragraph">
+<p>This fork of Geth includes two new types of subscriptions, available through the
+eth_subscribe method on Websockets.</p>
+</div>
+<div class="sect3">
+<h4 id="_rejected_transactions">Rejected Transactions</h4>
+<div class="paragraph">
+<p>Using Websockets, you can subscribe to a feed of rejected transactions with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{"id": 0, "method": "eth_subscribe", "params":["rejectedTransactions"]}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will immediately return a payload of the form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And as messages are rejected by the transaction pool, it will send additional
+messages of the form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "$SUBSCRIPTION_ID",
+    "result": {
+      "tx": "$ETHEREUM_TRANSACTION",
+      "reason": "$REJECT_REASON"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One message will be emitted on this feed for every transaction rejected by the
+transaction pool, excluding those rejected because they were already known by
+the transaction pool.</p>
+</div>
+<div class="paragraph">
+<p>It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</p>
+</div>
+<div class="paragraph">
+<p>The reject reason corresponds to the error messages returned by Geth within the
+txpool. At the time of this writing, these include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>invalid sender</p>
+</li>
+<li>
+<p>nonce too low</p>
+</li>
+<li>
+<p>transaction underpriced</p>
+</li>
+<li>
+<p>replacement transaction underpriced</p>
+</li>
+<li>
+<p>insufficient funds for gas * price + value</p>
+</li>
+<li>
+<p>intrinsic gas too low</p>
+</li>
+<li>
+<p>exceeds block gas limit</p>
+</li>
+<li>
+<p>negative value</p>
+</li>
+<li>
+<p>oversized data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>However it is possible that in the future Geth may add new error types that
+could be included by this response without modification to the rejection feed
+itself.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dropped_transactions">Dropped Transactions</h3>
+<div class="paragraph">
+<p>Using Websockets, you can subscribe to a feed of dropped transaction hashes
+with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{"id": 0, "method": "eth_subscribe", "params":["droppedTransactions"]}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will immediately return a payload of the form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And as messages are dropped from the transaction pool, it will send additional
+messages of the form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "0xe5fa5d3c8ec05953bd746a784cfeade6",
+    "result": {
+      "txhash": "$TRANSACTION_HASH",
+      "reason": "$REASON"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One message will be emitted on this feed for every transaction dropped from the
+transaction pool.</p>
+</div>
+<div class="paragraph">
+<p>It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</p>
+</div>
+<div class="paragraph">
+<p>The following reasons may be included as reasons transactions were rejected:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>underpriced-txs: Indicates the transaction&#8217;s gas price is below the node&#8217;s
+threshold.</p>
+</li>
+<li>
+<p>low-nonce-txs: Indicates that the account nonce for the sender of this
+transaction has exceeded the nonce on this transction. That may happen when this
+transaction is included in a block, or when a replacement transaction is
+included in a block.</p>
+</li>
+<li>
+<p>unpayable-txs: Indicates that the sender lacks sufficient funds to pay the
+intrinsic gas for this transaction</p>
+</li>
+<li>
+<p>account-cap-txs: Indicates that this account has sent enough transactions to
+exceed the per-account limit on the node.</p>
+</li>
+<li>
+<p>replaced-txs: Indicates that the transaction was dropped because a replacement
+transaction with the same nonce and higher gas has replaced it.</p>
+</li>
+<li>
+<p>unexecutable-txs: Indicates that a transaction is no longer considered
+executable. This typically applies to queued transaction, when a dependent
+pending transaction was removed for a reason such as unpayable-txs.</p>
+</li>
+<li>
+<p>truncating-txs: The transaction was dropped because the number of transactions
+in the mempool exceeds the allowable limit.</p>
+</li>
+<li>
+<p>old-txs: The transaction was dropped because it has been in the mempool longer
+than the allowable period of time without inclusion in a block.</p>
+</li>
+<li>
+<p>updated-gas-price: The node&#8217;s minimum gas price was updated, and transactions
+below that price were dropped.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mev_geth">MEV-Geth</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>/**
+* @AddMevBundle
+* @summary pool mevBundles
+* @param {AddMevBundle} &lt;uint64&gt;  - ddMevBundle adds a mev bundle to the pool
+* @return {mevBundles} blockNumber, minTimestamp, maxTimestamp
+*/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (pool *TxPool) AddMevBundle(txs types.Transactions, blockNumber *big.Int,
+minTimestamp, maxTimestamp uint64) error {
+	pool.mu.Lock()
+	defer pool.mu.Unlock()
 
+	pool.mevBundles = append(pool.mevBundles, mevBundle{
+		txs:          txs,
+		blockNumber:  blockNumber,
+		minTimestamp: minTimestamp,
+		maxTimestamp: maxTimestamp,
+	})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>/**
+* MevBundles
+* @readonly list of bundles valid for the given blockNumber/blockTimestamp
+* {uint64} ([]types.Transactions)
+*/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">// MevBundles returns a list of bundles valid for the given
+blockNumber/blockTimestamp
+// also prunes bundles that are outdated
+func (pool *TxPool) MevBundles(blockNumber *big.Int, blockTimestamp uint64)
+([]types.Transactions, error) {
+	return nil, nil
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_operational_topics_concerning_strategies_etc">Operational Topics (concerning strategies, etc)</h3>
+<div class="paragraph">
+<p>This section describes (without much context), some of the mathmatical
+principles used to find opportunites in the market.</p>
+</div>
+<div class="paragraph">
+<p>A good analogy would be comparing this to the well known `A * ` Algorithim for
+path finding. These equations are utilized, amongst others, as a hearuisistc. We
+do not make any claims on their formal soundness, only on their current and
+projected rate of returns.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_super_liquidity_manifolds_and_abstract_liquid_tranches">Super Liquidity Manifolds and Abstract Liquid Tranches</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>*Paramaratized Constant Function Markets</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Super-liquidity manifold (SLM) system is a mathematical construct, defined below
+to describe an efficient digital market model. Assets that are traded on such
+market \(^{1}\) may benefit from the trade option against at least one
+super-liquid exchange medium.</p>
+</div>
+<div class="paragraph">
+<p>Consider an abstract liquid tranche (ALT) system as a weighted directed graph
+\(G:=(V, E, w),\) where set of vertices \(V,|V| \leq| N |\) contains digital
+representation of all tradeable assets in \(G,\) set of edges \(E=\{e \in V
+\times V:\) \(w(e)&gt;0\}\) represents all possible atomic \(^{2}\) asymmetric
+\(^{3}\) trades, which are weighted by the function \(w: E \rightarrow R ^{+}\)
+corresponding to the price of some trade \(e \in E\)</p>
+</div>
+<div class="sect3">
+<h4 id="_definition_1">Definition 1</h4>
+<div class="paragraph">
+<p>Vertex \(v \in V\) represents half-liquid asset \(^{4}\) iff either
+\(\operatorname&#176;^{-}(v)=0\) (source) or
+\(\operatorname&#176;^{}(v)=0(\operatorname{sink}),\) where
+\(\operatorname{deg}^{(-1)}: V \rightarrow N\) is respectively a number
+of tail ends (indegree) and a number of head ends (outdegree) from vertices
+adjacent to \(v\).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_corollary_1_1_liquid_vertex">Corollary 1.1 - liquid vertex.</h4>
+<div class="paragraph">
+<p>Any liquid vertex \(v \in V\) has both \(\operatorname&#176;^{-}(v) \geq 1\) and
+\(\operatorname&#176;^{+}(v) \geq 1\)</p>
+</div>
+<div class="paragraph">
+<p>Corollary 1.2 - liquid graph.
+If there exists a strongly connected subgraph \(G^{\prime} \subseteq G\) s.t.
+all of its vertices are liquid, then \(G^{\prime}\) is called liquid graph.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_corollary_1_3_k_liquid_graph">Corollary 1.3 - k-liquid graph.</h4>
+<div class="paragraph">
+<p>If \(G^{\prime} \subseteq G\) is a k-connected liquid graph, then \(G^{\prime}\)
+is called \(k\) -liquid.
+Trade paths can have different liquidity preferences. For example, if a path
+\((s, v): s, v \in V\) on graph \(G\) has preferable liquidity when compared to
+any other path \(\left(s^{\prime}, v\right): s^{\prime}, v \in V,\) then \((s,
+v)\) is a shorter or equally weighted
+path than \(\left(s^{\prime}, v\right)\) iff \(\sum_{e \in(s, v)} w(e) \leq
+\sum_{e \in\left(s^{\prim</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_definition_2_preferable_liquidity_path">Definition 2 - preferable liquidity path.</h4>
+<div class="paragraph">
+<p>Let \(S \subset V \times V\) contain all shortest paths from vertex \(s\) to
+vertex \(t: \forall s, t \in V\). Also let vertex \(v \in V\) have the maximal
+\(^{3}\) betweenness centrality measure \(C_{B}(v):=\sum_{s \neq t \neq v \in V}
+\frac{\sigma_{s t}(v)}{\sigma_{s t}}: \forall(s, t) \in S,\) where \(\sigma_{s
+t}:=\sum_{(s, t) \in S} \sum_{e \in(s, t)} w(e)\)
+and \(\sigma_{s t}(v)\) is a sum of only those shortest paths in \(S\) which
+contain \(v\). We say that \((s, t) \in S\) is a path with preferable liquidity
+if it ends with \(v,\) i.e. \(t=v\)
+In order to capture a desired super-liquidity property of an always preferable
+asset in an ALT-system \(G,\) we need to identify such asset not only as a
+preferable "exit" (sink) vertex, but also as the one that can be consequently
+traded for any other liquid asset in \(G\) at the most attractive price.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_definition_3_super_liquidity">Definition 3 - super-liquidity</h4>
+<div class="paragraph">
+<p>A liquid vertex \(v \in V\left(G^{\prime}\right)\) of a complete liquid subgraph
+\(G^{\prime} \subseteq G\) is called a super-liquid vertex iff any preferable
+liquidity path \(p=(s, v)\) can be almost surely continued with an efficient
+trade for any other liquid \(u \in V\left(G^{\prime}\right), u \neq v\) in such
+a way that \(\sum_{e \in(s, u)} w(e) \leq \sum_{e \in(s, v)} w(e)+\sum_{e \in(v,
+u)} w(e)\) and \((s, u)\) is
+a shortest path.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_corollary_3_1_super_liquid_graph">Corollary 3.1 - super-liquid graph.</h4>
+<div class="paragraph">
+<p>A complete liquid subgraph \(G^{\prime} \subseteq G\) is called a super-liquid
+graph iff \(G^{\prime}\) contains a super-liquid vertex.</p>
+</div>
+<div class="paragraph">
+<p>Last definition of a super-liquid graph provides us with a starting point for
+the future framework of the super-liquidity manifold (SLTM system that can in
+theory allow efficient price trading. However there is no practical duality
+between super-liquid and illiquid assets. Instead, we can choose to link
+super-liquid vertex with a controlled liquidity asset, that has a programmable
+dynamic pricing model. We can assert that fully illiquid assets are disconnected
+from G, since they are not digitally traded and unpractical to consider. We
+assume that no such asset will exists in the future. Such subgraph is called a
+super slow and super fast (S3F) liquidity system with at least two liquid tokens
+(vertices).</p>
+</div>
+<div class="paragraph">
+<p>[1] almost surely in efficient way
+[2] no double-spending
+[3] costs for buying and selling operations are not necessarily equal</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-22 07:06:47 -0800
+Last updated 2021-01-22 13:34:12 -0800
 </div>
 </div>
 </body>

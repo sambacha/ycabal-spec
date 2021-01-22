@@ -1,0 +1,1144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+<info>
+<title>Abriged Document Spec</title>
+<date>2021-01-22</date>
+</info>
+<blockquote role="data-line-6">
+<simpara role="data-line-1">v0.6.0
+Copyright 2021 CommodityStream, LLC ALll Rights Reserved</simpara>
+</blockquote>
+<section xml:id="_acknowledgments" role="data-line-9">
+<title>Acknowledgments</title>
+<simpara xml:id="sources" role="data-line-12">blocknative
+ethcattle
+pegasys tech
+41north
+freight trust
+aldera tech
+rovide services
+whitelbock</simpara>
+</section>
+<section xml:id="_overview" role="data-line-21">
+<title>Overview</title>
+<simpara role="data-line-23">Maidenlane is divided into 3 segments</simpara>
+<itemizedlist role="data-line-25">
+<listitem role="data-line-25">
+<simpara>[1]  Network and Transactional Scheduling</simpara>
+</listitem>
+<listitem role="data-line-26">
+<simpara>[2] Lambda/Data Analysis</simpara>
+</listitem>
+<listitem role="data-line-27">
+<simpara>[3] Tracing, Logging and State Management</simpara>
+<orderedlist role="data-line-29" numeration="arabic">
+<listitem role="data-line-29">
+<simpara>Concerns itself with routing, provisioning, consumer facing aspects of
+offering a permissioned 'clearing/settlement' gateway (whicih is how we describe
+our relationship with mining pools and end users, we do not use the term 'MEV'
+or 'BEV'). An example of a solution that would belong to this category is
+utilizing mainland China DNS Servers to ensure reduced latency when mining nodes
+joing the permissioned network and are querying the DNS Service to find the
+network topology, as we do not utilize the DHT table of the public network, nor
+would we want to utilize it in a private fashion as it would divulgue network
+mapping and reduce overall security.</simpara>
+</listitem>
+<listitem role="data-line-39">
+<simpara>Deals with the Matching engine proper, 'lambda' or 'delta' calculations, and
+transaction arrangement. The heart of this system utilizes an in-emory database
+called KDB+, with its programming language, Q. This is not open source. KDB+
+requires a commerical license for running their 64bit database, which starts at
+25,000 a year.</simpara>
+</listitem>
+<listitem role="data-line-45">
+<simpara>Our current logging and tracing utilities are being redesigned with a new
+framework and approach that is being used by IOHK (Cardano Foundation), called
+<literal>Convariant Functor Tracing</literal>. Our existing stack however is being re-implemented
+to use NixOS as a Package and build service, along with utilizing Dhall for
+configuration. We do not use Kubernetes for [2] or [3].</simpara>
+</listitem>
+</orderedlist>
+</listitem>
+</itemizedlist>
+<section xml:id="_additional_points_of_specilization" role="data-line-51">
+<title>Additional points of specilization</title>
+<itemizedlist role="data-line-54">
+<listitem role="data-line-54">
+<simpara>[Geth]</simpara>
+<itemizedlist role="data-line-55">
+<listitem role="data-line-55">
+<simpara>modified for enhanced capture at both the filter and data type level</simpara>
+</listitem>
+<listitem role="data-line-56">
+<simpara>embedded changes to offer reduced latency
+*</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem role="data-line-59">
+<simpara>[Parity]</simpara>
+<itemizedlist role="data-line-60">
+<listitem role="data-line-60">
+<simpara>Services RLP decoding for incoming messages. A Seperate service runs for
+this</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem role="data-line-63">
+<simpara>[Kafka]</simpara>
+<itemizedlist role="data-line-64">
+<listitem role="data-line-64">
+<simpara>Kafka directly interfaces over RPC, there is no need to place a
+Geth/Parity node infront of Kafka in order to process or transform incoming
+transactions, etc.</simpara>
+</listitem>
+<listitem role="data-line-67">
+<simpara>Everything utilizes Avro</simpara>
+</listitem>
+<listitem role="data-line-68">
+<simpara>While we have currently implemented a Kafka logger, we have defined an
+abstract interface that could theoretically support a wide variety of messaging
+systems.</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</itemizedlist>
+<section xml:id="_capturing_write_operations" role="data-line-72">
+<title>Capturing Write Operations</title>
+<simpara role="data-line-74">In the Go Ethereum codebase, there is a <literal>Database</literal> interface which must support
+the following operations:</simpara>
+<itemizedlist role="data-line-77">
+<listitem role="data-line-77">
+<simpara>Put</simpara>
+</listitem>
+<listitem role="data-line-78">
+<simpara>Get</simpara>
+</listitem>
+<listitem role="data-line-79">
+<simpara>NewBatch</simpara>
+</listitem>
+<listitem role="data-line-80">
+<simpara>Has</simpara>
+</listitem>
+<listitem role="data-line-81">
+<simpara>Delete</simpara>
+</listitem>
+<listitem role="data-line-82">
+<simpara>Close</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-84">and a Batch interface which must support the following operations:</simpara>
+<itemizedlist role="data-line-86">
+<listitem role="data-line-86">
+<simpara>Put</simpara>
+</listitem>
+<listitem role="data-line-87">
+<simpara>Write</simpara>
+</listitem>
+<listitem role="data-line-88">
+<simpara>Delete</simpara>
+</listitem>
+<listitem role="data-line-89">
+<simpara>Reset</simpara>
+</listitem>
+<listitem role="data-line-90">
+<simpara>ValueSize</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-92">We have created a simple CDC wrapper, which proxies operations to the standard
+databases supported by Go Ethereum, and records <literal>Put</literal>, <literal>Delete</literal>, and
+<literal>Batch.Write</literal> operations through a <literal>LogProducer</literal> interface.
+At present, we have implemented a <literal>KafkaLogProducer</literal> to record write operations
+to a Kafka topic.</simpara>
+<simpara role="data-line-98">The performance impact to the Go Ethereum server is minimal.
+The CDC wrapper is light weight, proxying requests to the underlying database
+with minimal overhead.
+Writing to the Kafka topic is handled asynchronously, so write operations are
+unlikely to be delayed substantially due to logging.
+Read operations will be virtually unaffected by the wrapper.</simpara>
+</section>
+</section>
+<section xml:id="_replaying_write_operations" role="data-line-105">
+<title>Replaying Write Operations</title>
+<simpara role="data-line-107">We also have a modified Go Ethereum service which uses a <literal>LogConsumer</literal> interface
+to pull logs from Kafka and replay them into  KDB+</simpara>
+<simpara role="data-line-111">The index of the last written record is also recorded in the database, allowing
+the service to resume in the event that it is restarted.</simpara>
+<section xml:id="_preliminary_implementation" role="data-line-114">
+<title>Preliminary Implementation</title>
+<simpara role="data-line-116">In the current implementation we simply disable peer-to-peer connections on the
+node and populate the database via Kafka logs.
+Other than that it functions as a normal Go Ethereum node.</simpara>
+<simpara role="data-line-120">The RPC service in its current state is semi-functional.
+Many RPC functions default to querying the state trie at the "latest" block.
+However, which block is deemed to be the "latest" is normally determined by the
+peer-to-peer service.
+When a new block comes in it is written to the database, but the hash of the
+latest block is kept in memory.
+Without the peer-to-peer service running the service believes that the "latest"
+block has not updated since the process initialized and read the block out of
+the database.
+If RPC functions are called specifying the target block, instead of implicitly
+asking for the latest block, it will look for that information in the database
+and serve it correctly.</simpara>
+<simpara role="data-line-133">Despite preliminary successes, there are several potential problems with the
+current approach.
+A normal Go Ethereum node, even one lacking peers, assumes that it is
+responsible for maintaining its database.
+Occasionally this will lead to replicas attempting to upgrade indexes or prune
+the state trie.
+This is problematic because the same operations can be expected to come from the
+write log of the source node.
+Thus we need an approach where we can ensure that the read replicas will make no
+effort to write to their own database.</simpara>
+</section>
+</section>
+</section>
+<section xml:id="_proposed_implementation" role="data-line-144">
+<title>Proposed Implementation</title>
+<section xml:id="_other_models_considered" role="data-line-148">
+<title>Other Models Considered</title>
+<simpara role="data-line-150">This section documents several other approaches we considered to achieving our
+:ref:<literal>design-goals</literal>.
+This is not required reading for understanding subsequent sections, but may help
+offer some context for the current design.</simpara>
+<section xml:id="_higher_level_change_data_capture" role="data-line-155">
+<title>Higher Level Change Data Capture</title>
+<simpara role="data-line-157">Rather than capturing data as it is written to the database, one option we
+considered was capturing data as it was written to the State Trie, Blockchain,
+and Transaction Pool.
+The advantage of this approach is that the change data capture stream would be
+reflective of high level operations, and not dependent on low level
+implementation details regarding how the data gets written to a database.
+One disadvantage is that it would require more invasive changes to
+consensus-critical parts of the codebase, creating more room for errors that
+could effect the network as a whole.
+Additionally, because those changes would have been made throughout the Go
+Ethereum codebase it would be harder to maintain if Go Ethereum does not
+incorporate our changes.
+The proposed implementation requires very few changes to core Go Ethereum
+codebase, and primarily leverages APIs that should be relatively easy to
+maintain compatibility with.</simpara>
+</section>
+<section xml:id="_shared_key_value_store" role="data-line-173">
+<title>Shared Key Value Store</title>
+<simpara role="data-line-175">Before deciding on a change-data-capture replication system, one option we
+considered was to use a scalable key value store, which could be written to by
+one Ethereum node and read by many.
+Some early prototypes were developed under this model, but they all had
+significant performance limitations when it came to validating blocks.
+The Ethereum State Trie requires several read operations to retrieve a single
+piece of information.
+These read operations are practical when made against a local disk, but
+latencies become prohibitively large when the state trie is stored on a
+networked key value store on a remote system.
+This made it infeasible for an Ethereum node to process transactions at the
+speeds necessary to keep up with the network.</simpara>
+</section>
+<section xml:id="_extended_peer_to_peer_model" role="data-line-188">
+<title>Extended Peer-To-Peer Model</title>
+<simpara role="data-line-190">One option we explored was to add an extended protocol on top of the standard
+Ethereum peer-to-peer protocol, which would sync the blockchain and state trie
+from a trusted list of peers without following the rigorous validation
+procedures.
+This would have been a substantially more complex protocol than the one we are
+proposing, and would have put additional strain on the other nodes in the
+system.</simpara>
+</section>
+<section xml:id="_replica_codebase_from_scratch" role="data-line-198">
+<title>Replica Codebase from Scratch</title>
+<simpara role="data-line-200">One option we considered was to use Change Data Capture to record change logs,
+but write a new system from the ground-up to consume the captured information.
+Part of the appeal of this approach was that we have developers interested in
+contributing to the project who don&#8217;t have a solid grasp of Go, and the replica
+could have been developed in a language more accessible to our contributors.
+The biggest problem with this approach, particularly with the low level CDC, is
+that we would be tightly coupled to implementation details of how Go Ethereum
+writes to LevelDB, without having a shared codebase for interpreting that data.
+A minor change to how Go Ethereum stores data could break our replicas in subtle
+ways that might not be caught until bad data was served in production.</simpara>
+<simpara role="data-line-211">In the proposed implementation we will depend not only on the underlying data
+storage schema, but also the code Go Ethereum uses to interpret that data.
+If Go Ethereum changes their schema <emphasis>and</emphasis> changes their code to match while
+maintaining API compatibility, it should be transparent to the replicas.
+It is also possible that Go Ethereum changes their APIs in a way that breaks
+compatibility, but in that case we should find ourselves unable to compile the
+replica without fixing the dependency, and shouldn&#8217;t see surprises on a running
+system.</simpara>
+<simpara role="data-line-220">Finally, by building the replica service in Go as an extension to the existing
+Go Ethereum codebase, there is a reasonable chance that we could get the
+upstream Go Ethereum project to integrate our extensions.
+It is very unlikely that they would integrate our read replica extensions if the
+read replica is a separate project written in another language.</simpara>
+</section>
+</section>
+</section>
+<section xml:id="_design_goals" role="data-line-227">
+<title>Design Goals</title>
+<section xml:id="_health_checks" role="data-line-230">
+<title>Health Checks</title>
+<simpara role="data-line-232">A major challenge with existing Ethereum nodes is evaluating the health of an
+individual node.
+Generally nodes should be considered healthy if they have the blockchain and
+state trie at the highest block, and are able to serve RPC requests relating to
+that state.
+If a node is more than a couple of blocks behind the network, it should be
+considered unhealthy.</simpara>
+</section>
+</section>
+<initialization xml:id="_service_initialization" role="data-line-243">
+<title>Service Initialization</title>
+<simpara role="data-line-245">One of the major challenges with treating Ethereum nodes as disposable is the
+initialization time.
+Conventionally a new instance must find peers, download the latest blocks from
+those peers, and validate each transaction in those blocks.
+Even if the instance is built from a relatively recent snapshot, this can be a
+bandwidth intensive, computationally intensive, disk intensive, and time
+consuming process.</simpara>
+<simpara role="data-line-253">In a trustless peer-to-peer system, these steps are unavoidable.
+Malicious peers could provide incorrect information, so it is necessary to
+validate all of the information received from untrusted peers.
+But given several nodes managed by the same operator, it is generally safe for
+those nodes to trust eachother, allowing individual nodes to avoid some of the
+computationally intensive and disk intensive steps that make the initialization
+process time consuming.</simpara>
+<simpara role="data-line-261">Ideally node snapshots will be taken periodically, new instances will launch
+based on the most recent available snapshot, and then sync the blockchain and
+state trie from trusted peers without having to validate every successive
+transaction.
+Assuming relatively recent snapshots are available, this should allow new
+instances to start up in a matter of minutes rather than hours.</simpara>
+<simpara role="data-line-268">Additionally, during the initialization process services should be identifiable
+as still initializing and excluded from the load balancer pool.
+This will avoid nodes serving outdated information during initialization.</simpara>
+</initialization>
+<section xml:id="_load_balancing" role="data-line-275">
+<title>Load Balancing</title>
+<simpara role="data-line-277">Given reliable healthchecks and a quick initialization process, one challenge
+remains on loadbalancing.
+The Ethereum RPC protocol supports a concept of "filter subscriptions" where a
+filter is installed on an Ethereum node and subsequent requests about the
+subscription are served updates about changes matching the filter since the
+previous request.
+This requires a stateful session, which depends on having a single Ethereum node
+serve each successive request relating to a specific subscription.</simpara>
+<simpara role="data-line-286">For now this can be addressed on the client application using <literal>Provider Engine&#8217;s
+Filter Subprovider
+&lt;<link xl:href="https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+">https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+</link></literal></simpara>
+<simpara role="data-line-290">The Filter Subprovider mimics the functionality of installing a filter on a node
+and requesting updates about the subscription by making a series of stateless
+calls against the RPC server.
+Over the long term it might be beneficial to add a shared database that would
+allow the load balanced RPC nodes to manage filters on the server side instead
+of the client side, but due to the existence of the Filter Subprovider that is
+not necessary in the short term.</simpara>
+<section xml:id="_reduced_computational_requirements" role="data-line-298">
+<title>Reduced Computational Requirements</title>
+<simpara role="data-line-300">As discussed in :ref:<literal>initialization</literal>, a collection of nodes managed by a
+single operator do not have the same trust model amongst themselves as nodes in
+a fully peer-to-peer system.
+RPC Nodes can potentially decrease their computational overhead by relying on a
+subset of the nodes within a group to validate transactions.
+This would mean that a small portion of nodes would need the computational
+capacity to validate every transaction, while the remaining nodes would have
+lower resource requirements to serve RPC requests, allowing flexible scaling and
+redundancy.</simpara>
+</section>
+<section xml:id="_implementation" role="data-line-310">
+<title>Implementation</title>
+<simpara role="data-line-312">In <literal>go-ethereum/internal/ethapi/backend.go</literal>, a Backend interface is specified.
+Objects filling this interface can be passed to <literal>ethapi.GetAPIs()</literal> to return
+<literal>[]rpc.API</literal>, which can be used to serve the Ethereum RPC APIs.
+Presently there are two implementations of the Backend interface, one for full
+Ethereum nodes and one for Light Ethereum nodes that depend on the LES protocol.</simpara>
+<simpara role="data-line-318">This project will implement a third backend implementation, which will provide
+the necessary information to ethapi.GetAPIs() to in turn provide the RPC APIs.</simpara>
+</section>
+</section>
+<section xml:id="_backend_functions_to_implement" role="data-line-321">
+<title>Backend Functions To Implement</title>
+<simpara role="data-line-323">This section explores each of the 26 methods required by the Backend interface.
+This is an initial pass, and attempts to implement these methods may prove more
+difficult than described below.</simpara>
+<simpara role="data-line-327">Downloader()</simpara>
+<simpara role="data-line-329">Downloader must return a <literal>*go-ethereum/eth/downloader.Downloader</literal> object.
+Normally the <literal>Downloader</literal> object is responsible for managing relationships with
+remote peers, and synchronizing the block from remote peers.
+As our replicas will receive data directly via Kafka, the Downloader object
+won&#8217;t see much use.
+Even so, the <literal>PublicEthereumAPI</literal> struct expects to be able to retrieve a
+<literal>Downloader</literal> object so that it can provide the <literal>eth_syncing</literal> API call.</simpara>
+<simpara role="data-line-337">If the Backend interface required an interface for a downloader rather than a
+specific Downloader object, we could stub out at Downloader that provided the
+<literal>eth_syncing</literal> data based on the current Kafka sync state.
+Unfortunately the Downloader requires a specific object constructed with the
+following properties:</simpara>
+<itemizedlist role="data-line-343">
+<listitem role="data-line-343">
+<simpara><literal>{mode SyncMode}</literal> - An integer indicating whether the SyncMode is Fast, Full,
+or Light.
+We can probably specify "light" for our purposes.</simpara>
+</listitem>
+<listitem role="data-line-346">
+<simpara><literal>{stateDb ethdb.Database}</literal> - An interface to LevelDB.
+Our backend will neeed a Database instance, so this should be easy.</simpara>
+</listitem>
+<listitem role="data-line-348">
+<simpara><literal>{mux *event.TypeMux}</literal> - Used only for syncing with peers.
+If we avoid calling Downloader.Synchronize(), it appears this can safely be nil.</simpara>
+</listitem>
+<listitem role="data-line-350">
+<simpara>{<literal>chain BlockChain}</literal> - An object providing the downloader.BlockChain
+interface.
+If we only need to support Downloader.Progress(), and we set SyncMode to
+LightSync, this can be nil.</simpara>
+</listitem>
+<listitem role="data-line-354">
+<simpara><literal>{lightchain LightChain}</literal> - An object providing the downloader.LightChain
+interface.
+If we only need to support Downloader.Progress(), and we set SyncMode to
+LightSync, we will need to stub this out and provide CurrentHeader() with the
+correct blocknumber.</simpara>
+</listitem>
+<listitem role="data-line-359">
+<simpara><literal>{dropPeer peerDropFn}</literal> - Only used when syncing with peers.
+If we avoid calling Downloader.Synchronize(), this can be <literal>func(string) {}</literal></simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-362">Constructing a <literal>Downloader</literal> with the preceding arguments should provide the
+capabilities we need to offer the <literal>eth_progress</literal> RPC call.</simpara>
+<simpara role="data-line-365">ProtocolVersion() .</simpara>
+<simpara role="data-line-367">This just needs to return an integer indicating the protocol version.
+This tells us what version of the peer-to-peer protocol the Ethereum client is
+using.
+As replicas will not use a peer-to-peer protocol, it might make sense for this
+to be a value like <literal>-1</literal>.</simpara>
+<simpara role="data-line-373">SuggestPrice()</simpara>
+<simpara role="data-line-375">Should return a <literal>{big.Int}</literal> gas price for a transaction.
+This can use <literal>{go-ethereum/eth/gasprice.Oracle}</literal> to provide the same values a
+stanard Ethereum node would provide.
+Note, however, that gasprice.Oracle requires a Backend object of its own, so
+implementing SuggestPrice() will need to wait until the following backend
+methods have been implemented:</simpara>
+<itemizedlist role="data-line-382">
+<listitem role="data-line-382">
+<simpara><literal>HeaderByNumber()</literal></simpara>
+</listitem>
+<listitem role="data-line-383">
+<simpara><literal>BlockByNumber()</literal></simpara>
+</listitem>
+<listitem role="data-line-384">
+<simpara><literal>ChainConfig()</literal></simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-386"><emphasis role="strong">ChainDb()</emphasis></simpara>
+<simpara role="data-line-388">Our backend will need to be constructed with an {<literal>ethdb.Database}</literal> object, which
+will be it&#8217;s primary source for much of the information about the blockchain and
+state.
+This method will return that object.</simpara>
+<simpara role="data-line-393">For replicas, it might be prudent to have a wrapper that provides the
+<literal>{ethdb.Database}</literal> interface, but errors on any write operations, as we want to
+ensure that all write operations to the primary database come from the
+replication process.</simpara>
+<simpara role="data-line-398">*EventMux() *</simpara>
+<simpara role="data-line-400">This seem to be used by peer-to-peer systems.
+I can&#8217;t find anything in the RPC system that depends on <literal>EventMux()</literal>, so I think
+we can return <literal>nil</literal> for the Replica backend.</simpara>
+<simpara role="data-line-404">*AccountManager() *</simpara>
+<simpara role="data-line-406">This returns an <literal>*accounts.Manager</literal> object, which manages access to Ethereum
+wallets and other secret data.
+This would be used by the Private Ethereum APIs, which our Replicas will not
+implement.
+Services that need to manage accounts in conjunction with replica RPC nodes
+should utilize client side account managers such as <literal>+Web3 Provider Engine
+&lt;<link xl:href="https://www.npmjs.com/package/web3-provider-engine&gt;+">https://www.npmjs.com/package/web3-provider-engine&gt;+</link></literal>_.</simpara>
+<simpara role="data-line-414">In a future phase we may decide to implement an AccountManager service for
+replica nodes, but this would require serious consideration for how to securely
+store credentials and share them across the replicas in a cluster.</simpara>
+<simpara role="data-line-418"><emphasis role="strong">SetHead()</emphasis></simpara>
+<simpara role="data-line-420">This is used by the private debug APIs, allowing developers to set the
+blockchain back to an earlier state in private environments.
+Replicas should not be able to roll back the blockchain to an earlier state, so
+this method should be a no-op.</simpara>
+<simpara role="data-line-425">*HeaderByNumber() *</simpara>
+<simpara role="data-line-427">HeaderByNumber needs to return a <literal>*core/types.Header</literal> object corresponding to
+the specified block number.
+This will need to get information from the database.
+It might be possible to leverage in-memory caches to speed up these data
+lookups, but it must not rely on information normally provided by the
+peer-to-peer protocol manager.</simpara>
+<simpara role="data-line-434">This should be able to use <literal>core.GetCanonicalHash()</literal> to get the blockhash, then
+<literal>core.GetHeader()</literal> to get the Block Number.</simpara>
+<simpara role="data-line-437"><emphasis role="strong">BlockByNumber()</emphasis></simpara>
+<simpara role="data-line-439">BlockByNumber needs to return a <literal>*core/types.Block</literal> object corresponding to the
+specified block number.
+This will need to get information from the database.
+It might be possible to leverage in-memory caches to speed up these data
+lookups, but it must not rely on information normally provided by the
+peer-to-peer protocol manager.</simpara>
+<simpara role="data-line-446">This should be able to use <literal>core.GetCanonicalHash()</literal> to get the blockhash, then
+<literal>core.GetBlock()</literal> to get the Block Number.</simpara>
+<simpara role="data-line-449"><emphasis role="strong">StateAndHeaderByNumber()</emphasis></simpara>
+<simpara role="data-line-451">Needs to return a <literal>*core/state.StateDB</literal> object and a <literal>*core/types.Header</literal> object
+corresponding to the specified block number.</simpara>
+<simpara role="data-line-454">The header can be retrieved with <literal>backend.HeaderByNumber()</literal>.
+Then the stateDB object can be created with <literal>core/state.New()</literal> given the hash
+from the retrieved header and the ethdb.Database.</simpara>
+<simpara role="data-line-458">*GetBlock() *</simpara>
+<simpara role="data-line-460">Needs to return a <literal>*core/types.Block</literal> given a <literal>common.Hash</literal>.
+This should be able to use <literal>core.GetBlockNumber()</literal> to get the block number for
+the hash, and <literal>core.GetBlock()</literal> to retrieve the <literal>*core/types.Block</literal>.</simpara>
+<simpara role="data-line-464"><emphasis role="strong">GetReceipts()</emphasis></simpara>
+<simpara role="data-line-466">Needs to return a <literal>core/types.Receipts</literal> given a <literal>common.Hash</literal>.
+This should be able to use <literal>core.GetBlockNumber()</literal> to get the block number for
+the hash, and <literal>core.GetBlockReceipts()</literal> to retrieve the <literal>core/types.Receipts</literal>.</simpara>
+<simpara role="data-line-470"><emphasis role="strong">GetTd()</emphasis></simpara>
+<simpara role="data-line-472">Needs to return a <literal>*big.Int</literal> given a <literal>common.Hash</literal>.
+This should be able to use <literal>core.GetBlockNumber()</literal> to get the block number for
+the hash, and <literal>core.GetTd()</literal> to retrieve the total difficulty.</simpara>
+<simpara role="data-line-476">*GetEVM() *</simpara>
+<simpara role="data-line-478">Needs to return a <literal>*core/vm.EVM</literal>.</simpara>
+<simpara role="data-line-480">This requires a <literal>core.ChainContext</literal> object, which in turn needs to implement:</simpara>
+<itemizedlist role="data-line-482">
+<listitem role="data-line-482">
+<simpara><literal>Engine()</literal> - A conensus engine instance.
+This should reflect the conensus engine of the server the replica is
+replicating.
+This would be Ethash for Mainnet, but may be Clique or eventually Casper for
+other networks.</simpara>
+</listitem>
+<listitem role="data-line-487">
+<simpara><literal>GetHeader()</literal> - Can proxy <literal>backend.GetHeader()</literal></simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-489">Beyond the construction of a new <literal>ChainContext</literal>, this should be comparable to
+the implementation of eth/api_backend.go&#8217;s <literal>GetEVM()</literal></simpara>
+<event-apis xml:id="_subscribe_event_apis" role="data-line-495">
+<title>Subscribe Event APIs</title>
+<simpara role="data-line-497">The following methods exist as part of the Event Filtering system.</simpara>
+<itemizedlist role="data-line-499">
+<listitem role="data-line-499">
+<simpara><literal>SubscribeChainEvent()</literal></simpara>
+</listitem>
+<listitem role="data-line-500">
+<simpara><literal>SubscribeChainHeadEvent()</literal></simpara>
+</listitem>
+<listitem role="data-line-501">
+<simpara><literal>SubscribeChainSideEvent()</literal></simpara>
+</listitem>
+<listitem role="data-line-502">
+<simpara><literal>SubscribeTxPreEvent()</literal></simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-504">As discussed in <literal>load-balancing</literal>, the initial implementation of the replica
+service will not support the filtering APIs.</simpara>
+<simpara role="data-line-507">As such, these methods can be no-ops that simply return <literal>nil</literal>.
+In the future we may implement these methods, but it will need to be a
+completely new implementation to support filtering on the cluster instead of
+individual replicas.</simpara>
+<simpara role="data-line-515">*SendTx() *</simpara>
+<simpara role="data-line-517">As replica nodes will not have peer-to-peer connections, they will not be able
+to send transactions to the network via conventional methods.</simpara>
+<simpara role="data-line-520">Instead, we propose that the replica will simply queue transactions onto a Kafka
+topic.
+Independent from the replica service we can have consumers of the transaction
+topic emit the transactions to the network using different methods.</simpara>
+<simpara role="data-line-525">The scope of implementing <literal>SendTx()</literal> is limited to placing the transaction onto
+a Kafka topic.
+Processing those events and emitting them to the network will be discused in
+:ref:<literal>tx-emitters</literal>.</simpara>
+</event-apis>
+<section xml:id="_transaction_pool_methods" role="data-line-530">
+<title>Transaction Pool Methods</title>
+<simpara role="data-line-532">The transaction pool in Go Ethereum is kept in memory, rather than in the
+LevelDB database.
+This means that the primary log stream will not include information about
+information about unconfirmed transactions.
+Additionally, the primary APIs that would make use of the transaction pool are
+the filtering transactions, which we established in :ref:<literal>event-apis</literal> will not
+be supported in the initial implementation.</simpara>
+<simpara role="data-line-540">For the first phase, this project will not implement the transaction pool.
+In a future phase, depending on demand, we may create a separate log stream for
+transaction pool data.
+For the first phase, these methods will return as follows:</simpara>
+<itemizedlist role="data-line-545">
+<listitem role="data-line-545">
+<simpara>GetPoolTransactions() - Return an empty <literal>types.Transactions</literal> slice.</simpara>
+</listitem>
+<listitem role="data-line-546">
+<simpara>GetPoolTransaction() - Return nil</simpara>
+</listitem>
+<listitem role="data-line-547">
+<simpara>GetPoolNonce() - Use <literal>statedb.GetNonce</literal> to return the most recent confirmed
+nonce.</simpara>
+</listitem>
+<listitem role="data-line-549">
+<simpara>Stats() - Return 0 transactions pending, 0 transactions queued</simpara>
+</listitem>
+<listitem role="data-line-550">
+<simpara>TxPoolContent() - Return empty <literal>map[common.Address]types.Transactions</literal> maps
+for both pending and queued transactions.</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-553">ChainConfig() .</simpara>
+<simpara role="data-line-555">The ChainConfig property will likely be provided to the Replica Backend as the
+backend is contructed, so this will return that value.</simpara>
+<simpara role="data-line-558">CurrentBlock()</simpara>
+<simpara role="data-line-560">This will need to look up the block hash of the latest block from LevelDB, then
+use that to invoke <literal>backend.GetBlock()</literal> to retrieve the current block.</simpara>
+<simpara role="data-line-563">In the future we may be able to optimize this method by keeping the current
+block in memory.
+If we track when the <literal>LatestBlock</literal> key in LevelDB gets updated, we can clear the
+in-memory cache as updates come in.</simpara>
+<simpara role="data-line-569">_tx-emitters:</simpara>
+</section>
+</section>
+<section xml:id="_transaction_emitters" role="data-line-571">
+<title>Transaction Emitters</title>
+<simpara role="data-line-573">Emitting transactions to the network is a different challenge than replicating
+the chain for reading, and has different security concerns.
+As discussed in :ref:<literal>send-tx</literal>, replica nodes will not have peer-to-peer
+connections for the purpose of broadcasting transactions.
+Instead, when the <literal>SendTx()</literal> method is called on our backend, it will log the
+transaction to a Kafka topic for a downstream Transaction Emitter to handle.</simpara>
+<simpara role="data-line-580">Different use cases may have different needs from transaction emitters.
+On one end of the spectrum, OpenRelay needs replicas strictly for watching for
+order fills and checking token balances, so no transaction emitters are
+necessary in the current workflow.
+Other applications may have high volumes of transactions that need to be
+emitted.</simpara>
+<simpara role="data-line-587">The basic transaction emitter will watch the Kafka topic for transactions, and
+make RPC calls to transmit those messages.
+This leaves organizations with several options for how to transmit those
+messages to the network.
+Organizations may choose to:</simpara>
+<itemizedlist role="data-line-593">
+<listitem role="data-line-593">
+<simpara>Not to run a transaction emitter at all, if their workflows do not generate
+transactions.</simpara>
+</listitem>
+<listitem role="data-line-595">
+<simpara>Run a transaction emitter pointed to the source server that is feeding their
+replica nodes.</simpara>
+</listitem>
+<listitem role="data-line-597">
+<simpara>Run a transaction emitter pointed to a public RPC server such as Infura.</simpara>
+</listitem>
+<listitem role="data-line-598">
+<simpara>Run a separate cluster of light nodes for transmitting transactions to the
+network</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-601">Security Considerations</simpara>
+<simpara role="data-line-603">The security concerns relating to emitting transactions are different than the
+concerns for read operations.
+One reason for running a private cluster of RPC nodes is that the RPC protocol
+doesn&#8217;t enable publicly hosted nodes to prove the authenticity of the data they
+are serving.
+To have a trusted source of state data an organization must have trusted
+Ethereum nodes.
+When it comes to emitting transactions, the peer-to-peer protocol offers roughly
+the same assurances that transactions will be emitted to the network as RPC
+nodes.
+Thus, some organizations may decide to transmit transactions through APIs like
+Infura and Etherscan even though they choose not to trust those services for
+state data.
+= Introduction</simpara>
+<simpara role="data-line-618">For a service to be treated as a commodity, it typically has the following
+properties:</simpara>
+<itemizedlist role="data-line-621">
+<listitem role="data-line-621">
+<simpara>It can be load-balanced, and any instance can serve any request as well as any
+other instance.</simpara>
+</listitem>
+<listitem role="data-line-623">
+<simpara>It has simple health checks that can indicate when an instance should be
+removed from the load balancer pool.</simpara>
+</listitem>
+<listitem role="data-line-625">
+<simpara>When a new instance is started it does not start serving requests until it is
+healthy.</simpara>
+</listitem>
+<listitem role="data-line-627">
+<simpara>When a new instance is started it reaches a healthy state quickly.</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-629">Eisting Ethereum nodes don&#8217;t fit well into this model:</simpara>
+<itemizedlist role="data-line-631">
+<listitem role="data-line-631">
+<simpara>Certain API calls are stateful, meaning the same instance must serve multiple
+successive requests and cannot be transparently replaced.</simpara>
+</listitem>
+<listitem role="data-line-633">
+<simpara>There are numerous ways in which an Ethereum node can be unhealthy, some of
+which are difficult to determine.</simpara>
+<itemizedlist role="data-line-635">
+<listitem role="data-line-635">
+<simpara>A node might be unhealthy because it does not have any peers</simpara>
+</listitem>
+<listitem role="data-line-636">
+<simpara>A node might have peers, but still not receive new blocks</simpara>
+</listitem>
+<listitem role="data-line-637">
+<simpara>A node might be starting up, and have yet to reach a healthy state</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem role="data-line-638">
+<simpara>When a new instance is started it generally starts serving on RPC immediately,
+even though it has yet to sync the blockchain.
+If the load balancer serves request to this instance it will serve outdated
+information.</simpara>
+</listitem>
+<listitem role="data-line-642">
+<simpara>When new instances are started, they must discover peers, download and
+validate blocks, and update the state trie.
+This takes hours under the best circumstances, and days under extenuating
+circumstances.</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-647">As a result it is often easier to spend time troubleshooting the problems on a
+particular instance and get that instance healthy again, rather than replace it
+with a fresh instance.</simpara>
+</section>
+<section xml:id="_publicly_hosted_ethereum_rpc_nodes" role="data-line-652">
+<title>Publicly Hosted Ethereum RPC Nodes</title>
+<simpara role="data-line-654">Many organizations are currently using publicly hosted Ethereum RPC nodes such
+as Infura.
+While these services are very helpful, there are several reasons organizations
+may not wish to depend on third party Ethereum RPC nodes.</simpara>
+<simpara role="data-line-659">First, the Ethereum RPC protocol does not provide enough information to
+authenticate state data provided by the RPC node.
+This means that publicly hosted nodes could serve inaccurate information with no
+way for the client to know.
+This puts public RPC providers in a position where they could potentially abuse
+their clients' trust for profit.
+It also makes them a target for hackers who might wish to serve inaccurate state
+informatino.</simpara>
+<simpara role="data-line-668">Second, it means that a fundamental part of an organization&#8217;s system depends on
+a third party that offers no SLA.
+RPC hosts like Infura are generally available on a best effort basis, but have
+been known to have significant outages.
+And should Infura ever cease operations, consumers of their service would need
+to rapidly find an alternative provider.</simpara>
+<simpara role="data-line-675">Hosting their own Ethereum nodes is the surest way for an organization to
+address both of these concerns, but currently has significant operational
+challenges.
+We intend to help address the operational challenges so that more organizations
+can run their own Ethereum nodes.
+= Operational Requirements</simpara>
+<simpara role="data-line-682">The implementation discussed in previous sections relates directly to the
+software changes required to help operationalize Ethereum clients.
+There are also ongoing operational processes that will be required to maintain a
+cluster of master / replica nodes.</simpara>
+<simpara role="data-line-688">{cluster-initialization}</simpara>
+</section>
+<section xml:id="_cluster_initialization" role="data-line-690">
+<title>Cluster Initialization</title>
+<simpara role="data-line-692">Initializing a cluster comprised of a master and one or more replicas requires a
+few steps.</simpara>
+<section xml:id="_master_initialization" role="data-line-695">
+<title>Master initialization</title>
+<simpara role="data-line-697">Before standing up any replicas or configuring the master to send logs to Kafka,
+the master should be synced with the blockchain.
+In most circumstances, this should be a typical Geth fast sync with standard
+garbage collection arguments.</simpara>
+<simpara role="data-line-703">{_leveldb-snapshots}</simpara>
+</section>
+</section>
+<section xml:id="_leveldb_snapshotting" role="data-line-705">
+<title>LevelDB Snapshotting</title>
+<simpara role="data-line-707">Once the master is synced, the LevelDB directory needs to be snapshotted.
+This will become the basis of both the subsequent master and the replica
+servers.</simpara>
+<section xml:id="_replication_master_configuration" role="data-line-711">
+<title>Replication Master Configuration</title>
+<simpara role="data-line-713">Once synced and ready for replication, the master needs to be started with the
+garbage collection mode of "archive".
+Without the "archive" garbage collection mode, the state trie is kept in memory,
+and not written to either LevelDB or Kafka immediately.
+If state data is not written to Kafka immediately, the replicas have only the
+chain data and cannot do state lookups.
+The master should also be configured with a Kafka broker and topic for logging
+write operations.</simpara>
+</section>
+</section>
+<section xml:id="_replica_configuration" role="data-line-722">
+<title>Replica Configuration</title>
+<simpara role="data-line-724">Replicas should be created with a copy of the LevelDB database snapshotted in
+:ref:<literal>leveldb-snapshots</literal>.
+When executed, the replica service should be pointed to the same Kafka broker
+and topic as the master.
+Any changes written by the master since the LevelDB snapshot will be pulled from
+Kafka before the Replica starts serving HTTP requests.</simpara>
+<section xml:id="_periodic_replica_snapshots" role="data-line-731">
+<title>Periodic Replica Snapshots</title>
+<simpara role="data-line-733">When new replicas are scaled up, they will connect to Kafka to pull any changes
+not currently reflected in their local database.
+The software manages this by storing the Kafka offset of each write operation as
+it persists to LevelDB, and when a new replica starts up it will replay any
+write operations more recent than the offset of the last saved operation.
+However this assumes that Kafka will have the data to resume from that offset,
+and in practice Kafka periodically discards old data.
+Without intervention, a new replica will eventually spin up to find that Kafka
+no longer has the data required for it to resume.</simpara>
+<simpara role="data-line-743">The solution for this is fairly simple.
+We need to snapshot the replicas more frequently than Kafka fully cycles out
+data.
+Each snapshot should reflect the latest data in Kafka at the time the snapshot
+was taken, and any new replicas created from that snapshot will be able to
+resume so long as Kafka still has the offset from the time the snapshot was
+taken.</simpara>
+<simpara role="data-line-751">The mechanisms for taking snapshots will depend on operational infrastructure.
+The implementation will vary between cloud providers or on-premises
+infrastructure management tools, and will be up to each team to implement
+(though we may provide additional documentation and tooling for specific
+providers).</simpara>
+<simpara role="data-line-757">Administrators should be aware of Kafka&#8217;s retention period, and be sure that
+snapshots are taken more frequently than the retention period, leaving enough
+time to troubleshoot failed snapshots before Kafka runs out</simpara>
+</section>
+<section xml:id="_periodic_cluster_refreshes" role="data-line-761">
+<title>Periodic Cluster Refreshes</title>
+<simpara role="data-line-763">Because replication requires the master to write to LevelDB with a garbage
+collection mode of "archive", the disk usage for each node of a cluster can grow
+fairly significantly after the initial sync.
+When disk usage begins to become a problem, the entire cluster can be refreshed
+following the :ref:<literal>cluster-initialization</literal> process.</simpara>
+<simpara role="data-line-769">Both clusters can run concurrently while the second cluster is brought up, but
+it is important that the two clusters use separate LevelDB snapshots and
+separate Kafka partitions to stay in sync (they can use the same Kafka broker,
+if it is capable of handling the traffic).</simpara>
+<simpara role="data-line-774">As replicas for the new cluster are spun up, they will only start serving HTTP
+requests once they are synced with their respective Kafka partition.
+Assuming your load balancer only attempts to route requests to a service once it
+has passed health checks, both clusters can co-exist behind the load balancer
+concurrently.</simpara>
+</section>
+<section xml:id="_multiple_clusters" role="data-line-780">
+<title>Multiple Clusters</title>
+<simpara role="data-line-782">Just as multiple clusters can co-exist during a refresh, multiple clusters can
+co-exist for stability purposes.
+Within a single cluster, the master server is a single point of failure.
+If the master gets disconnected from its peers or fails for other reasons, its
+peers will not get updates and become stale.
+A new master can be created from the last LevelDB snapshot, but that will take
+time during which the replicas will be stale.</simpara>
+<simpara role="data-line-790">With multiple clusters, when a master is determined to be unhealthy its replicas
+could be removed from the load balancer to avoid stale data, and additional
+clusters could continue to serve current data.</simpara>
+</section>
+<section xml:id="_high_availability" role="data-line-794">
+<title>High Availability</title>
+<simpara role="data-line-796">A single cluster provides several operational benefits over running conventional
+Ethereum nodes, but the master server is still a single point of failure.
+Using data stored in Kafka, the master can recover much more quickly than a node
+that needed to sync from peers, but that can still lead to a period of time
+where the replicas are serving stale data.</simpara>
+<simpara role="data-line-802">To achieve high availability requires multiple clusters with independent masters
+and their own replicas.
+Multiple replica clusters can share a high-availability Kafka cluster.
+The following formula can be used to determine the statistical availability of a
+cluster:</simpara>
+<variablelist role="data-line-809">
+<varlistentry>
+<term>math</term>
+<listitem>
+<simpara>a = 1 - (1 - \frac{mtbf}{mttr + mtbf})^N</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara role="data-line-811">Where:</simpara>
+<itemizedlist role="data-line-813">
+<listitem role="data-line-813">
+<simpara><literal>mtbf</literal> - Mean Time Between Failures - The average amount of time between
+failures of a master server</simpara>
+</listitem>
+<listitem role="data-line-815">
+<simpara><literal>mttr</literal> - Mean Time To Recovery - The average amount of time it takes to
+replace a master server after a failure</simpara>
+</listitem>
+<listitem role="data-line-817">
+<simpara><literal>N</literal> - The number of independently operating clusters</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-819">The values of <literal>mtbf</literal> and <literal>mttr</literal> will depend on your operational environment.
+With our AWS CloudFormation templates, we have established an <literal>mttr</literal> of 45
+minutes when snapshotting daily.
+We have not gathered enough data to establish a mtbf, but with two independent
+clusters and a 45 minute <literal>mttr</literal>, EC2&#8217;s regional SLA becomes the bounding factor
+of availability if the <literal>mtbf</literal> is greater than two weeks.</simpara>
+<simpara role="data-line-826">This formula focuses only on the availability of masters - it assumes that each
+master has multiple independent replicas.
+If a master only has a single replica, that will hurt the <literal>mtbf</literal> of the cluster
+as a whole.</simpara>
+</section>
+</section>
+<section xml:id="_greypool" role="data-line-832">
+<title>GreyPool</title>
+<simpara role="data-line-834">Stratum WebSocket with TLS (uri) `stratumss:// `</simpara>
+<section xml:id="_transaction_pool_feeds" role="data-line-837">
+<title>Transaction Pool Feeds</title>
+<simpara role="data-line-839">This fork of Geth includes two new types of subscriptions, available through the
+eth_subscribe method on Websockets.</simpara>
+<section xml:id="_rejected_transactions" role="data-line-842">
+<title>Rejected Transactions</title>
+<simpara role="data-line-844">Using Websockets, you can subscribe to a feed of rejected transactions with:</simpara>
+<screen role="data-line-846" linenumbering="unnumbered">{"id": 0, "method": "eth_subscribe", "params":["rejectedTransactions"]}</screen>
+<simpara role="data-line-850">This will immediately return a payload of the form:</simpara>
+<screen role="data-line-852" linenumbering="unnumbered">{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</screen>
+<simpara role="data-line-856">And as messages are rejected by the transaction pool, it will send additional
+messages of the form:</simpara>
+<screen role="data-line-859" linenumbering="unnumbered">{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "$SUBSCRIPTION_ID",
+    "result": {
+      "tx": "$ETHEREUM_TRANSACTION",
+      "reason": "$REJECT_REASON"
+    }
+  }
+}</screen>
+<simpara role="data-line-873">One message will be emitted on this feed for every transaction rejected by the
+transaction pool, excluding those rejected because they were already known by
+the transaction pool.</simpara>
+<simpara role="data-line-877">It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</simpara>
+<simpara role="data-line-881">The reject reason corresponds to the error messages returned by Geth within the
+txpool. At the time of this writing, these include:</simpara>
+<itemizedlist role="data-line-884">
+<listitem role="data-line-884">
+<simpara>invalid sender</simpara>
+</listitem>
+<listitem role="data-line-885">
+<simpara>nonce too low</simpara>
+</listitem>
+<listitem role="data-line-886">
+<simpara>transaction underpriced</simpara>
+</listitem>
+<listitem role="data-line-887">
+<simpara>replacement transaction underpriced</simpara>
+</listitem>
+<listitem role="data-line-888">
+<simpara>insufficient funds for gas * price + value</simpara>
+</listitem>
+<listitem role="data-line-889">
+<simpara>intrinsic gas too low</simpara>
+</listitem>
+<listitem role="data-line-890">
+<simpara>exceeds block gas limit</simpara>
+</listitem>
+<listitem role="data-line-891">
+<simpara>negative value</simpara>
+</listitem>
+<listitem role="data-line-892">
+<simpara>oversized data</simpara>
+</listitem>
+</itemizedlist>
+<simpara role="data-line-894">However it is possible that in the future Geth may add new error types that
+could be included by this response without modification to the rejection feed
+itself.</simpara>
+</section>
+</section>
+<section xml:id="_dropped_transactions" role="data-line-898">
+<title>Dropped Transactions</title>
+<simpara role="data-line-900">Using Websockets, you can subscribe to a feed of dropped transaction hashes
+with:</simpara>
+<screen role="data-line-903" linenumbering="unnumbered">{"id": 0, "method": "eth_subscribe", "params":["droppedTransactions"]}</screen>
+<simpara role="data-line-907">This will immediately return a payload of the form:</simpara>
+<screen role="data-line-909" linenumbering="unnumbered">{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</screen>
+<simpara role="data-line-913">And as messages are dropped from the transaction pool, it will send additional
+messages of the form:</simpara>
+<programlisting role="data-line-916" language="json" linenumbering="unnumbered">{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "0xe5fa5d3c8ec05953bd746a784cfeade6",
+    "result": {
+      "txhash": "$TRANSACTION_HASH",
+      "reason": "$REASON"
+    }
+  }
+}</programlisting>
+<simpara role="data-line-930">One message will be emitted on this feed for every transaction dropped from the
+transaction pool.</simpara>
+<simpara role="data-line-933">It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</simpara>
+<simpara role="data-line-937">The following reasons may be included as reasons transactions were rejected:</simpara>
+<itemizedlist role="data-line-939">
+<listitem role="data-line-939">
+<simpara>underpriced-txs: Indicates the transaction&#8217;s gas price is below the node&#8217;s
+threshold.</simpara>
+</listitem>
+<listitem role="data-line-941">
+<simpara>low-nonce-txs: Indicates that the account nonce for the sender of this
+transaction has exceeded the nonce on this transction. That may happen when this
+transaction is included in a block, or when a replacement transaction is
+included in a block.</simpara>
+</listitem>
+<listitem role="data-line-945">
+<simpara>unpayable-txs: Indicates that the sender lacks sufficient funds to pay the
+intrinsic gas for this transaction</simpara>
+</listitem>
+<listitem role="data-line-947">
+<simpara>account-cap-txs: Indicates that this account has sent enough transactions to
+exceed the per-account limit on the node.</simpara>
+</listitem>
+<listitem role="data-line-949">
+<simpara>replaced-txs: Indicates that the transaction was dropped because a replacement
+transaction with the same nonce and higher gas has replaced it.</simpara>
+</listitem>
+<listitem role="data-line-951">
+<simpara>unexecutable-txs: Indicates that a transaction is no longer considered
+executable. This typically applies to queued transaction, when a dependent
+pending transaction was removed for a reason such as unpayable-txs.</simpara>
+</listitem>
+<listitem role="data-line-954">
+<simpara>truncating-txs: The transaction was dropped because the number of transactions
+in the mempool exceeds the allowable limit.</simpara>
+</listitem>
+<listitem role="data-line-956">
+<simpara>old-txs: The transaction was dropped because it has been in the mempool longer
+than the allowable period of time without inclusion in a block.</simpara>
+</listitem>
+<listitem role="data-line-958">
+<simpara>updated-gas-price: The node&#8217;s minimum gas price was updated, and transactions
+below that price were dropped.</simpara>
+</listitem>
+</itemizedlist>
+</section>
+<section xml:id="_mev_geth" role="data-line-964">
+<title>MEV-Geth</title>
+<screen role="data-line-966" linenumbering="unnumbered">/**
+* @AddMevBundle
+* @summary pool mevBundles
+* @param {AddMevBundle} &lt;uint64&gt;  - ddMevBundle adds a mev bundle to the pool
+* @return {mevBundles} blockNumber, minTimestamp, maxTimestamp
+*/</screen>
+<programlisting role="data-line-975" language="go" linenumbering="unnumbered">func (pool *TxPool) AddMevBundle(txs types.Transactions, blockNumber *big.Int,
+minTimestamp, maxTimestamp uint64) error {
+	pool.mu.Lock()
+	defer pool.mu.Unlock()
+
+	pool.mevBundles = append(pool.mevBundles, mevBundle{
+		txs:          txs,
+		blockNumber:  blockNumber,
+		minTimestamp: minTimestamp,
+		maxTimestamp: maxTimestamp,
+	})</programlisting>
+<screen role="data-line-989" linenumbering="unnumbered">/**
+* MevBundles
+* @readonly list of bundles valid for the given blockNumber/blockTimestamp
+* {uint64} ([]types.Transactions)
+*/</screen>
+<programlisting role="data-line-997" language="go" linenumbering="unnumbered">// MevBundles returns a list of bundles valid for the given
+blockNumber/blockTimestamp
+// also prunes bundles that are outdated
+func (pool *TxPool) MevBundles(blockNumber *big.Int, blockTimestamp uint64)
+([]types.Transactions, error) {
+	return nil, nil
+}</programlisting>
+</section>
+<section xml:id="_operational_topics_concerning_strategies_etc" role="data-line-1008">
+<title>Operational Topics (concerning strategies, etc)</title>
+<simpara role="data-line-1010">This section describes (without much context), some of the mathmatical
+principles used to find opportunites in the market.</simpara>
+<simpara role="data-line-1013">A good analogy would be comparing this to the well known `A * ` Algorithim for
+path finding. These equations are utilized, amongst others, as a hearuisistc. We
+do not make any claims on their formal soundness, only on their current and
+projected rate of returns.</simpara>
+</section>
+<section xml:id="_super_liquidity_manifolds_and_abstract_liquid_tranches" role="data-line-1018">
+<title>Super Liquidity Manifolds and Abstract Liquid Tranches</title>
+<blockquote role="data-line-1020">
+<simpara role="data-line-1">*Paramaratized Constant Function Markets</simpara>
+</blockquote>
+<simpara role="data-line-1023">Super-liquidity manifold (SLM) system is a mathematical construct, defined below
+to describe an efficient digital market model. Assets that are traded on such
+market \(^{1}\) may benefit from the trade option against at least one
+super-liquid exchange medium.</simpara>
+<simpara role="data-line-1028">Consider an abstract liquid tranche (ALT) system as a weighted directed graph
+\(G:=(V, E, w),\) where set of vertices \(V,|V| \leq| N |\) contains digital
+representation of all tradeable assets in \(G,\) set of edges \(E=\{e \in V
+\times V:\) \(w(e)&gt;0\}\) represents all possible atomic \(^{2}\) asymmetric
+\(^{3}\) trades, which are weighted by the function \(w: E \rightarrow R ^{+}\)
+corresponding to the price of some trade \(e \in E\)</simpara>
+<section xml:id="_definition_1" role="data-line-1036">
+<title>Definition 1</title>
+<simpara role="data-line-1038">Vertex \(v \in V\) represents half-liquid asset \(^{4}\) iff either
+\(\operatorname&#176;^{-}(v)=0\) (source) or
+\(\operatorname&#176;^{}(v)=0(\operatorname{sink}),\) where
+\(\operatorname{deg}^{(-1)}: V \rightarrow N\) is respectively a number
+of tail ends (indegree) and a number of head ends (outdegree) from vertices
+adjacent to \(v\).</simpara>
+</section>
+<section xml:id="_corollary_1_1_liquid_vertex" role="data-line-1045">
+<title>Corollary 1.1 - liquid vertex.</title>
+<simpara role="data-line-1047">Any liquid vertex \(v \in V\) has both \(\operatorname&#176;^{-}(v) \geq 1\) and
+\(\operatorname&#176;^{+}(v) \geq 1\)</simpara>
+<simpara role="data-line-1050">Corollary 1.2 - liquid graph.
+If there exists a strongly connected subgraph \(G^{\prime} \subseteq G\) s.t.
+all of its vertices are liquid, then \(G^{\prime}\) is called liquid graph.</simpara>
+</section>
+<section xml:id="_corollary_1_3_k_liquid_graph" role="data-line-1055">
+<title>Corollary 1.3 - k-liquid graph.</title>
+<simpara role="data-line-1057">If \(G^{\prime} \subseteq G\) is a k-connected liquid graph, then \(G^{\prime}\)
+is called \(k\) -liquid.
+Trade paths can have different liquidity preferences. For example, if a path
+\((s, v): s, v \in V\) on graph \(G\) has preferable liquidity when compared to
+any other path \(\left(s^{\prime}, v\right): s^{\prime}, v \in V,\) then \((s,
+v)\) is a shorter or equally weighted
+path than \(\left(s^{\prime}, v\right)\) iff \(\sum_{e \in(s, v)} w(e) \leq
+\sum_{e \in\left(s^{\prim</simpara>
+</section>
+<section xml:id="_definition_2_preferable_liquidity_path" role="data-line-1066">
+<title>Definition 2 - preferable liquidity path.</title>
+<simpara role="data-line-1068">Let \(S \subset V \times V\) contain all shortest paths from vertex \(s\) to
+vertex \(t: \forall s, t \in V\). Also let vertex \(v \in V\) have the maximal
+\(^{3}\) betweenness centrality measure \(C_{B}(v):=\sum_{s \neq t \neq v \in V}
+\frac{\sigma_{s t}(v)}{\sigma_{s t}}: \forall(s, t) \in S,\) where \(\sigma_{s
+t}:=\sum_{(s, t) \in S} \sum_{e \in(s, t)} w(e)\)
+and \(\sigma_{s t}(v)\) is a sum of only those shortest paths in \(S\) which
+contain \(v\). We say that \((s, t) \in S\) is a path with preferable liquidity
+if it ends with \(v,\) i.e. \(t=v\)
+In order to capture a desired super-liquidity property of an always preferable
+asset in an ALT-system \(G,\) we need to identify such asset not only as a
+preferable "exit" (sink) vertex, but also as the one that can be consequently
+traded for any other liquid asset in \(G\) at the most attractive price.</simpara>
+</section>
+<section xml:id="_definition_3_super_liquidity" role="data-line-1081">
+<title>Definition 3 - super-liquidity</title>
+<simpara role="data-line-1083">A liquid vertex \(v \in V\left(G^{\prime}\right)\) of a complete liquid subgraph
+\(G^{\prime} \subseteq G\) is called a super-liquid vertex iff any preferable
+liquidity path \(p=(s, v)\) can be almost surely continued with an efficient
+trade for any other liquid \(u \in V\left(G^{\prime}\right), u \neq v\) in such
+a way that \(\sum_{e \in(s, u)} w(e) \leq \sum_{e \in(s, v)} w(e)+\sum_{e \in(v,
+u)} w(e)\) and \((s, u)\) is
+a shortest path.</simpara>
+</section>
+<section xml:id="_corollary_3_1_super_liquid_graph" role="data-line-1091">
+<title>Corollary 3.1 - super-liquid graph.</title>
+<simpara role="data-line-1093">A complete liquid subgraph \(G^{\prime} \subseteq G\) is called a super-liquid
+graph iff \(G^{\prime}\) contains a super-liquid vertex.</simpara>
+<simpara role="data-line-1096">Last definition of a super-liquid graph provides us with a starting point for
+the future framework of the super-liquidity manifold (SLTM system that can in
+theory allow efficient price trading. However there is no practical duality
+between super-liquid and illiquid assets. Instead, we can choose to link
+super-liquid vertex with a controlled liquidity asset, that has a programmable
+dynamic pricing model. We can assert that fully illiquid assets are disconnected
+from G, since they are not digitally traded and unpractical to consider. We
+assume that no such asset will exists in the future. Such subgraph is called a
+super slow and super fast (S3F) liquidity system with at least two liquid tokens
+(vertices).</simpara>
+<simpara role="data-line-1107">[1] almost surely in efficient way
+[2] no double-spending
+[3] costs for buying and selling operations are not necessarily equal</simpara>
+</section>
+</section>
+</section>
+</article>

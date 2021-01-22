@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Abriged Document Spec</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
+:not(pre)>code.nobreak{word-wrap:normal}
+:not(pre)>code.nowrap{white-space:nowrap}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+table.tableblock{max-width:100%;border-collapse:separate}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
+table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
+table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
+table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
+table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
+table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
+table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="article data-line-1">
+<div id="header">
+<h1>Abriged Document Spec</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_acknowledgments">Acknowledgments</a></li>
+<li><a href="#_links">Links</a></li>
+<li><a href="#_notice">Notice</a></li>
+<li><a href="#_overview">Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_additional_points_of_specilization">Additional points of specilization</a></li>
+<li><a href="#_replaying_write_operations">Replaying Write Operations</a></li>
+</ul>
+</li>
+<li><a href="#_proposed_implementation">Proposed Implementation</a>
+<ul class="sectlevel2">
+<li><a href="#_other_models_considered">Other Models Considered</a></li>
+</ul>
+</li>
+<li><a href="#_design_goals">Design Goals</a>
+<ul class="sectlevel2">
+<li><a href="#_health_checks">Health Checks</a></li>
+</ul>
+</li>
+<li><a href="#_service_initialization">Service Initialization</a></li>
+<li><a href="#_load_balancing">Load Balancing</a>
+<ul class="sectlevel2">
+<li><a href="#_reduced_computational_requirements">Reduced Computational Requirements</a></li>
+<li><a href="#_implementation">Implementation</a></li>
+</ul>
+</li>
+<li><a href="#_backend_functions_to_implement">Backend Functions To Implement</a>
+<ul class="sectlevel2">
+<li><a href="#_subscribe_event_apis">Subscribe Event APIs</a></li>
+<li><a href="#_transaction_pool_methods">Transaction Pool Methods</a></li>
+</ul>
+</li>
+<li><a href="#_transaction_emitters">Transaction Emitters</a></li>
+<li><a href="#_publicly_hosted_ethereum_rpc_nodes">Publicly Hosted Ethereum RPC Nodes</a></li>
+<li><a href="#_cluster_initialization">Cluster Initialization</a>
+<ul class="sectlevel2">
+<li><a href="#_master_initialization">Master initialization</a></li>
+</ul>
+</li>
+<li><a href="#_leveldb_snapshotting">LevelDB Snapshotting</a>
+<ul class="sectlevel2">
+<li><a href="#_replication_master_configuration">Replication Master Configuration</a></li>
+</ul>
+</li>
+<li><a href="#_replica_configuration">Replica Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#_periodic_replica_snapshots">Periodic Replica Snapshots</a></li>
+<li><a href="#_periodic_cluster_refreshes">Periodic Cluster Refreshes</a></li>
+<li><a href="#_multiple_clusters">Multiple Clusters</a></li>
+<li><a href="#_high_availability">High Availability</a></li>
+</ul>
+</li>
+<li><a href="#_greypool">GreyPool</a>
+<ul class="sectlevel2">
+<li><a href="#_transaction_pool_feeds">Transaction Pool Feeds</a></li>
+<li><a href="#_dropped_transactions">Dropped Transactions</a></li>
+<li><a href="#_mev_geth">MEV-Geth</a></li>
+<li><a href="#_operational_topics_concerning_strategies_etc">Operational Topics (concerning strategies, etc)</a></li>
+<li><a href="#_super_liquidity_manifolds_and_abstract_liquid_tranches">Super Liquidity Manifolds and Abstract Liquid Tranches</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="quoteblock data-line-6">
+<blockquote>
+<div class="paragraph data-line-1">
+<p>v0.6.0
+Copyright 2021 CommodityStream, LLC ALll Rights Reserved</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-9">
+<h2 id="_acknowledgments">Acknowledgments</h2>
+<div class="sectionbody">
+<div id="sources" class="paragraph data-line-12">
+<p>blocknative
+ethcattle
+pegasys tech
+41north
+freight trust
+aldera tech
+rovide services
+whitelbock</p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-21">
+<h2 id="_links">Links</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-23">
+<p><a href="https://t.me/manifoldfinance" class="bare">https://t.me/manifoldfinance</a></p>
+</div>
+<div class="paragraph data-line-25">
+<p><a href="https://github.com/manifoldfinance" class="bare">https://github.com/manifoldfinance</a>
+<a href="https://github.com/backbonecabal" class="bare">https://github.com/backbonecabal</a>
+<a href="https://github.com/maidenlane" class="bare">https://github.com/maidenlane</a></p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-30">
+<h2 id="_notice">Notice</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-32">
+<p>This document does not discuss crypto-mechanics or other cryptoassets. For information on incentives, distribution,
+and other important information, please reach out to us.</p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-35">
+<h2 id="_overview">Overview</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-37">
+<p>Maidenlane is divided into 3 segments</p>
+</div>
+<div class="ulist data-line-39">
+<ul>
+<li class="data-line-39">
+<p>[1]  Network and Transactional Scheduling</p>
+</li>
+<li class="data-line-40">
+<p>[2] Lambda/Data Analysis</p>
+</li>
+<li class="data-line-41">
+<p>[3] Tracing, Logging and State Management</p>
+<div class="olist arabic data-line-43">
+<ol class="arabic">
+<li class="data-line-43">
+<p>Concerns itself with routing, provisioning, consumer facing aspects of
+offering a permissioned 'clearing/settlement' gateway (whicih is how we describe
+our relationship with mining pools and end users, we do not use the term 'MEV'
+or 'BEV'). An example of a solution that would belong to this category is
+utilizing mainland China DNS Servers to ensure reduced latency when mining nodes
+joing the permissioned network and are querying the DNS Service to find the
+network topology, as we do not utilize the DHT table of the public network, nor
+would we want to utilize it in a private fashion as it would divulgue network
+mapping and reduce overall security.</p>
+</li>
+<li class="data-line-53">
+<p>Deals with the Matching engine proper, 'lambda' or 'delta' calculations, and
+transaction arrangement. The heart of this system utilizes an in-emory database
+called KDB+, with its programming language, Q. This is not open source. KDB+
+requires a commerical license for running their 64bit database, which starts at
+25,000 a year.</p>
+</li>
+<li class="data-line-59">
+<p>Our current logging and tracing utilities are being redesigned with a new
+framework and approach that is being used by IOHK (Cardano Foundation), called
+<code>Convariant Functor Tracing</code>. Our existing stack however is being re-implemented
+to use NixOS as a Package and build service, along with utilizing Dhall for
+configuration. We do not use Kubernetes for [2] or [3].</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2 data-line-65">
+<h3 id="_additional_points_of_specilization">Additional points of specilization</h3>
+<div class="ulist data-line-68">
+<ul>
+<li class="data-line-68">
+<p>[Geth]</p>
+<div class="ulist data-line-69">
+<ul>
+<li class="data-line-69">
+<p>modified for enhanced capture at both the filter and data type level</p>
+</li>
+<li class="data-line-70">
+<p>embedded changes to offer reduced latency
+*</p>
+</li>
+</ul>
+</div>
+</li>
+<li class="data-line-73">
+<p>[Parity]</p>
+<div class="ulist data-line-74">
+<ul>
+<li class="data-line-74">
+<p>Services RLP decoding for incoming messages. A Seperate service runs for
+this</p>
+</li>
+</ul>
+</div>
+</li>
+<li class="data-line-77">
+<p>[Kafka]</p>
+<div class="ulist data-line-78">
+<ul>
+<li class="data-line-78">
+<p>Kafka directly interfaces over RPC, there is no need to place a
+Geth/Parity node infront of Kafka in order to process or transform incoming
+transactions, etc.</p>
+</li>
+<li class="data-line-81">
+<p>Everything utilizes Avro</p>
+</li>
+<li class="data-line-82">
+<p>While we have currently implemented a Kafka logger, we have defined an
+abstract interface that could theoretically support a wide variety of messaging
+systems.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3 data-line-86">
+<h4 id="_capturing_write_operations">Capturing Write Operations</h4>
+<div class="paragraph data-line-88">
+<p>In the Go Ethereum codebase, there is a <code>Database</code> interface which must support
+the following operations:</p>
+</div>
+<div class="ulist data-line-91">
+<ul>
+<li class="data-line-91">
+<p>Put</p>
+</li>
+<li class="data-line-92">
+<p>Get</p>
+</li>
+<li class="data-line-93">
+<p>NewBatch</p>
+</li>
+<li class="data-line-94">
+<p>Has</p>
+</li>
+<li class="data-line-95">
+<p>Delete</p>
+</li>
+<li class="data-line-96">
+<p>Close</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-98">
+<p>and a Batch interface which must support the following operations:</p>
+</div>
+<div class="ulist data-line-100">
+<ul>
+<li class="data-line-100">
+<p>Put</p>
+</li>
+<li class="data-line-101">
+<p>Write</p>
+</li>
+<li class="data-line-102">
+<p>Delete</p>
+</li>
+<li class="data-line-103">
+<p>Reset</p>
+</li>
+<li class="data-line-104">
+<p>ValueSize</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-106">
+<p>We have created a simple CDC wrapper, which proxies operations to the standard
+databases supported by Go Ethereum, and records <code>Put</code>, <code>Delete</code>, and
+<code>Batch.Write</code> operations through a <code>LogProducer</code> interface.
+At present, we have implemented a <code>KafkaLogProducer</code> to record write operations
+to a Kafka topic.</p>
+</div>
+<div class="paragraph data-line-112">
+<p>The performance impact to the Go Ethereum server is minimal.
+The CDC wrapper is light weight, proxying requests to the underlying database
+with minimal overhead.
+Writing to the Kafka topic is handled asynchronously, so write operations are
+unlikely to be delayed substantially due to logging.
+Read operations will be virtually unaffected by the wrapper.</p>
+</div>
+</div>
+</div>
+<div class="sect2 data-line-119">
+<h3 id="_replaying_write_operations">Replaying Write Operations</h3>
+<div class="paragraph data-line-121">
+<p>We also have a modified Go Ethereum service which uses a <code>LogConsumer</code> interface
+to pull logs from Kafka and replay them into  KDB+</p>
+</div>
+<div class="paragraph data-line-125">
+<p>The index of the last written record is also recorded in the database, allowing
+the service to resume in the event that it is restarted.</p>
+</div>
+<div class="sect3 data-line-128">
+<h4 id="_preliminary_implementation">Preliminary Implementation</h4>
+<div class="paragraph data-line-130">
+<p>In the current implementation we simply disable peer-to-peer connections on the
+node and populate the database via Kafka logs.
+Other than that it functions as a normal Go Ethereum node.</p>
+</div>
+<div class="paragraph data-line-134">
+<p>The RPC service in its current state is semi-functional.
+Many RPC functions default to querying the state trie at the "latest" block.
+However, which block is deemed to be the "latest" is normally determined by the
+peer-to-peer service.
+When a new block comes in it is written to the database, but the hash of the
+latest block is kept in memory.
+Without the peer-to-peer service running the service believes that the "latest"
+block has not updated since the process initialized and read the block out of
+the database.
+If RPC functions are called specifying the target block, instead of implicitly
+asking for the latest block, it will look for that information in the database
+and serve it correctly.</p>
+</div>
+<div class="paragraph data-line-147">
+<p>Despite preliminary successes, there are several potential problems with the
+current approach.
+A normal Go Ethereum node, even one lacking peers, assumes that it is
+responsible for maintaining its database.
+Occasionally this will lead to replicas attempting to upgrade indexes or prune
+the state trie.
+This is problematic because the same operations can be expected to come from the
+write log of the source node.
+Thus we need an approach where we can ensure that the read replicas will make no
+effort to write to their own database.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-158">
+<h2 id="_proposed_implementation">Proposed Implementation</h2>
+<div class="sectionbody">
+<div class="sect2 data-line-162">
+<h3 id="_other_models_considered">Other Models Considered</h3>
+<div class="paragraph data-line-164">
+<p>This section documents several other approaches we considered to achieving our
+:ref:<code>design-goals</code>.
+This is not required reading for understanding subsequent sections, but may help
+offer some context for the current design.</p>
+</div>
+<div class="sect3 data-line-169">
+<h4 id="_higher_level_change_data_capture">Higher Level Change Data Capture</h4>
+<div class="paragraph data-line-171">
+<p>Rather than capturing data as it is written to the database, one option we
+considered was capturing data as it was written to the State Trie, Blockchain,
+and Transaction Pool.
+The advantage of this approach is that the change data capture stream would be
+reflective of high level operations, and not dependent on low level
+implementation details regarding how the data gets written to a database.
+One disadvantage is that it would require more invasive changes to
+consensus-critical parts of the codebase, creating more room for errors that
+could effect the network as a whole.
+Additionally, because those changes would have been made throughout the Go
+Ethereum codebase it would be harder to maintain if Go Ethereum does not
+incorporate our changes.
+The proposed implementation requires very few changes to core Go Ethereum
+codebase, and primarily leverages APIs that should be relatively easy to
+maintain compatibility with.</p>
+</div>
+</div>
+<div class="sect3 data-line-187">
+<h4 id="_shared_key_value_store">Shared Key Value Store</h4>
+<div class="paragraph data-line-189">
+<p>Before deciding on a change-data-capture replication system, one option we
+considered was to use a scalable key value store, which could be written to by
+one Ethereum node and read by many.
+Some early prototypes were developed under this model, but they all had
+significant performance limitations when it came to validating blocks.
+The Ethereum State Trie requires several read operations to retrieve a single
+piece of information.
+These read operations are practical when made against a local disk, but
+latencies become prohibitively large when the state trie is stored on a
+networked key value store on a remote system.
+This made it infeasible for an Ethereum node to process transactions at the
+speeds necessary to keep up with the network.</p>
+</div>
+</div>
+<div class="sect3 data-line-202">
+<h4 id="_extended_peer_to_peer_model">Extended Peer-To-Peer Model</h4>
+<div class="paragraph data-line-204">
+<p>One option we explored was to add an extended protocol on top of the standard
+Ethereum peer-to-peer protocol, which would sync the blockchain and state trie
+from a trusted list of peers without following the rigorous validation
+procedures.
+This would have been a substantially more complex protocol than the one we are
+proposing, and would have put additional strain on the other nodes in the
+system.</p>
+</div>
+</div>
+<div class="sect3 data-line-212">
+<h4 id="_replica_codebase_from_scratch">Replica Codebase from Scratch</h4>
+<div class="paragraph data-line-214">
+<p>One option we considered was to use Change Data Capture to record change logs,
+but write a new system from the ground-up to consume the captured information.
+Part of the appeal of this approach was that we have developers interested in
+contributing to the project who don&#8217;t have a solid grasp of Go, and the replica
+could have been developed in a language more accessible to our contributors.
+The biggest problem with this approach, particularly with the low level CDC, is
+that we would be tightly coupled to implementation details of how Go Ethereum
+writes to LevelDB, without having a shared codebase for interpreting that data.
+A minor change to how Go Ethereum stores data could break our replicas in subtle
+ways that might not be caught until bad data was served in production.</p>
+</div>
+<div class="paragraph data-line-225">
+<p>In the proposed implementation we will depend not only on the underlying data
+storage schema, but also the code Go Ethereum uses to interpret that data.
+If Go Ethereum changes their schema <em>and</em> changes their code to match while
+maintaining API compatibility, it should be transparent to the replicas.
+It is also possible that Go Ethereum changes their APIs in a way that breaks
+compatibility, but in that case we should find ourselves unable to compile the
+replica without fixing the dependency, and shouldn&#8217;t see surprises on a running
+system.</p>
+</div>
+<div class="paragraph data-line-234">
+<p>Finally, by building the replica service in Go as an extension to the existing
+Go Ethereum codebase, there is a reasonable chance that we could get the
+upstream Go Ethereum project to integrate our extensions.
+It is very unlikely that they would integrate our read replica extensions if the
+read replica is a separate project written in another language.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-241">
+<h2 id="_design_goals">Design Goals</h2>
+<div class="sectionbody">
+<div class="sect2 data-line-244">
+<h3 id="_health_checks">Health Checks</h3>
+<div class="paragraph data-line-246">
+<p>A major challenge with existing Ethereum nodes is evaluating the health of an
+individual node.
+Generally nodes should be considered healthy if they have the blockchain and
+state trie at the highest block, and are able to serve RPC requests relating to
+that state.
+If a node is more than a couple of blocks behind the network, it should be
+considered unhealthy.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-257">
+<h2 id="_service_initialization">Service Initialization</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-259">
+<p>One of the major challenges with treating Ethereum nodes as disposable is the
+initialization time.
+Conventionally a new instance must find peers, download the latest blocks from
+those peers, and validate each transaction in those blocks.
+Even if the instance is built from a relatively recent snapshot, this can be a
+bandwidth intensive, computationally intensive, disk intensive, and time
+consuming process.</p>
+</div>
+<div class="paragraph data-line-267">
+<p>In a trustless peer-to-peer system, these steps are unavoidable.
+Malicious peers could provide incorrect information, so it is necessary to
+validate all of the information received from untrusted peers.
+But given several nodes managed by the same operator, it is generally safe for
+those nodes to trust eachother, allowing individual nodes to avoid some of the
+computationally intensive and disk intensive steps that make the initialization
+process time consuming.</p>
+</div>
+<div class="paragraph data-line-275">
+<p>Ideally node snapshots will be taken periodically, new instances will launch
+based on the most recent available snapshot, and then sync the blockchain and
+state trie from trusted peers without having to validate every successive
+transaction.
+Assuming relatively recent snapshots are available, this should allow new
+instances to start up in a matter of minutes rather than hours.</p>
+</div>
+<div class="paragraph data-line-282">
+<p>Additionally, during the initialization process services should be identifiable
+as still initializing and excluded from the load balancer pool.
+This will avoid nodes serving outdated information during initialization.</p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-289">
+<h2 id="_load_balancing">Load Balancing</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-291">
+<p>Given reliable healthchecks and a quick initialization process, one challenge
+remains on loadbalancing.
+The Ethereum RPC protocol supports a concept of "filter subscriptions" where a
+filter is installed on an Ethereum node and subsequent requests about the
+subscription are served updates about changes matching the filter since the
+previous request.
+This requires a stateful session, which depends on having a single Ethereum node
+serve each successive request relating to a specific subscription.</p>
+</div>
+<div class="paragraph data-line-300">
+<p>For now this can be addressed on the client application using <code>Provider Engine&#8217;s
+Filter Subprovider
+&lt;<a href="https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+" class="bare">https://github.com/MetaMask/provider-engine/blob/master/subproviders/filters.js&gt;+</a></code></p>
+</div>
+<div class="paragraph data-line-304">
+<p>The Filter Subprovider mimics the functionality of installing a filter on a node
+and requesting updates about the subscription by making a series of stateless
+calls against the RPC server.
+Over the long term it might be beneficial to add a shared database that would
+allow the load balanced RPC nodes to manage filters on the server side instead
+of the client side, but due to the existence of the Filter Subprovider that is
+not necessary in the short term.</p>
+</div>
+<div class="sect2 data-line-312">
+<h3 id="_reduced_computational_requirements">Reduced Computational Requirements</h3>
+<div class="paragraph data-line-314">
+<p>As discussed in :ref:<code>initialization</code>, a collection of nodes managed by a
+single operator do not have the same trust model amongst themselves as nodes in
+a fully peer-to-peer system.
+RPC Nodes can potentially decrease their computational overhead by relying on a
+subset of the nodes within a group to validate transactions.
+This would mean that a small portion of nodes would need the computational
+capacity to validate every transaction, while the remaining nodes would have
+lower resource requirements to serve RPC requests, allowing flexible scaling and
+redundancy.</p>
+</div>
+</div>
+<div class="sect2 data-line-324">
+<h3 id="_implementation">Implementation</h3>
+<div class="paragraph data-line-326">
+<p>In <code>go-ethereum/internal/ethapi/backend.go</code>, a Backend interface is specified.
+Objects filling this interface can be passed to <code>ethapi.GetAPIs()</code> to return
+<code>[]rpc.API</code>, which can be used to serve the Ethereum RPC APIs.
+Presently there are two implementations of the Backend interface, one for full
+Ethereum nodes and one for Light Ethereum nodes that depend on the LES protocol.</p>
+</div>
+<div class="paragraph data-line-332">
+<p>This project will implement a third backend implementation, which will provide
+the necessary information to ethapi.GetAPIs() to in turn provide the RPC APIs.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-335">
+<h2 id="_backend_functions_to_implement">Backend Functions To Implement</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-337">
+<p>This section explores each of the 26 methods required by the Backend interface.
+This is an initial pass, and attempts to implement these methods may prove more
+difficult than described below.</p>
+</div>
+<div class="paragraph data-line-341">
+<p>Downloader()</p>
+</div>
+<div class="paragraph data-line-343">
+<p>Downloader must return a <code>*go-ethereum/eth/downloader.Downloader</code> object.
+Normally the <code>Downloader</code> object is responsible for managing relationships with
+remote peers, and synchronizing the block from remote peers.
+As our replicas will receive data directly via Kafka, the Downloader object
+won&#8217;t see much use.
+Even so, the <code>PublicEthereumAPI</code> struct expects to be able to retrieve a
+<code>Downloader</code> object so that it can provide the <code>eth_syncing</code> API call.</p>
+</div>
+<div class="paragraph data-line-351">
+<p>If the Backend interface required an interface for a downloader rather than a
+specific Downloader object, we could stub out at Downloader that provided the
+<code>eth_syncing</code> data based on the current Kafka sync state.
+Unfortunately the Downloader requires a specific object constructed with the
+following properties:</p>
+</div>
+<div class="ulist data-line-357">
+<ul>
+<li class="data-line-357">
+<p><code>{mode SyncMode}</code> - An integer indicating whether the SyncMode is Fast, Full,
+or Light.
+We can probably specify "light" for our purposes.</p>
+</li>
+<li class="data-line-360">
+<p><code>{stateDb ethdb.Database}</code> - An interface to LevelDB.
+Our backend will neeed a Database instance, so this should be easy.</p>
+</li>
+<li class="data-line-362">
+<p><code>{mux *event.TypeMux}</code> - Used only for syncing with peers.
+If we avoid calling Downloader.Synchronize(), it appears this can safely be nil.</p>
+</li>
+<li class="data-line-364">
+<p>{<code>chain BlockChain}</code> - An object providing the downloader.BlockChain
+interface.
+If we only need to support Downloader.Progress(), and we set SyncMode to
+LightSync, this can be nil.</p>
+</li>
+<li class="data-line-368">
+<p><code>{lightchain LightChain}</code> - An object providing the downloader.LightChain
+interface.
+If we only need to support Downloader.Progress(), and we set SyncMode to
+LightSync, we will need to stub this out and provide CurrentHeader() with the
+correct blocknumber.</p>
+</li>
+<li class="data-line-373">
+<p><code>{dropPeer peerDropFn}</code> - Only used when syncing with peers.
+If we avoid calling Downloader.Synchronize(), this can be <code>func(string) {}</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-376">
+<p>Constructing a <code>Downloader</code> with the preceding arguments should provide the
+capabilities we need to offer the <code>eth_progress</code> RPC call.</p>
+</div>
+<div class="paragraph data-line-379">
+<p>ProtocolVersion() .</p>
+</div>
+<div class="paragraph data-line-381">
+<p>This just needs to return an integer indicating the protocol version.
+This tells us what version of the peer-to-peer protocol the Ethereum client is
+using.
+As replicas will not use a peer-to-peer protocol, it might make sense for this
+to be a value like <code>-1</code>.</p>
+</div>
+<div class="paragraph data-line-387">
+<p>SuggestPrice()</p>
+</div>
+<div class="paragraph data-line-389">
+<p>Should return a <code>{big.Int}</code> gas price for a transaction.
+This can use <code>{go-ethereum/eth/gasprice.Oracle}</code> to provide the same values a
+stanard Ethereum node would provide.
+Note, however, that gasprice.Oracle requires a Backend object of its own, so
+implementing SuggestPrice() will need to wait until the following backend
+methods have been implemented:</p>
+</div>
+<div class="ulist data-line-396">
+<ul>
+<li class="data-line-396">
+<p><code>HeaderByNumber()</code></p>
+</li>
+<li class="data-line-397">
+<p><code>BlockByNumber()</code></p>
+</li>
+<li class="data-line-398">
+<p><code>ChainConfig()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-400">
+<p><strong>ChainDb()</strong></p>
+</div>
+<div class="paragraph data-line-402">
+<p>Our backend will need to be constructed with an {<code>ethdb.Database}</code> object, which
+will be it&#8217;s primary source for much of the information about the blockchain and
+state.
+This method will return that object.</p>
+</div>
+<div class="paragraph data-line-407">
+<p>For replicas, it might be prudent to have a wrapper that provides the
+<code>{ethdb.Database}</code> interface, but errors on any write operations, as we want to
+ensure that all write operations to the primary database come from the
+replication process.</p>
+</div>
+<div class="paragraph data-line-412">
+<p>*EventMux() *</p>
+</div>
+<div class="paragraph data-line-414">
+<p>This seem to be used by peer-to-peer systems.
+I can&#8217;t find anything in the RPC system that depends on <code>EventMux()</code>, so I think
+we can return <code>nil</code> for the Replica backend.</p>
+</div>
+<div class="paragraph data-line-418">
+<p>*AccountManager() *</p>
+</div>
+<div class="paragraph data-line-420">
+<p>This returns an <code>*accounts.Manager</code> object, which manages access to Ethereum
+wallets and other secret data.
+This would be used by the Private Ethereum APIs, which our Replicas will not
+implement.
+Services that need to manage accounts in conjunction with replica RPC nodes
+should utilize client side account managers such as <code>+Web3 Provider Engine
+&lt;<a href="https://www.npmjs.com/package/web3-provider-engine&gt;+" class="bare">https://www.npmjs.com/package/web3-provider-engine&gt;+</a></code>_.</p>
+</div>
+<div class="paragraph data-line-428">
+<p>In a future phase we may decide to implement an AccountManager service for
+replica nodes, but this would require serious consideration for how to securely
+store credentials and share them across the replicas in a cluster.</p>
+</div>
+<div class="paragraph data-line-432">
+<p><strong>SetHead()</strong></p>
+</div>
+<div class="paragraph data-line-434">
+<p>This is used by the private debug APIs, allowing developers to set the
+blockchain back to an earlier state in private environments.
+Replicas should not be able to roll back the blockchain to an earlier state, so
+this method should be a no-op.</p>
+</div>
+<div class="paragraph data-line-439">
+<p>*HeaderByNumber() *</p>
+</div>
+<div class="paragraph data-line-441">
+<p>HeaderByNumber needs to return a <code>*core/types.Header</code> object corresponding to
+the specified block number.
+This will need to get information from the database.
+It might be possible to leverage in-memory caches to speed up these data
+lookups, but it must not rely on information normally provided by the
+peer-to-peer protocol manager.</p>
+</div>
+<div class="paragraph data-line-448">
+<p>This should be able to use <code>core.GetCanonicalHash()</code> to get the blockhash, then
+<code>core.GetHeader()</code> to get the Block Number.</p>
+</div>
+<div class="paragraph data-line-451">
+<p><strong>BlockByNumber()</strong></p>
+</div>
+<div class="paragraph data-line-453">
+<p>BlockByNumber needs to return a <code>*core/types.Block</code> object corresponding to the
+specified block number.
+This will need to get information from the database.
+It might be possible to leverage in-memory caches to speed up these data
+lookups, but it must not rely on information normally provided by the
+peer-to-peer protocol manager.</p>
+</div>
+<div class="paragraph data-line-460">
+<p>This should be able to use <code>core.GetCanonicalHash()</code> to get the blockhash, then
+<code>core.GetBlock()</code> to get the Block Number.</p>
+</div>
+<div class="paragraph data-line-463">
+<p><strong>StateAndHeaderByNumber()</strong></p>
+</div>
+<div class="paragraph data-line-465">
+<p>Needs to return a <code>*core/state.StateDB</code> object and a <code>*core/types.Header</code> object
+corresponding to the specified block number.</p>
+</div>
+<div class="paragraph data-line-468">
+<p>The header can be retrieved with <code>backend.HeaderByNumber()</code>.
+Then the stateDB object can be created with <code>core/state.New()</code> given the hash
+from the retrieved header and the ethdb.Database.</p>
+</div>
+<div class="paragraph data-line-472">
+<p>*GetBlock() *</p>
+</div>
+<div class="paragraph data-line-474">
+<p>Needs to return a <code>*core/types.Block</code> given a <code>common.Hash</code>.
+This should be able to use <code>core.GetBlockNumber()</code> to get the block number for
+the hash, and <code>core.GetBlock()</code> to retrieve the <code>*core/types.Block</code>.</p>
+</div>
+<div class="paragraph data-line-478">
+<p><strong>GetReceipts()</strong></p>
+</div>
+<div class="paragraph data-line-480">
+<p>Needs to return a <code>core/types.Receipts</code> given a <code>common.Hash</code>.
+This should be able to use <code>core.GetBlockNumber()</code> to get the block number for
+the hash, and <code>core.GetBlockReceipts()</code> to retrieve the <code>core/types.Receipts</code>.</p>
+</div>
+<div class="paragraph data-line-484">
+<p><strong>GetTd()</strong></p>
+</div>
+<div class="paragraph data-line-486">
+<p>Needs to return a <code>*big.Int</code> given a <code>common.Hash</code>.
+This should be able to use <code>core.GetBlockNumber()</code> to get the block number for
+the hash, and <code>core.GetTd()</code> to retrieve the total difficulty.</p>
+</div>
+<div class="paragraph data-line-490">
+<p>*GetEVM() *</p>
+</div>
+<div class="paragraph data-line-492">
+<p>Needs to return a <code>*core/vm.EVM</code>.</p>
+</div>
+<div class="paragraph data-line-494">
+<p>This requires a <code>core.ChainContext</code> object, which in turn needs to implement:</p>
+</div>
+<div class="ulist data-line-496">
+<ul>
+<li class="data-line-496">
+<p><code>Engine()</code> - A conensus engine instance.
+This should reflect the conensus engine of the server the replica is
+replicating.
+This would be Ethash for Mainnet, but may be Clique or eventually Casper for
+other networks.</p>
+</li>
+<li class="data-line-501">
+<p><code>GetHeader()</code> - Can proxy <code>backend.GetHeader()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-503">
+<p>Beyond the construction of a new <code>ChainContext</code>, this should be comparable to
+the implementation of eth/api_backend.go&#8217;s <code>GetEVM()</code></p>
+</div>
+<div class="sect2 data-line-509">
+<h3 id="_subscribe_event_apis">Subscribe Event APIs</h3>
+<div class="paragraph data-line-511">
+<p>The following methods exist as part of the Event Filtering system.</p>
+</div>
+<div class="ulist data-line-513">
+<ul>
+<li class="data-line-513">
+<p><code>SubscribeChainEvent()</code></p>
+</li>
+<li class="data-line-514">
+<p><code>SubscribeChainHeadEvent()</code></p>
+</li>
+<li class="data-line-515">
+<p><code>SubscribeChainSideEvent()</code></p>
+</li>
+<li class="data-line-516">
+<p><code>SubscribeTxPreEvent()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-518">
+<p>As discussed in <code>load-balancing</code>, the initial implementation of the replica
+service will not support the filtering APIs.</p>
+</div>
+<div class="paragraph data-line-521">
+<p>As such, these methods can be no-ops that simply return <code>nil</code>.
+In the future we may implement these methods, but it will need to be a
+completely new implementation to support filtering on the cluster instead of
+individual replicas.</p>
+</div>
+<div class="paragraph data-line-529">
+<p>*SendTx() *</p>
+</div>
+<div class="paragraph data-line-531">
+<p>As replica nodes will not have peer-to-peer connections, they will not be able
+to send transactions to the network via conventional methods.</p>
+</div>
+<div class="paragraph data-line-534">
+<p>Instead, we propose that the replica will simply queue transactions onto a Kafka
+topic.
+Independent from the replica service we can have consumers of the transaction
+topic emit the transactions to the network using different methods.</p>
+</div>
+<div class="paragraph data-line-539">
+<p>The scope of implementing <code>SendTx()</code> is limited to placing the transaction onto
+a Kafka topic.
+Processing those events and emitting them to the network will be discused in
+:ref:<code>tx-emitters</code>.</p>
+</div>
+</div>
+<div class="sect2 data-line-544">
+<h3 id="_transaction_pool_methods">Transaction Pool Methods</h3>
+<div class="paragraph data-line-546">
+<p>The transaction pool in Go Ethereum is kept in memory, rather than in the
+LevelDB database.
+This means that the primary log stream will not include information about
+information about unconfirmed transactions.
+Additionally, the primary APIs that would make use of the transaction pool are
+the filtering transactions, which we established in :ref:<code>event-apis</code> will not
+be supported in the initial implementation.</p>
+</div>
+<div class="paragraph data-line-554">
+<p>For the first phase, this project will not implement the transaction pool.
+In a future phase, depending on demand, we may create a separate log stream for
+transaction pool data.
+For the first phase, these methods will return as follows:</p>
+</div>
+<div class="ulist data-line-559">
+<ul>
+<li class="data-line-559">
+<p>GetPoolTransactions() - Return an empty <code>types.Transactions</code> slice.</p>
+</li>
+<li class="data-line-560">
+<p>GetPoolTransaction() - Return nil</p>
+</li>
+<li class="data-line-561">
+<p>GetPoolNonce() - Use <code>statedb.GetNonce</code> to return the most recent confirmed
+nonce.</p>
+</li>
+<li class="data-line-563">
+<p>Stats() - Return 0 transactions pending, 0 transactions queued</p>
+</li>
+<li class="data-line-564">
+<p>TxPoolContent() - Return empty <code>map[common.Address]types.Transactions</code> maps
+for both pending and queued transactions.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-567">
+<p>ChainConfig() .</p>
+</div>
+<div class="paragraph data-line-569">
+<p>The ChainConfig property will likely be provided to the Replica Backend as the
+backend is contructed, so this will return that value.</p>
+</div>
+<div class="paragraph data-line-572">
+<p>CurrentBlock()</p>
+</div>
+<div class="paragraph data-line-574">
+<p>This will need to look up the block hash of the latest block from LevelDB, then
+use that to invoke <code>backend.GetBlock()</code> to retrieve the current block.</p>
+</div>
+<div class="paragraph data-line-577">
+<p>In the future we may be able to optimize this method by keeping the current
+block in memory.
+If we track when the <code>LatestBlock</code> key in LevelDB gets updated, we can clear the
+in-memory cache as updates come in.</p>
+</div>
+<div class="paragraph data-line-583">
+<p>_tx-emitters:</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-585">
+<h2 id="_transaction_emitters">Transaction Emitters</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-587">
+<p>Emitting transactions to the network is a different challenge than replicating
+the chain for reading, and has different security concerns.
+As discussed in :ref:<code>send-tx</code>, replica nodes will not have peer-to-peer
+connections for the purpose of broadcasting transactions.
+Instead, when the <code>SendTx()</code> method is called on our backend, it will log the
+transaction to a Kafka topic for a downstream Transaction Emitter to handle.</p>
+</div>
+<div class="paragraph data-line-594">
+<p>Different use cases may have different needs from transaction emitters.
+On one end of the spectrum, OpenRelay needs replicas strictly for watching for
+order fills and checking token balances, so no transaction emitters are
+necessary in the current workflow.
+Other applications may have high volumes of transactions that need to be
+emitted.</p>
+</div>
+<div class="paragraph data-line-601">
+<p>The basic transaction emitter will watch the Kafka topic for transactions, and
+make RPC calls to transmit those messages.
+This leaves organizations with several options for how to transmit those
+messages to the network.
+Organizations may choose to:</p>
+</div>
+<div class="ulist data-line-607">
+<ul>
+<li class="data-line-607">
+<p>Not to run a transaction emitter at all, if their workflows do not generate
+transactions.</p>
+</li>
+<li class="data-line-609">
+<p>Run a transaction emitter pointed to the source server that is feeding their
+replica nodes.</p>
+</li>
+<li class="data-line-611">
+<p>Run a transaction emitter pointed to a public RPC server such as Infura.</p>
+</li>
+<li class="data-line-612">
+<p>Run a separate cluster of light nodes for transmitting transactions to the
+network</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-615">
+<p>Security Considerations</p>
+</div>
+<div class="paragraph data-line-617">
+<p>The security concerns relating to emitting transactions are different than the
+concerns for read operations.
+One reason for running a private cluster of RPC nodes is that the RPC protocol
+doesn&#8217;t enable publicly hosted nodes to prove the authenticity of the data they
+are serving.
+To have a trusted source of state data an organization must have trusted
+Ethereum nodes.
+When it comes to emitting transactions, the peer-to-peer protocol offers roughly
+the same assurances that transactions will be emitted to the network as RPC
+nodes.
+Thus, some organizations may decide to transmit transactions through APIs like
+Infura and Etherscan even though they choose not to trust those services for
+state data.
+= Introduction</p>
+</div>
+<div class="paragraph data-line-632">
+<p>For a service to be treated as a commodity, it typically has the following
+properties:</p>
+</div>
+<div class="ulist data-line-635">
+<ul>
+<li class="data-line-635">
+<p>It can be load-balanced, and any instance can serve any request as well as any
+other instance.</p>
+</li>
+<li class="data-line-637">
+<p>It has simple health checks that can indicate when an instance should be
+removed from the load balancer pool.</p>
+</li>
+<li class="data-line-639">
+<p>When a new instance is started it does not start serving requests until it is
+healthy.</p>
+</li>
+<li class="data-line-641">
+<p>When a new instance is started it reaches a healthy state quickly.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-643">
+<p>Eisting Ethereum nodes don&#8217;t fit well into this model:</p>
+</div>
+<div class="ulist data-line-645">
+<ul>
+<li class="data-line-645">
+<p>Certain API calls are stateful, meaning the same instance must serve multiple
+successive requests and cannot be transparently replaced.</p>
+</li>
+<li class="data-line-647">
+<p>There are numerous ways in which an Ethereum node can be unhealthy, some of
+which are difficult to determine.</p>
+<div class="ulist data-line-649">
+<ul>
+<li class="data-line-649">
+<p>A node might be unhealthy because it does not have any peers</p>
+</li>
+<li class="data-line-650">
+<p>A node might have peers, but still not receive new blocks</p>
+</li>
+<li class="data-line-651">
+<p>A node might be starting up, and have yet to reach a healthy state</p>
+</li>
+</ul>
+</div>
+</li>
+<li class="data-line-652">
+<p>When a new instance is started it generally starts serving on RPC immediately,
+even though it has yet to sync the blockchain.
+If the load balancer serves request to this instance it will serve outdated
+information.</p>
+</li>
+<li class="data-line-656">
+<p>When new instances are started, they must discover peers, download and
+validate blocks, and update the state trie.
+This takes hours under the best circumstances, and days under extenuating
+circumstances.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-661">
+<p>As a result it is often easier to spend time troubleshooting the problems on a
+particular instance and get that instance healthy again, rather than replace it
+with a fresh instance.</p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-666">
+<h2 id="_publicly_hosted_ethereum_rpc_nodes">Publicly Hosted Ethereum RPC Nodes</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-668">
+<p>Many organizations are currently using publicly hosted Ethereum RPC nodes such
+as Infura.
+While these services are very helpful, there are several reasons organizations
+may not wish to depend on third party Ethereum RPC nodes.</p>
+</div>
+<div class="paragraph data-line-673">
+<p>First, the Ethereum RPC protocol does not provide enough information to
+authenticate state data provided by the RPC node.
+This means that publicly hosted nodes could serve inaccurate information with no
+way for the client to know.
+This puts public RPC providers in a position where they could potentially abuse
+their clients' trust for profit.
+It also makes them a target for hackers who might wish to serve inaccurate state
+informatino.</p>
+</div>
+<div class="paragraph data-line-682">
+<p>Second, it means that a fundamental part of an organization&#8217;s system depends on
+a third party that offers no SLA.
+RPC hosts like Infura are generally available on a best effort basis, but have
+been known to have significant outages.
+And should Infura ever cease operations, consumers of their service would need
+to rapidly find an alternative provider.</p>
+</div>
+<div class="paragraph data-line-689">
+<p>Hosting their own Ethereum nodes is the surest way for an organization to
+address both of these concerns, but currently has significant operational
+challenges.
+We intend to help address the operational challenges so that more organizations
+can run their own Ethereum nodes.
+= Operational Requirements</p>
+</div>
+<div class="paragraph data-line-696">
+<p>The implementation discussed in previous sections relates directly to the
+software changes required to help operationalize Ethereum clients.
+There are also ongoing operational processes that will be required to maintain a
+cluster of master / replica nodes.</p>
+</div>
+<div class="paragraph data-line-702">
+<p>{cluster-initialization}</p>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-704">
+<h2 id="_cluster_initialization">Cluster Initialization</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-706">
+<p>Initializing a cluster comprised of a master and one or more replicas requires a
+few steps.</p>
+</div>
+<div class="sect2 data-line-709">
+<h3 id="_master_initialization">Master initialization</h3>
+<div class="paragraph data-line-711">
+<p>Before standing up any replicas or configuring the master to send logs to Kafka,
+the master should be synced with the blockchain.
+In most circumstances, this should be a typical Geth fast sync with standard
+garbage collection arguments.</p>
+</div>
+<div class="paragraph data-line-717">
+<p>{_leveldb-snapshots}</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-719">
+<h2 id="_leveldb_snapshotting">LevelDB Snapshotting</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-721">
+<p>Once the master is synced, the LevelDB directory needs to be snapshotted.
+This will become the basis of both the subsequent master and the replica
+servers.</p>
+</div>
+<div class="sect2 data-line-725">
+<h3 id="_replication_master_configuration">Replication Master Configuration</h3>
+<div class="paragraph data-line-727">
+<p>Once synced and ready for replication, the master needs to be started with the
+garbage collection mode of "archive".
+Without the "archive" garbage collection mode, the state trie is kept in memory,
+and not written to either LevelDB or Kafka immediately.
+If state data is not written to Kafka immediately, the replicas have only the
+chain data and cannot do state lookups.
+The master should also be configured with a Kafka broker and topic for logging
+write operations.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-736">
+<h2 id="_replica_configuration">Replica Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-738">
+<p>Replicas should be created with a copy of the LevelDB database snapshotted in
+:ref:<code>leveldb-snapshots</code>.
+When executed, the replica service should be pointed to the same Kafka broker
+and topic as the master.
+Any changes written by the master since the LevelDB snapshot will be pulled from
+Kafka before the Replica starts serving HTTP requests.</p>
+</div>
+<div class="sect2 data-line-745">
+<h3 id="_periodic_replica_snapshots">Periodic Replica Snapshots</h3>
+<div class="paragraph data-line-747">
+<p>When new replicas are scaled up, they will connect to Kafka to pull any changes
+not currently reflected in their local database.
+The software manages this by storing the Kafka offset of each write operation as
+it persists to LevelDB, and when a new replica starts up it will replay any
+write operations more recent than the offset of the last saved operation.
+However this assumes that Kafka will have the data to resume from that offset,
+and in practice Kafka periodically discards old data.
+Without intervention, a new replica will eventually spin up to find that Kafka
+no longer has the data required for it to resume.</p>
+</div>
+<div class="paragraph data-line-757">
+<p>The solution for this is fairly simple.
+We need to snapshot the replicas more frequently than Kafka fully cycles out
+data.
+Each snapshot should reflect the latest data in Kafka at the time the snapshot
+was taken, and any new replicas created from that snapshot will be able to
+resume so long as Kafka still has the offset from the time the snapshot was
+taken.</p>
+</div>
+<div class="paragraph data-line-765">
+<p>The mechanisms for taking snapshots will depend on operational infrastructure.
+The implementation will vary between cloud providers or on-premises
+infrastructure management tools, and will be up to each team to implement
+(though we may provide additional documentation and tooling for specific
+providers).</p>
+</div>
+<div class="paragraph data-line-771">
+<p>Administrators should be aware of Kafka&#8217;s retention period, and be sure that
+snapshots are taken more frequently than the retention period, leaving enough
+time to troubleshoot failed snapshots before Kafka runs out</p>
+</div>
+</div>
+<div class="sect2 data-line-775">
+<h3 id="_periodic_cluster_refreshes">Periodic Cluster Refreshes</h3>
+<div class="paragraph data-line-777">
+<p>Because replication requires the master to write to LevelDB with a garbage
+collection mode of "archive", the disk usage for each node of a cluster can grow
+fairly significantly after the initial sync.
+When disk usage begins to become a problem, the entire cluster can be refreshed
+following the :ref:<code>cluster-initialization</code> process.</p>
+</div>
+<div class="paragraph data-line-783">
+<p>Both clusters can run concurrently while the second cluster is brought up, but
+it is important that the two clusters use separate LevelDB snapshots and
+separate Kafka partitions to stay in sync (they can use the same Kafka broker,
+if it is capable of handling the traffic).</p>
+</div>
+<div class="paragraph data-line-788">
+<p>As replicas for the new cluster are spun up, they will only start serving HTTP
+requests once they are synced with their respective Kafka partition.
+Assuming your load balancer only attempts to route requests to a service once it
+has passed health checks, both clusters can co-exist behind the load balancer
+concurrently.</p>
+</div>
+</div>
+<div class="sect2 data-line-794">
+<h3 id="_multiple_clusters">Multiple Clusters</h3>
+<div class="paragraph data-line-796">
+<p>Just as multiple clusters can co-exist during a refresh, multiple clusters can
+co-exist for stability purposes.
+Within a single cluster, the master server is a single point of failure.
+If the master gets disconnected from its peers or fails for other reasons, its
+peers will not get updates and become stale.
+A new master can be created from the last LevelDB snapshot, but that will take
+time during which the replicas will be stale.</p>
+</div>
+<div class="paragraph data-line-804">
+<p>With multiple clusters, when a master is determined to be unhealthy its replicas
+could be removed from the load balancer to avoid stale data, and additional
+clusters could continue to serve current data.</p>
+</div>
+</div>
+<div class="sect2 data-line-808">
+<h3 id="_high_availability">High Availability</h3>
+<div class="paragraph data-line-810">
+<p>A single cluster provides several operational benefits over running conventional
+Ethereum nodes, but the master server is still a single point of failure.
+Using data stored in Kafka, the master can recover much more quickly than a node
+that needed to sync from peers, but that can still lead to a period of time
+where the replicas are serving stale data.</p>
+</div>
+<div class="paragraph data-line-816">
+<p>To achieve high availability requires multiple clusters with independent masters
+and their own replicas.
+Multiple replica clusters can share a high-availability Kafka cluster.
+The following formula can be used to determine the statistical availability of a
+cluster:</p>
+</div>
+<div class="dlist data-line-823">
+<dl>
+<dt class="hdlist1">math</dt>
+<dd>
+<p>a = 1 - (1 - \frac{mtbf}{mttr + mtbf})^N</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph data-line-825">
+<p>Where:</p>
+</div>
+<div class="ulist data-line-827">
+<ul>
+<li class="data-line-827">
+<p><code>mtbf</code> - Mean Time Between Failures - The average amount of time between
+failures of a master server</p>
+</li>
+<li class="data-line-829">
+<p><code>mttr</code> - Mean Time To Recovery - The average amount of time it takes to
+replace a master server after a failure</p>
+</li>
+<li class="data-line-831">
+<p><code>N</code> - The number of independently operating clusters</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-833">
+<p>The values of <code>mtbf</code> and <code>mttr</code> will depend on your operational environment.
+With our AWS CloudFormation templates, we have established an <code>mttr</code> of 45
+minutes when snapshotting daily.
+We have not gathered enough data to establish a mtbf, but with two independent
+clusters and a 45 minute <code>mttr</code>, EC2&#8217;s regional SLA becomes the bounding factor
+of availability if the <code>mtbf</code> is greater than two weeks.</p>
+</div>
+<div class="paragraph data-line-840">
+<p>This formula focuses only on the availability of masters - it assumes that each
+master has multiple independent replicas.
+If a master only has a single replica, that will hurt the <code>mtbf</code> of the cluster
+as a whole.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 data-line-846">
+<h2 id="_greypool">GreyPool</h2>
+<div class="sectionbody">
+<div class="paragraph data-line-848">
+<p>Stratum WebSocket with TLS (uri) `stratumss:// `</p>
+</div>
+<div class="sect2 data-line-851">
+<h3 id="_transaction_pool_feeds">Transaction Pool Feeds</h3>
+<div class="paragraph data-line-853">
+<p>This fork of Geth includes two new types of subscriptions, available through the
+eth_subscribe method on Websockets.</p>
+</div>
+<div class="sect3 data-line-856">
+<h4 id="_rejected_transactions">Rejected Transactions</h4>
+<div class="paragraph data-line-858">
+<p>Using Websockets, you can subscribe to a feed of rejected transactions with:</p>
+</div>
+<div class="listingblock data-line-860">
+<div class="content">
+<pre class="highlight"><code>{"id": 0, "method": "eth_subscribe", "params":["rejectedTransactions"]}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-864">
+<p>This will immediately return a payload of the form:</p>
+</div>
+<div class="listingblock data-line-866">
+<div class="content">
+<pre class="highlight"><code>{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-870">
+<p>And as messages are rejected by the transaction pool, it will send additional
+messages of the form:</p>
+</div>
+<div class="listingblock data-line-873">
+<div class="content">
+<pre class="highlight"><code>{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "$SUBSCRIPTION_ID",
+    "result": {
+      "tx": "$ETHEREUM_TRANSACTION",
+      "reason": "$REJECT_REASON"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-887">
+<p>One message will be emitted on this feed for every transaction rejected by the
+transaction pool, excluding those rejected because they were already known by
+the transaction pool.</p>
+</div>
+<div class="paragraph data-line-891">
+<p>It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</p>
+</div>
+<div class="paragraph data-line-895">
+<p>The reject reason corresponds to the error messages returned by Geth within the
+txpool. At the time of this writing, these include:</p>
+</div>
+<div class="ulist data-line-898">
+<ul>
+<li class="data-line-898">
+<p>invalid sender</p>
+</li>
+<li class="data-line-899">
+<p>nonce too low</p>
+</li>
+<li class="data-line-900">
+<p>transaction underpriced</p>
+</li>
+<li class="data-line-901">
+<p>replacement transaction underpriced</p>
+</li>
+<li class="data-line-902">
+<p>insufficient funds for gas * price + value</p>
+</li>
+<li class="data-line-903">
+<p>intrinsic gas too low</p>
+</li>
+<li class="data-line-904">
+<p>exceeds block gas limit</p>
+</li>
+<li class="data-line-905">
+<p>negative value</p>
+</li>
+<li class="data-line-906">
+<p>oversized data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph data-line-908">
+<p>However it is possible that in the future Geth may add new error types that
+could be included by this response without modification to the rejection feed
+itself.</p>
+</div>
+</div>
+</div>
+<div class="sect2 data-line-912">
+<h3 id="_dropped_transactions">Dropped Transactions</h3>
+<div class="paragraph data-line-914">
+<p>Using Websockets, you can subscribe to a feed of dropped transaction hashes
+with:</p>
+</div>
+<div class="listingblock data-line-917">
+<div class="content">
+<pre class="highlight"><code>{"id": 0, "method": "eth_subscribe", "params":["droppedTransactions"]}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-921">
+<p>This will immediately return a payload of the form:</p>
+</div>
+<div class="listingblock data-line-923">
+<div class="content">
+<pre class="highlight"><code>{"jsonrpc":"2.0","id":0,"result":"$SUBSCRIPTION_ID"}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-927">
+<p>And as messages are dropped from the transaction pool, it will send additional
+messages of the form:</p>
+</div>
+<div class="listingblock data-line-930">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "subscription": "0xe5fa5d3c8ec05953bd746a784cfeade6",
+    "result": {
+      "txhash": "$TRANSACTION_HASH",
+      "reason": "$REASON"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph data-line-944">
+<p>One message will be emitted on this feed for every transaction dropped from the
+transaction pool.</p>
+</div>
+<div class="paragraph data-line-947">
+<p>It is important that consuming applications process messages quickly enough to
+keep up with the process. Geth will buffer up to 20,000 messages, but if that
+threshold is reached the subscription will be discarded by the server.</p>
+</div>
+<div class="paragraph data-line-951">
+<p>The following reasons may be included as reasons transactions were rejected:</p>
+</div>
+<div class="ulist data-line-953">
+<ul>
+<li class="data-line-953">
+<p>underpriced-txs: Indicates the transaction&#8217;s gas price is below the node&#8217;s
+threshold.</p>
+</li>
+<li class="data-line-955">
+<p>low-nonce-txs: Indicates that the account nonce for the sender of this
+transaction has exceeded the nonce on this transction. That may happen when this
+transaction is included in a block, or when a replacement transaction is
+included in a block.</p>
+</li>
+<li class="data-line-959">
+<p>unpayable-txs: Indicates that the sender lacks sufficient funds to pay the
+intrinsic gas for this transaction</p>
+</li>
+<li class="data-line-961">
+<p>account-cap-txs: Indicates that this account has sent enough transactions to
+exceed the per-account limit on the node.</p>
+</li>
+<li class="data-line-963">
+<p>replaced-txs: Indicates that the transaction was dropped because a replacement
+transaction with the same nonce and higher gas has replaced it.</p>
+</li>
+<li class="data-line-965">
+<p>unexecutable-txs: Indicates that a transaction is no longer considered
+executable. This typically applies to queued transaction, when a dependent
+pending transaction was removed for a reason such as unpayable-txs.</p>
+</li>
+<li class="data-line-968">
+<p>truncating-txs: The transaction was dropped because the number of transactions
+in the mempool exceeds the allowable limit.</p>
+</li>
+<li class="data-line-970">
+<p>old-txs: The transaction was dropped because it has been in the mempool longer
+than the allowable period of time without inclusion in a block.</p>
+</li>
+<li class="data-line-972">
+<p>updated-gas-price: The node&#8217;s minimum gas price was updated, and transactions
+below that price were dropped.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2 data-line-978">
+<h3 id="_mev_geth">MEV-Geth</h3>
+<div class="listingblock data-line-980">
+<div class="content">
+<pre class="highlight"><code>/**
+* @AddMevBundle
+* @summary pool mevBundles
+* @param {AddMevBundle} &lt;uint64&gt;  - ddMevBundle adds a mev bundle to the pool
+* @return {mevBundles} blockNumber, minTimestamp, maxTimestamp
+*/</code></pre>
+</div>
+</div>
+<div class="listingblock data-line-989">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (pool *TxPool) AddMevBundle(txs types.Transactions, blockNumber *big.Int,
+minTimestamp, maxTimestamp uint64) error {
+	pool.mu.Lock()
+	defer pool.mu.Unlock()
+
+	pool.mevBundles = append(pool.mevBundles, mevBundle{
+		txs:          txs,
+		blockNumber:  blockNumber,
+		minTimestamp: minTimestamp,
+		maxTimestamp: maxTimestamp,
+	})</code></pre>
+</div>
+</div>
+<div class="listingblock data-line-1003">
+<div class="content">
+<pre class="highlight"><code>/**
+* MevBundles
+* @readonly list of bundles valid for the given blockNumber/blockTimestamp
+* {uint64} ([]types.Transactions)
+*/</code></pre>
+</div>
+</div>
+<div class="listingblock data-line-1011">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">// MevBundles returns a list of bundles valid for the given
+blockNumber/blockTimestamp
+// also prunes bundles that are outdated
+func (pool *TxPool) MevBundles(blockNumber *big.Int, blockTimestamp uint64)
+([]types.Transactions, error) {
+	return nil, nil
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 data-line-1022">
+<h3 id="_operational_topics_concerning_strategies_etc">Operational Topics (concerning strategies, etc)</h3>
+<div class="paragraph data-line-1024">
+<p>This section describes (without much context), some of the mathmatical
+principles used to find opportunites in the market.</p>
+</div>
+<div class="paragraph data-line-1027">
+<p>A good analogy would be comparing this to the well known `A * ` Algorithim for
+path finding. These equations are utilized, amongst others, as a hearuisistc. We
+do not make any claims on their formal soundness, only on their current and
+projected rate of returns.</p>
+</div>
+</div>
+<div class="sect2 data-line-1032">
+<h3 id="_super_liquidity_manifolds_and_abstract_liquid_tranches">Super Liquidity Manifolds and Abstract Liquid Tranches</h3>
+<div class="quoteblock data-line-1034">
+<blockquote>
+<div class="paragraph data-line-1">
+<p>*Paramaratized Constant Function Markets</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph data-line-1037">
+<p>Super-liquidity manifold (SLM) system is a mathematical construct, defined below
+to describe an efficient digital market model. Assets that are traded on such
+market \(^{1}\) may benefit from the trade option against at least one
+super-liquid exchange medium.</p>
+</div>
+<div class="paragraph data-line-1042">
+<p>Consider an abstract liquid tranche (ALT) system as a weighted directed graph
+\(G:=(V, E, w),\) where set of vertices \(V,|V| \leq| N |\) contains digital
+representation of all tradeable assets in \(G,\) set of edges \(E=\{e \in V
+\times V:\) \(w(e)&gt;0\}\) represents all possible atomic \(^{2}\) asymmetric
+\(^{3}\) trades, which are weighted by the function \(w: E \rightarrow R ^{+}\)
+corresponding to the price of some trade \(e \in E\)</p>
+</div>
+<div class="sect3 data-line-1050">
+<h4 id="_definition_1">Definition 1</h4>
+<div class="paragraph data-line-1052">
+<p>Vertex \(v \in V\) represents half-liquid asset \(^{4}\) iff either
+\(\operatorname&#176;^{-}(v)=0\) (source) or
+\(\operatorname&#176;^{}(v)=0(\operatorname{sink}),\) where
+\(\operatorname{deg}^{(-1)}: V \rightarrow N\) is respectively a number
+of tail ends (indegree) and a number of head ends (outdegree) from vertices
+adjacent to \(v\).</p>
+</div>
+</div>
+<div class="sect3 data-line-1059">
+<h4 id="_corollary_1_1_liquid_vertex">Corollary 1.1 - liquid vertex.</h4>
+<div class="paragraph data-line-1061">
+<p>Any liquid vertex \(v \in V\) has both \(\operatorname&#176;^{-}(v) \geq 1\) and
+\(\operatorname&#176;^{+}(v) \geq 1\)</p>
+</div>
+<div class="paragraph data-line-1064">
+<p>Corollary 1.2 - liquid graph.
+If there exists a strongly connected subgraph \(G^{\prime} \subseteq G\) s.t.
+all of its vertices are liquid, then \(G^{\prime}\) is called liquid graph.</p>
+</div>
+</div>
+<div class="sect3 data-line-1069">
+<h4 id="_corollary_1_3_k_liquid_graph">Corollary 1.3 - k-liquid graph.</h4>
+<div class="paragraph data-line-1071">
+<p>If \(G^{\prime} \subseteq G\) is a k-connected liquid graph, then \(G^{\prime}\)
+is called \(k\) -liquid.
+Trade paths can have different liquidity preferences. For example, if a path
+\((s, v): s, v \in V\) on graph \(G\) has preferable liquidity when compared to
+any other path \(\left(s^{\prime}, v\right): s^{\prime}, v \in V,\) then \((s,
+v)\) is a shorter or equally weighted
+path than \(\left(s^{\prime}, v\right)\) iff \(\sum_{e \in(s, v)} w(e) \leq
+\sum_{e \in\left(s^{\prim</p>
+</div>
+</div>
+<div class="sect3 data-line-1080">
+<h4 id="_definition_2_preferable_liquidity_path">Definition 2 - preferable liquidity path.</h4>
+<div class="paragraph data-line-1082">
+<p>Let \(S \subset V \times V\) contain all shortest paths from vertex \(s\) to
+vertex \(t: \forall s, t \in V\). Also let vertex \(v \in V\) have the maximal
+\(^{3}\) betweenness centrality measure \(C_{B}(v):=\sum_{s \neq t \neq v \in V}
+\frac{\sigma_{s t}(v)}{\sigma_{s t}}: \forall(s, t) \in S,\) where \(\sigma_{s
+t}:=\sum_{(s, t) \in S} \sum_{e \in(s, t)} w(e)\)
+and \(\sigma_{s t}(v)\) is a sum of only those shortest paths in \(S\) which
+contain \(v\). We say that \((s, t) \in S\) is a path with preferable liquidity
+if it ends with \(v,\) i.e. \(t=v\)
+In order to capture a desired super-liquidity property of an always preferable
+asset in an ALT-system \(G,\) we need to identify such asset not only as a
+preferable "exit" (sink) vertex, but also as the one that can be consequently
+traded for any other liquid asset in \(G\) at the most attractive price.</p>
+</div>
+</div>
+<div class="sect3 data-line-1095">
+<h4 id="_definition_3_super_liquidity">Definition 3 - super-liquidity</h4>
+<div class="paragraph data-line-1097">
+<p>A liquid vertex \(v \in V\left(G^{\prime}\right)\) of a complete liquid subgraph
+\(G^{\prime} \subseteq G\) is called a super-liquid vertex iff any preferable
+liquidity path \(p=(s, v)\) can be almost surely continued with an efficient
+trade for any other liquid \(u \in V\left(G^{\prime}\right), u \neq v\) in such
+a way that \(\sum_{e \in(s, u)} w(e) \leq \sum_{e \in(s, v)} w(e)+\sum_{e \in(v,
+u)} w(e)\) and \((s, u)\) is
+a shortest path.</p>
+</div>
+</div>
+<div class="sect3 data-line-1105">
+<h4 id="_corollary_3_1_super_liquid_graph">Corollary 3.1 - super-liquid graph.</h4>
+<div class="paragraph data-line-1107">
+<p>A complete liquid subgraph \(G^{\prime} \subseteq G\) is called a super-liquid
+graph iff \(G^{\prime}\) contains a super-liquid vertex.</p>
+</div>
+<div class="paragraph data-line-1110">
+<p>Last definition of a super-liquid graph provides us with a starting point for
+the future framework of the super-liquidity manifold (SLTM system that can in
+theory allow efficient price trading. However there is no practical duality
+between super-liquid and illiquid assets. Instead, we can choose to link
+super-liquid vertex with a controlled liquidity asset, that has a programmable
+dynamic pricing model. We can assert that fully illiquid assets are disconnected
+from G, since they are not digitally traded and unpractical to consider. We
+assume that no such asset will exists in the future. Such subgraph is called a
+super slow and super fast (S3F) liquidity system with at least two liquid tokens
+(vertices).</p>
+</div>
+<div class="paragraph data-line-1121">
+<p>[1] almost surely in efficient way
+[2] no double-spending
+[3] costs for buying and selling operations are not necessarily equal</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-01-22 13:31:44 -0800
+</div>
+</div>
+</body>
+</html>

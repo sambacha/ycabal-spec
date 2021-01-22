@@ -1,7 +1,9 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Proposal: Monotonic Elapsed Time Measurements in Go</title><link rel="stylesheet" type="text/css" href="/+static/base.mkGYfyMw1ltYdSUJFnTfAQ.cache.css"/><link rel="stylesheet" type="text/css" href="/+static/doc.SwFWSqyOBtHwse7AqrZZeg.cache.css"/><link rel="stylesheet" type="text/css" href="/+static/prettify/prettify.AOMOBqJIPcDq491E2ExAAw.cache.css"/><!-- default customHeadTagPart --></head><body class="Site"><header class="Site-header "><div class="Header"><div class="Header-title"></div></div></header><div class="Site-content Site-Content--markdown"><div class="Container"><div class="doc"><h1><a class="h" name="Proposal_Monotonic-Elapsed-Time-Measurements-in-Go" href="#Proposal_Monotonic-Elapsed-Time-Measurements-in-Go"><span></span></a><a class="h" name="proposal_monotonic-elapsed-time-measurements-in-go" href="#proposal_monotonic-elapsed-time-measurements-in-go"><span></span></a>Proposal: Monotonic Elapsed Time Measurements in Go</h1><p>Author: Russ Cox</p><p>Last updated: January 26, 2017<br /> Discussion: <a href="https://golang.org/issue/12914">https://golang.org/issue/12914</a>.<br /> URL: <a href="https://golang.org/design/12914-monotonic">https://golang.org/design/12914-monotonic</a></p><h2><a class="h" name="Abstract" href="#Abstract"><span></span></a><a class="h" name="abstract" href="#abstract"><span></span></a>Abstract</h2><p>Comparison and subtraction of times observed by <code class="code">time.Now</code> can return incorrect results if the system wall clock is reset between the two observations. We propose to extend the <code class="code">time.Time</code> representation to hold an additional monotonic clock reading for use in those calculations. Among other benefits, this should make it impossible for a basic elapsed time measurement using <code class="code">time.Now</code> and <code class="code">time.Since</code> to report a negative duration or other result not grounded in reality.</p><h2><a class="h" name="Background" href="#Background"><span></span></a><a class="h" name="background" href="#background"><span></span></a>Background</h2><h3><a class="h" name="Clocks" href="#Clocks"><span></span></a><a class="h" name="clocks" href="#clocks"><span></span></a>Clocks</h3><p>A clock never keeps perfect time. Eventually, someone notices, decides the accumulated error—compared to a reference clock deemed more reliable—is large enough to be worth fixing, and resets the clock to match the reference. As I write this, the watch on my wrist is 44 seconds ahead of the clock on my computer. Compared to the computer, my watch gains about five seconds a day. In a few days I will probably be bothered enough to reset it to match the computer.</p><p>My watch may not be perfect for identifying the precise moment when a meeting should begin, but it&#39;s quite good for measuring elapsed time. If I start timing an event by checking the time, and then I stop timing the event by checking again and subtracting the two times, the error contributed by the watch speed will be under 0.01%.</p><p>Resetting a clock makes it better for telling time but useless, in that moment, for measuring time. If I reset my watch to match my computer while I am timing an event, the time of day it shows is now more accurate, but subtracting the start and end times for the event will produce a measurement that includes the reset. If I turn my watch back 44 seconds while timing a 60-second event, I would (unless I correct for the reset) measure the event as taking 16 seconds. Worse, I could measure a 10-second event as taking −34 seconds, ending before it began.</p><p>Since I know the watch is consistently gaining five seconds per day, I could reduce the need for resets by taking it to a watchmaker to adjust the mechanism to tick ever so slightly slower. I could also reduce the size of the resets by doing them more often. If, five times a day at regular intervals, I stopped my watch for one second, I wouldn&#39;t ever need a 44-second reset, reducing the maximum possible error introduced in the timing of an event. Similarly, if instead my watch lost five seconds each day, I could turn it forward one second five times a day to avoid larger forward resets.</p><h3><a class="h" name="Computer-clocks" href="#Computer-clocks"><span></span></a><a class="h" name="computer-clocks" href="#computer-clocks"><span></span></a>Computer clocks</h3><p>All the same problems affect computer clocks, usually with smaller time units.</p><p>Most computers have some kind of high-precision clock and a way to convert ticks of that clock to an equivalent number of seconds. Often, software on the computer compares that clock to a higher-accuracy reference clock <a href="https://tools.ietf.org/html/rfc5905">accessed over the network</a>. If the local clock is observed to be slightly ahead, it can be slowed a little by dropping an occasional tick; if slightly behind, sped up by counting some ticks twice. If the local clock is observed to run at a consistent speed relative to the reference clock (for example, five seconds fast per day), the software can change the conversion formula, making the slight corrections less frequent. These minor adjustments, applied regularly, can keep the local clock matched to the reference clock without observable resets, giving the outward appearance of a perfectly synchronized clock.</p><p>Unfortunately, many systems fall short of this appearance of perfection, for two main reasons.</p><p>First, some computer clocks are unreliable or don&#39;t run at all when the computer is off. The time starts out very wrong. After learning the correct time from the network, the only correction option is a reset.</p><p>Second, most computer time representations ignore leap seconds, in part because leap seconds—unlike leap years—follow no predictable pattern: the <a href="https://en.wikipedia.org/wiki/Leap_second">IERS decides about six months in advance</a> whether to insert (or in theory remove) a leap second at the end of a particular calendar month. In the real world, the leap second 23:59:60 UTC is inserted between 23:59:59 UTC and 00:00:00 UTC. Most computers, unable to represent 23:59:60, instead insert a clock reset and repeat 23:59:59.</p><p>Just like my watch, resetting a computer clock makes it better for telling time but useless, in that moment, for measuring time. Entering a leap second, the clock might report 23:59:59.995 at one instant and then report 23:59:59.005 ten milliseconds later; subtracting these to compute elapsed time results in −990 ms instead of +10 ms.</p><p>To avoid the problem of measuring elapsed times across clock resets, operating systems provide access to two different clocks: a wall clock and a monotonic clock. Both are adjusted to move forward at a target rate of one clock second per real second, but the monotonic clock starts at an undefined absolute value and is never reset. The wall clock is for telling time; the monotonic clock is for measuring time.</p><p>C/C++ programs use the operating system-provided mechanisms for querying one clock or the other. Java&#39;s <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#nanoTime--"><code class="code">System.nanoTime</code></a> is widely believed to read a monotonic clock where available, returning an int64 counting nanoseconds since an arbitrary start point. Python 3.3 added monotonic clock support in <a href="https://www.python.org/dev/peps/pep-0418/">PEP 418</a>. The new function <code class="code">time.monotonic</code> reads the monotonic clock, returning a float64 counting seconds since an arbitrary start point; the old function <code class="code">time.time</code> reads the system wall clock, returning a float64 counting seconds since 1970.</p><h3><a class="h" name="Go-time" href="#Go-time"><span></span></a><a class="h" name="go-time" href="#go-time"><span></span></a>Go time</h3><p>Go&#39;s current <a href="https://golang.org/pkg/time/">time API</a>, which Rob Pike and I designed in 2011, defines an opaque type <code class="code">time.Time</code>, a function <code class="code">time.Now</code> that returns the current time, and a method <code class="code">t.Sub(u)</code> to subtract two times, along with other methods interpreting a <code class="code">time.Time</code> as a wall clock time. These are widely used by Go programs to measure elapsed times. The implementation of these functions only reads the system wall clock, never the monotonic clock, making the measurements incorrect in the event of clock resets.</p><p>Go&lsquo;s original target was Google&rsquo;s production servers, on which the wall clock never resets: the time is set very early in system startup, before any Go software runs, and leap seconds are handled by a <a href="https://developers.google.com/time/smear#standardsmear">leap smear</a>, spreading the extra second over a 20-hour window in which the clock runs at 99.9986% speed (20 hours on that clock corresponds to 20 hours and one second in the real world). In 2011, I hoped that the trend toward reliable, reset-free computer clocks would continue and that Go programs could safely use the system wall clock to measure elapsed times. I was wrong. Although Akamai, Amazon, and Microsoft use leap smears now too, many systems still implement leap seconds by clock reset. A Go program measuring a negative elapsed time during a leap second caused <a href="https://blog.cloudflare.com/how-and-why-the-leap-second-affected-cloudflare-dns/">CloudFlare&#39;s recent DNS outage</a>. Wikipedia&lsquo;s <a href="https://en.wikipedia.org/wiki/Leap_second#Examples_of_problems_associated_with_the_leap_second">list of examples of problems associated with the leap second</a> now includes CloudFlare&rsquo;s outage and notes Go&#39;s time APIs as the root cause. Beyond the problem of leap seconds, Go has also expanded to systems in non-production environments that may have less well-regulated clocks and consequently more frequent clock resets. Go must handle clock resets gracefully.</p><p>The internals of both the Go runtime and the Go time package originally used wall time but have already been converted as much as possible (without changing exported APIs) to use the monotonic clock. For example, if a goroutine runs <code class="code">time.Sleep(1*time.Minute)</code> and then the wall clock resets backward one hour, in the original Go implementation that goroutine would have slept for 61 real minutes. Today, that goroutine always sleeps for only 1 real minute. All other time APIs using <code class="code">time.Duration</code>, such as <code class="code">time.After</code>, <code class="code">time.Tick</code>, and <code class="code">time.NewTimer</code>, have similarly been converted to implement those durations using the monotonic clock.</p><p>Three standard Go APIs remain that use the system wall clock that should more properly use the monotonic clock. Due to <a href="https://golang.org/doc/go1compat">Go 1 compatibility</a>, the types and method names used in the APIs cannot be changed.</p><p>The first problematic Go API is measurement of elapsed times. Much code exists that uses patterns like:</p><pre class="code">start := time.Now()
+
 ... something ...
 end := time.Now()
 elapsed := start.Sub(end)
+
 </pre><p>or, equivalently:</p><pre class="code">start := time.Now()
 ... something ...
 elapsed := time.Since(start)
@@ -62,33 +64,34 @@ $ wc -l alltimenow
 $ egrep -c &#39;time\.Now\(\).*time\.Now\(\)&#39; alltimenow
 63
 
-$ 9 sed -n &#39;s/.*(time\.Now\(\)(\.[A-Za-z0-9]+)?).*/\1/p&#39; alltimenow | sort | uniq -c
+\$ 9 sed -n &#39;s/._(time\.Now\(\)(\.[A-Za-z0-9]+)?)._/\1/p&#39; alltimenow | sort | uniq -c
 4910 time.Now()
 1511 time.Now().Add
-  45 time.Now().AddDate
-  69 time.Now().After
-  77 time.Now().Before
-   4 time.Now().Date
-   5 time.Now().Day
-   1 time.Now().Equal
- 130 time.Now().Format
-  23 time.Now().In
-   8 time.Now().Local
-   4 time.Now().Location
-   1 time.Now().MarshalBinary
-   2 time.Now().MarshalText
-   2 time.Now().Minute
-  68 time.Now().Nanosecond
-  14 time.Now().Round
-  22 time.Now().Second
-  37 time.Now().String
- 370 time.Now().Sub
-  28 time.Now().Truncate
- 570 time.Now().UTC
- 582 time.Now().Unix
+45 time.Now().AddDate
+69 time.Now().After
+77 time.Now().Before
+4 time.Now().Date
+5 time.Now().Day
+1 time.Now().Equal
+130 time.Now().Format
+23 time.Now().In
+8 time.Now().Local
+4 time.Now().Location
+1 time.Now().MarshalBinary
+2 time.Now().MarshalText
+2 time.Now().Minute
+68 time.Now().Nanosecond
+14 time.Now().Round
+22 time.Now().Second
+37 time.Now().String
+370 time.Now().Sub
+28 time.Now().Truncate
+570 time.Now().UTC
+582 time.Now().Unix
 8067 time.Now().UnixNano
-  17 time.Now().Year
-   2 time.Now().Zone
+17 time.Now().Year
+2 time.Now().Zone
+
 </pre><p>That splits into completely unaffected:</p><pre class="code">  45 time.Now().AddDate
    4 time.Now().Date
    5 time.Now().Day
@@ -290,12 +293,13 @@ var fakeCerts = []*x509.Certificate{
 }
 
 expectedMsg := colorBlue(&quot;\nCertificate expiry info:\n&quot;) +
-	colorBold(fmt.Sprintf(&quot;#1 Test cert will expire on %s\n&quot;, expiredDate))
+colorBold(fmt.Sprintf(&quot;#1 Test cert will expire on %s\n&quot;, expiredDate))
 
 msg := getCertificateChainMsg(fakeCerts)
 if msg != expectedMsg {
-	t.Fatalf(&quot;Expected message was: %s, got: %s&quot;, expectedMsg, msg)
+t.Fatalf(&quot;Expected message was: %s, got: %s&quot;, expectedMsg, msg)
 }
+
 </pre><p><strong>Unaffected</strong> (but uses time multiple times).</p><h3><a class="h" name="github_com_pingcap_tidb_expression_builtin_string_test_go_42" href="#github_com_pingcap_tidb_expression_builtin_string_test_go_42"><span></span></a>github.com/pingcap/tidb/expression/builtin_string_test.go:42</h3><pre class="code">{types.Time{Time: types.FromGoTime(time.Now()), Fsp: 6, Type: mysql.TypeDatetime}, 26},
 </pre><p>The call to FromGoTime does:</p><pre class="code">func FromGoTime(t gotime.Time) TimeInternal {
 	year, month, day := t.Date()
@@ -321,6 +325,7 @@ type Clock interface {
 type defaultClock int
 var defaultClockInstance defaultClock
 func (defaultClock) Time() time.Time { return time.Now() }
+
 </pre><p>Let&#39;s look at how that gets used.</p><p>The main use is to get a now time and then check whether</p><pre class="code">if ts.levels[0].end.Before(now) {
 	ts.advance(now)
 }
@@ -333,24 +338,26 @@ for i := 0; i &lt; len(ts.levels); i++ {
 		break
 	}
 
-	// If the time is sufficiently far, just clear the level and advance
-	// directly.
-	if !t.Before(level.end.Add(level.size * time.Duration(ts.numBuckets))) {
-		for _, b := range level.buckets {
-			ts.resetObservation(b)
-		}
-		level.end = time.Unix(0, (t.UnixNano()/level.size.Nanoseconds())*level.size.Nanoseconds())
-	}
+    // If the time is sufficiently far, just clear the level and advance
+    // directly.
+    if !t.Before(level.end.Add(level.size * time.Duration(ts.numBuckets))) {
+    	for _, b := range level.buckets {
+    		ts.resetObservation(b)
+    	}
+    	level.end = time.Unix(0, (t.UnixNano()/level.size.Nanoseconds())*level.size.Nanoseconds())
+    }
 
-	for t.After(level.end) {
-		level.end = level.end.Add(level.size)
-		level.newest = level.oldest
-		level.oldest = (level.oldest + 1) % ts.numBuckets
-		ts.resetObservation(level.buckets[level.newest])
-	}
+    for t.After(level.end) {
+    	level.end = level.end.Add(level.size)
+    	level.newest = level.oldest
+    	level.oldest = (level.oldest + 1) % ts.numBuckets
+    	ts.resetObservation(level.buckets[level.newest])
+    }
 
-	t = level.end
+    t = level.end
+
 }
+
 </pre><p><strong>Unaffected</strong> (but uses time multiple times).</p><h3><a class="h" name="github_com_astaxie_beego_logs_logger_test_go_24" href="#github_com_astaxie_beego_logs_logger_test_go_24"><span></span></a>github.com/astaxie/beego/logs/logger_test.go:24</h3><pre class="code">func TestFormatHeader_0(t *testing.T) {
 	tm := time.Now()
 	if tm.Year() &gt;= 2100 {
@@ -379,6 +386,7 @@ for i := 0; i &lt; len(ts.levels); i++ {
 ctx.buildCanonicalString()
 expected := &quot;https://example.org/bucket/key-._~,!@#$%^&amp;*()?Foo=z&amp;Foo=o&amp;Foo=m&amp;Foo=a&quot;
 assert.Equal(t, expected, ctx.Request.URL.String())
+
 </pre><p>ctx is used as:</p><pre class="code">ctx.formattedTime = ctx.Time.UTC().Format(timeFormat)
 ctx.formattedShortTime = ctx.Time.UTC().Format(shortTimeFormat)
 </pre><p>and then ctx.formattedTime is used sometimes and ctx.formattedShortTime is used other times.</p><p><strong>Unaffected</strong> (but uses time multiple times).</p><h3><a class="h" name="github_com_zenazn_goji_example_models_go_21" href="#github_com_zenazn_goji_example_models_go_21"><span></span></a>github.com/zenazn/goji/example/models.go:21</h3><pre class="code">var Greets = []Greet{
@@ -398,12 +406,14 @@ bucket, exists := r.Buckets[now.Unix()]
 r.Mutex.RUnlock()
 
 if !exists {
-	r.Mutex.Lock()
-	defer r.Mutex.Unlock()
+r.Mutex.Lock()
+defer r.Mutex.Unlock()
 
-	r.Buckets[now.Unix()] = &amp;timingBucket{}
-	bucket = r.Buckets[now.Unix()]
+    r.Buckets[now.Unix()] = &amp;timingBucket{}
+    bucket = r.Buckets[now.Unix()]
+
 }
+
 </pre><p><strong>Unaffected</strong> (but uses wall representation multiple times).</p><h2><a class="h" name="Fixed" href="#Fixed"><span></span></a><a class="h" name="fixed" href="#fixed"><span></span></a>Fixed</h2><h3><a class="h" name="github_com_hashicorp_vault_vendor_golang_org_x_net_http2_transport_go_721" href="#github_com_hashicorp_vault_vendor_golang_org_x_net_http2_transport_go_721"><span></span></a>github.com/hashicorp/vault/vendor/golang.org/x/net/http2/transport.go:721</h3><pre class="code">func (cc *ClientConn) RoundTrip(req *http.Request) (*http.Response, error) {
 	...
 	cc.lastActive = time.Now()
@@ -433,13 +443,14 @@ func (s *Serf) reap(old []*memberState, timeout time.Duration) []*memberState {
 	globalMetrics.MeasureSince(key, start)
 }
 
-func (m *Metrics) MeasureSince(key []string, start time.Time) {
-	...
-	now := time.Now()
-	elapsed := now.Sub(start)
-	msec := float32(elapsed.Nanoseconds()) / float32(m.TimerGranularity)
-	m.sink.AddSample(key, msec)
+func (m \*Metrics) MeasureSince(key []string, start time.Time) {
+...
+now := time.Now()
+elapsed := now.Sub(start)
+msec := float32(elapsed.Nanoseconds()) / float32(m.TimerGranularity)
+m.sink.AddSample(key, msec)
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_flynn_flynn_vendor_gopkg_in_mgo_v2_session_go_3598" href="#github_com_flynn_flynn_vendor_gopkg_in_mgo_v2_session_go_3598"><span></span></a>github.com/flynn/flynn/vendor/gopkg.in/mgo.v2/session.go:3598</h3><pre class="code">if iter.timeout &gt;= 0 {
 	if timeout.IsZero() {
 		timeout = time.Now().Add(iter.timeout)
@@ -463,10 +474,11 @@ for iThread := 0; iThread &lt; numQueryThreads; iThread++ {
 // 记录时间并计算分词速度
 t5 := time.Now()
 log.Printf(&quot;搜索平均响应时间 %v 毫秒&quot;,
-	t5.Sub(t4).Seconds()*1000/float64(numRepeatQuery*len(searchQueries)))
+t5.Sub(t4).Seconds()*1000/float64(numRepeatQuery*len(searchQueries)))
 log.Printf(&quot;搜索吞吐量每秒 %v 次查询&quot;,
-	float64(numRepeatQuery*numQueryThreads*len(searchQueries))/
-		t5.Sub(t4).Seconds())
+float64(numRepeatQuery*numQueryThreads*len(searchQueries))/
+t5.Sub(t4).Seconds())
+
 </pre><p>The first print is &ldquo;Search average response time %v milliseconds&rdquo; and the second is &ldquo;Search Throughput %v queries per second.&rdquo;</p><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_ncw_rclone_vendor_google_golang_org_grpc_call_go_171" href="#github_com_ncw_rclone_vendor_google_golang_org_grpc_call_go_171"><span></span></a>github.com/ncw/rclone/vendor/google.golang.org/grpc/call.go:171</h3><pre class="code">if EnableTracing {
 	...
 	if deadline, ok := ctx.Deadline(); ok {
@@ -481,13 +493,14 @@ log.Printf(&quot;搜索吞吐量每秒 %v 次查询&quot;,
 )
 
 func init() {
-	baseTimestamp = time.Now()
-	isTerminal = IsTerminal()
+baseTimestamp = time.Now()
+isTerminal = IsTerminal()
 }
 
 func miniTS() int {
-	return int(time.Since(baseTimestamp) / time.Second)
+return int(time.Since(baseTimestamp) / time.Second)
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_flynn_flynn_vendor_golang_org_x_net_http2_go17_go_54" href="#github_com_flynn_flynn_vendor_golang_org_x_net_http2_go17_go_54"><span></span></a>github.com/flynn/flynn/vendor/golang.org/x/net/http2/go17.go:54</h3><pre class="code">if ci.WasIdle &amp;&amp; !cc.lastActive.IsZero() {
 	ci.IdleTime = time.Now().Sub(cc.lastActive)
 }
@@ -605,14 +618,16 @@ func (t *TombstoneGC) nextExpires() time.Time {
 		return
 	}
 
-	// Create new expiration time
-	t.expires[expires] = &amp;expireInterval{
-		maxIndex: index,
-		timer: time.AfterFunc(expires.Sub(time.Now()), func() {
-			t.expireTime(expires)
-		}),
-	}
+    // Create new expiration time
+    t.expires[expires] = &amp;expireInterval{
+    	maxIndex: index,
+    	timer: time.AfterFunc(expires.Sub(time.Now()), func() {
+    		t.expireTime(expires)
+    	}),
+    }
+
 }
+
 </pre><p>The granularity rounding will usually reuslt in something that can be used in a map key but not always. The code is using the rounding only as an optimization, so it doesn&#39;t actually matter if a few extra keys get generated. More importantly, the time passd to time.AfterFunc ends up monotonic, so that timers fire correctly.</p><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_storage_etcd_etcd_helper_go_310" href="#github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_storage_etcd_etcd_helper_go_310"><span></span></a>github.com/openshift/origin/vendor/k8s.io/kubernetes/pkg/storage/etcd/etcd_helper.go:310</h3><pre class="code">startTime := time.Now()
 ...
 metrics.RecordEtcdRequestLatency(&quot;get&quot;, getTypeName(listPtr), startTime)
@@ -625,8 +640,9 @@ resp, err := m.Status(ctx, endpoint)
 cancel()
 
 if cost := time.Now().Sub(start); cost &gt; slowRequestTime {
-	log.Warnf(&quot;check etcd %s status, resp: %v, err: %v, cost: %s&quot;, endpoint, resp, err, cost)
+log.Warnf(&quot;check etcd %s status, resp: %v, err: %v, cost: %s&quot;, endpoint, resp, err, cost)
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_kubelet_kuberuntime_instrumented_services_go_235" href="#github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_kubelet_kuberuntime_instrumented_services_go_235"><span></span></a>github.com/openshift/origin/vendor/k8s.io/kubernetes/pkg/kubelet/kuberuntime/instrumented_services.go:235</h3><pre class="code">func (in instrumentedImageManagerService) ImageStatus(image *runtimeApi.ImageSpec) (*runtimeApi.Image, error) {
 	...
 	defer recordOperation(operation, time.Now())
@@ -635,9 +651,10 @@ if cost := time.Now().Sub(start); cost &gt; slowRequestTime {
 
 // recordOperation records the duration of the operation.
 func recordOperation(operation string, start time.Time) {
-	metrics.RuntimeOperations.WithLabelValues(operation).Inc()
-	metrics.RuntimeOperationsLatency.WithLabelValues(operation).Observe(metrics.SinceInMicroseconds(start))
+metrics.RuntimeOperations.WithLabelValues(operation).Inc()
+metrics.RuntimeOperationsLatency.WithLabelValues(operation).Observe(metrics.SinceInMicroseconds(start))
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_kubelet_dockertools_instrumented_docker_go_58" href="#github_com_openshift_origin_vendor_k8s_io_kubernetes_pkg_kubelet_dockertools_instrumented_docker_go_58"><span></span></a>github.com/openshift/origin/vendor/k8s.io/kubernetes/pkg/kubelet/dockertools/instrumented_docker.go:58</h3><pre class="code">defer recordOperation(operation, time.Now())
 </pre><p><strong>Fixed.</strong> (see previous)</p><h3><a class="h" name="github_com_coreos_etcd_tools_functional_tester_etcd_runner_command_global_go_103" href="#github_com_coreos_etcd_tools_functional_tester_etcd_runner_command_global_go_103"><span></span></a>github.com/coreos/etcd/tools/functional-tester/etcd-runner/command/global.go:103</h3><pre class="code">start := time.Now()
 for i := 1; i &lt; len(rcs)*rounds+1; i++ {
@@ -667,17 +684,18 @@ WAIT:
 	default:
 	}
 
-	// Handle the one-shot mode.
-	if s.opts.SemaphoreTryOnce &amp;&amp; attempts &gt; 0 {
-		elapsed := time.Now().Sub(start)
-		if elapsed &gt; qOpts.WaitTime {
-			return nil, nil
-		}
+    // Handle the one-shot mode.
+    if s.opts.SemaphoreTryOnce &amp;&amp; attempts &gt; 0 {
+    	elapsed := time.Now().Sub(start)
+    	if elapsed &gt; qOpts.WaitTime {
+    		return nil, nil
+    	}
 
-		qOpts.WaitTime -= elapsed
-	}
-	attempts++
-	... goto WAIT ...
+    	qOpts.WaitTime -= elapsed
+    }
+    attempts++
+    ... goto WAIT ...
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_gravitational_teleport_lib_reversetunnel_localsite_go_83" href="#github_com_gravitational_teleport_lib_reversetunnel_localsite_go_83"><span></span></a>github.com/gravitational/teleport/lib/reversetunnel/localsite.go:83</h3><pre class="code">func (s *localSite) GetLastConnected() time.Time {
 	return time.Now()
 }
@@ -691,17 +709,18 @@ for range r.Events {
 </pre><p>Those fields get used by</p><pre class="code">func (res *Result) Duration() time.Duration { return res.End.Sub(res.Start) }
 
 func (r *report) processResult(res *Result) {
-	if res.Err != nil {
-		r.errorDist[res.Err.Error()]++
-		return
-	}
-	dur := res.Duration()
-	r.lats = append(r.lats, dur.Seconds())
-	r.avgTotal += dur.Seconds()
-	if r.sps != nil {
-		r.sps.Add(res.Start, dur)
-	}
+if res.Err != nil {
+r.errorDist[res.Err.Error()]++
+return
 }
+dur := res.Duration()
+r.lats = append(r.lats, dur.Seconds())
+r.avgTotal += dur.Seconds()
+if r.sps != nil {
+r.sps.Add(res.Start, dur)
+}
+}
+
 </pre><p>The duration computation is fixed by use of monotonic time. The call tp r.sps.Add buckets the start time by converting to Unix seconds and is therefore unaffected (start time only used once other than the duration calculation, so no visible jitter).</p><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_flynn_flynn_vendor_github_com_flynn_oauth2_internal_token_go_191" href="#github_com_flynn_flynn_vendor_github_com_flynn_oauth2_internal_token_go_191"><span></span></a>github.com/flynn/flynn/vendor/github.com/flynn/oauth2/internal/token.go:191</h3><pre class="code">token.Expiry = time.Now().Add(time.Duration(expires) * time.Second)
 </pre><p>used by:</p><pre class="code">func (t *Token) expired() bool {
 	if t.Expiry.IsZero() {
@@ -766,25 +785,27 @@ Expect(handler.rttStats.LatestRTT()).To(BeNumerically(&quot;~&quot;, 1*time.Minu
 	)
 	...
 
-	// Watch for changes.
-	for {
-		select {
-		case event := &lt;-updates:
-			switch v := event.(type) {
-			case state.EventCommit:
-				if commitDebounceTimer != nil {
-					if time.Since(debouncingStarted) &gt; maxLatency {
-						...
-					}
-				} else {
-					commitDebounceTimer = time.NewTimer(commitDebounceGap)
-					debouncingStarted = time.Now()
-					...
-				}
-			}
-		...
-	}
+    // Watch for changes.
+    for {
+    	select {
+    	case event := &lt;-updates:
+    		switch v := event.(type) {
+    		case state.EventCommit:
+    			if commitDebounceTimer != nil {
+    				if time.Since(debouncingStarted) &gt; maxLatency {
+    					...
+    				}
+    			} else {
+    				commitDebounceTimer = time.NewTimer(commitDebounceGap)
+    				debouncingStarted = time.Now()
+    				...
+    			}
+    		}
+    	...
+    }
+
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="golang_org_x_net_nettest_conntest_go_361" href="#golang_org_x_net_nettest_conntest_go_361"><span></span></a>golang.org/x/net/nettest/conntest.go:361</h3><pre class="code">c1.SetDeadline(time.Now().Add(10 * time.Millisecond))
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_minio_minio_vendor_github_com_eapache_go_resiliency_breaker_breaker_go_120" href="#github_com_minio_minio_vendor_github_com_eapache_go_resiliency_breaker_breaker_go_120"><span></span></a>github.com/minio/minio/vendor/github.com/eapache/go-resiliency/breaker/breaker.go:120</h3><pre class="code">expiry := b.lastError.Add(b.timeout)
 if time.Now().After(expiry) {
@@ -831,10 +852,11 @@ for matchesInChunk := range countChan {
 }
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_mitchellh_packer_vendor_google_golang_org_appengine_demos_helloworld_helloworld_go_19" href="#github_com_mitchellh_packer_vendor_google_golang_org_appengine_demos_helloworld_helloworld_go_19"><span></span></a>github.com/mitchellh/packer/vendor/google.golang.org/appengine/demos/helloworld/helloworld.go:19</h3><pre class="code">var initTime = time.Now()
 
-func handle(w http.ResponseWriter, r *http.Request) {
-	...
-	tmpl.Execute(w, time.Since(initTime))
+func handle(w http.ResponseWriter, r \*http.Request) {
+...
+tmpl.Execute(w, time.Since(initTime))
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_ncw_rclone_vendor_google_golang_org_appengine_internal_api_go_549" href="#github_com_ncw_rclone_vendor_google_golang_org_appengine_internal_api_go_549"><span></span></a>github.com/ncw/rclone/vendor/google.golang.org/appengine/internal/api.go:549</h3><pre class="code">func (c *context) logFlusher(stop &lt;-chan int) {
 	lastFlush := time.Now()
 	tick := time.NewTicker(flushInterval)
@@ -866,8 +888,9 @@ fmt.Printf(&quot;Import done in %v.\n\n&quot;, time.Since(start))
 }
 
 if rtime.Before(dtime1) || dtime2.Before(rtime) || atime2.Before(atime1) || ctime.Before(atime2) {
-	t.Fatalf(&quot;Wrong callback order:\n%v\n%v\n%v\n%v\n%v\n%v&quot;, dtime1, rtime, atime1, atime2, dtime2, ctime)
+t.Fatalf(&quot;Wrong callback order:\n%v\n%v\n%v\n%v\n%v\n%v&quot;, dtime1, rtime, atime1, atime2, dtime2, ctime)
 }
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_google_cadvisor_manager_container_go_456" href="#github_com_google_cadvisor_manager_container_go_456"><span></span></a>github.com/google/cadvisor/manager/container.go:456</h3><pre class="code">// Schedule the next housekeeping. Sleep until that time.
 if time.Now().Before(next) {
 	time.Sleep(next.Sub(time.Now()))
@@ -883,6 +906,7 @@ start := time.Now()
 
 // Compute the RTT
 return time.Now().Sub(start), nil
+
 </pre><p><strong>Fixed.</strong></p><h3><a class="h" name="github_com_go_kit_kit_examples_shipping_booking_instrumenting_go_31" href="#github_com_go_kit_kit_examples_shipping_booking_instrumenting_go_31"><span></span></a>github.com/go-kit/kit/examples/shipping/booking/instrumenting.go:31</h3><pre class="code">defer func(begin time.Time) {
 	s.requestCount.With(&quot;method&quot;, &quot;book&quot;).Add(1)
 	s.requestLatency.With(&quot;method&quot;, &quot;book&quot;).Observe(time.Since(begin).Seconds())
@@ -919,16 +943,18 @@ defer func() {
 		p.deadline = time.Now().Add(respTimeout)
 		...
 
-	case now := &lt;-timeout.C:
-		// Notify and remove callbacks whose deadline is in the past.
-		for el := plist.Front(); el != nil; el = el.Next() {
-			p := el.Value.(*pending)
-			if now.After(p.deadline) || now.Equal(p.deadline) {
-				...
-			}
-		}
-	}
+    case now := &lt;-timeout.C:
+    	// Notify and remove callbacks whose deadline is in the past.
+    	for el := plist.Front(); el != nil; el = el.Next() {
+    		p := el.Value.(*pending)
+    		if now.After(p.deadline) || now.Equal(p.deadline) {
+    			...
+    		}
+    	}
+    }
+
 }
+
 </pre><p><strong>Fixed</strong> assuming time channels receive monotonic times as well.</p><h3><a class="h" name="k8s_io_heapster_metrics_sinks_manager_go_150" href="#k8s_io_heapster_metrics_sinks_manager_go_150"><span></span></a>k8s.io/heapster/metrics/sinks/manager.go:150</h3><pre class="code">startTime := time.Now()
 ...
 defer exporterDuration.
@@ -977,8 +1003,9 @@ defer exporterDuration.
 }
 
 func miniTS() int {
-	return int(time.Since(baseTimestamp) / time.Second)
+return int(time.Since(baseTimestamp) / time.Second)
 }
+
 </pre><p><strong>Fixed</strong> (same as above, vendored in docker/libnetwork).</p><h3><a class="h" name="github_com_openshift_origin_vendor_github_com_coreos_etcd_etcdserver_v3_server_go_693" href="#github_com_openshift_origin_vendor_github_com_coreos_etcd_etcdserver_v3_server_go_693"><span></span></a>github.com/openshift/origin/vendor/github.com/coreos/etcd/etcdserver/v3_server.go:693</h3><pre class="code">start := time.Now()
 ...
 return nil, s.parseProposeCtxErr(cctx.Err(), start)

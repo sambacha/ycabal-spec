@@ -1,19 +1,15 @@
-
-
 ## Git Tag + Tar; Reproducibility in Artifact Creation
 
 [tar-sz](https://github.com/sambacha/tar-sz)
 
+> Generate a plain-text, encrypted archive that is secured using the public key of a particular GitHub user.
 
->  Generate a plain-text, encrypted archive that is secured using the public key of a particular GitHub user.
-
-* ssh-tgz
-* tgz
-
+- ssh-tgz
+- tgz
 
 ## ssh-tgz
 
-deterministic and reproducible self-composing and encrypted artifact generator. 
+deterministic and reproducible self-composing and encrypted artifact generator.
 Uses GitHub SSH keys to encrypt and decrypt
 
 ### Archive and Secure
@@ -99,7 +95,6 @@ tgzx() {
 tgzx ssh.tgzx .ssh
 ```
 
-
 #### Extract
 
 ```bash
@@ -112,7 +107,7 @@ tgzx ssh.tgzx .ssh
 ./ssh.tgzx t
 ```
 
-### Timezone RFC Table 
+### Timezone RFC Table
 
 | **RFC 822:**<br>_RFC 822 formatted date_             | Thu, 01 Jan 1970 00:00:00 +0000                  |
 | ---------------------------------------------------- | ------------------------------------------------ |
@@ -120,27 +115,24 @@ tgzx ssh.tgzx .ssh
 | **UNIX Timestamp:**<br>_seconds since Jan 1 1970_    | <br>00000000                                     |
 | **Mac Timestamp:**<br>_seconds since Jan 1 1904_     |                                                  |
 | **Microsoft Timestamp:**<br>_days since Dec 31 1899_ |                                                  |
-| **FILETIME:**<br>_100-nanoseconds since Jan 1 1601_  | 0    
+| **FILETIME:**<br>_100-nanoseconds since Jan 1 1601_  | 0                                                |
 
+### Time Normalization
 
-### Time Normalization 
+Convert the "yyyymmddhh" string in argument \$1 to "yyyy-mm-dd hh:00" and
+pass the result to 'date --rfc-3339=seconds' to normalize the date.
+The date is interpreted in the timezone specified by the value that
+the "TZ" environment variable was at first invocation of the script.
 
-Convert the "yyyymmddhh" string in argument $1 to "yyyy-mm-dd hh:00" and
- pass the result to 'date --rfc-3339=seconds' to normalize the date.
- The date is interpreted in the timezone specified by the value that
- the "TZ" environment variable was at first invocation of the script.
-
- Example 1: 2015-12-10 10:00 PST (UTC-0800)
-    $ env TZ='America/Los_Angeles' ./utcdate 2015121010
-    2015121018
-
-
+Example 1: 2015-12-10 10:00 PST (UTC-0800)
+\$ env TZ='America/Los_Angeles' ./utcdate 2015121010
+2015121018
 
 ### Deterministic Artifact Creation using GNU Tar
 
 Empty Directory is created and archived to be embedded within
 
-```bash 
+```bash
 $ mkdir -p build/.emptydir
 $ tar --owner=0 --group=0 --numeric-owner -cf pkg.tar build/.emptydir
 $ tar --owner=0 --group=0 --numeric-owner -cf product.tar build
@@ -148,7 +140,7 @@ $ tar --owner=0 --group=0 --numeric-owner -cf product.tar build
 
 Full example The recommended way to create a Tar archive is thus:
 
-```bash 
+```bash
 $ tar --sort=name \
       --mtime="@${SOURCE_DATE_EPOCH}" \
       --owner=0 --group=0 --numeric-owner \

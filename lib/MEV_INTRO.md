@@ -1,11 +1,9 @@
 ---
-title: MEV Statistics Summary 
+title: MEV Statistics Summary
 description: Reference file and snippets from whitepapers
 ---
 
 # MEV Statistics and Landscape Summary
-
-
 
     source material and summary
     Quantifying Blockchain Extractable Value: How dark is the forest?
@@ -97,8 +95,6 @@ of assetY, decreasing the available liquidity of assetY(cf.Equation 3).cx(·),cy
 | 90        | 285         | 276         | 281      | 144.4           | 144.4         |
 | mean      | 209         | 171         | 181      | 55              | 52.8          |
 | std.      | 157         | 76          | 62       | 58.8            | 50.4          |
-
-
 
 https://etherscan.io/tx/0x07729d7826e2335a88ac1ae23aa9463a3183c6dc6e7a7ba485c244f473a9be87
 7, the trader executes the arbitrage in the following order:

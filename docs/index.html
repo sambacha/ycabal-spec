@@ -2085,6 +2085,99 @@ h6 > a.anchor {
 <body class="article">
 <div id="header">
 <h1>Introduction</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_ycabal">YCabal</a></li>
+<li><a href="#_efficiency_by_aggregation">Efficiency by Aggregation</a>
+<ul class="sectlevel2">
+<li><a href="#_user_capture">User Capture</a></li>
+<li><a href="#_service_level_architecture_view">Service Level Architecture View</a></li>
+<li><a href="#_aws_deployment">AWS Deployment</a></li>
+<li><a href="#_application_security">Application Security</a></li>
+</ul>
+</li>
+<li><a href="#_abriged_requirements_specification">Abriged Requirements Specification</a></li>
+<li><a href="#_acknowledgments">Acknowledgments</a></li>
+<li><a href="#_about_quality">About quality</a>
+<ul class="sectlevel2">
+<li><a href="#_the_categories">The categories</a></li>
+<li><a href="#_classification_can_be_ambiguous">Classification can be ambiguous</a></li>
+<li><a href="#_formulation_of_scenarios">Formulation of scenarios</a></li>
+</ul>
+</li>
+<li><a href="#_approach">Approach</a></li>
+<li><a href="#_change_data_capture">Change Data Capture</a>
+<ul class="sectlevel3">
+<li><a href="#_replaying_write_operations">Replaying Write Operations</a></li>
+</ul>
+</li>
+<li><a href="#_preliminary_implementation">Preliminary Implementation</a></li>
+<li><a href="#_other_models_considered">Other Models Considered</a>
+<ul class="sectlevel2">
+<li><a href="#_higher_level_change_data_capture">Higher Level Change Data Capture</a></li>
+<li><a href="#_shared_key_value_store">Shared Key Value Store</a></li>
+<li><a href="#_extended_peer_to_peer_model">Extended Peer-To-Peer Model .</a></li>
+<li><a href="#_replica_codebase_and_risks_with_geth">Replica Codebase and Risks with Geth</a></li>
+</ul>
+</li>
+<li><a href="#_design_goals">Design Goals</a>
+<ul class="sectlevel1">
+<li><a href="#_health_checks">Health Checks</a></li>
+<li><a href="#_service_initialization">Service Initialization</a></li>
+<li><a href="#_load_balancing">Load Balancing</a></li>
+<li><a href="#_reduced_computational_requirements">Reduced Computational Requirements</a></li>
+</ul>
+</li>
+<li><a href="#_implementation_and_testing">Implementation and Testing</a>
+<ul class="sectlevel1">
+<li><a href="#_developer_notice">Developer Notice</a>
+<ul class="sectlevel2">
+<li><a href="#_overview">Overview</a></li>
+<li><a href="#_go_ethereum_requirements">Go Ethereum Requirements</a></li>
+<li><a href="#_sendtx">SendTx()</a></li>
+</ul>
+</li>
+<li><a href="#_transaction_emitters">Transaction Emitters</a>
+<ul class="sectlevel2">
+<li><a href="#_security_considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li><a href="#_operational_requirements">Operational Requirements</a>
+<ul class="sectlevel2">
+<li><a href="#_developer_notice_2">Developer Notice</a></li>
+</ul>
+</li>
+<li><a href="#_cluster_initialization">Cluster Initialization</a>
+<ul class="sectlevel2">
+<li><a href="#_master_initialization">Master initialization</a></li>
+</ul>
+</li>
+<li><a href="#_leveldb_snapshotting">LevelDB Snapshotting</a>
+<ul class="sectlevel2">
+<li><a href="#_replication_master_configuration">Replication Master Configuration</a></li>
+</ul>
+</li>
+<li><a href="#_replica_configuration">Replica Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#_periodic_replica_snapshots">Periodic Replica Snapshots</a></li>
+<li><a href="#_periodic_cluster_refreshes">Periodic Cluster Refreshes</a></li>
+<li><a href="#_multiple_clusters">Multiple Clusters</a></li>
+<li><a href="#_high_availability">High Availability</a></li>
+<li><a href="#definition-1---half-liquid-asset">Definition 1 - Half Liquid asset.</a></li>
+<li><a href="#definition-2---preferable-liquidity-path">Definition 2 - Preferable liquidity path.</a></li>
+<li><a href="#_definition_3_super_liquidity">Definition 3 - Super Liquidity</a></li>
+</ul>
+</li>
+<li><a href="#_super_liquidity_tranche">Super Liquidity Tranche</a>
+<ul class="sectlevel2">
+<li><a href="#_manifold_finance">Manifold Finance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div id="preamble">
@@ -3451,7 +3544,7 @@ settlement engine.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-22 06:53:42 -0800
+Last updated 2021-01-22 07:06:47 -0800
 </div>
 </div>
 </body>

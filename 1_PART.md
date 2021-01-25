@@ -146,6 +146,7 @@ https://etherscan.io/address/0x000000000025d4386f7fb58984cbe110aee3a4c4
 
 https://etherscan.io/tx/0x4e173c71d481a94169839a6a0e6b912c2631589db1a7a42596649a692f3a29cd
 https://etherscan.io/tx/0xa67e709687dc64a543387f7219aadc0e7f29f207d838caf2d99fd69b4d684725
+
 ### Service Level Architecture View
 
 The financial exchange employs a microservices architecture with independent services interacting with one another to provide a full order management system with a price-time priority orderbook. The figure below shows a high level view of the service level architecture. There are two types of services.
@@ -171,11 +172,12 @@ There are two parts to application security
 Data Encryption
 User Authentication & Authorization
 
-![](images/AWS2.png)
----
+## ![](images/AWS2.png)
+
 title: Introduction
 description:
 version:
+
 ---
 
 ## Introduction
@@ -271,6 +273,7 @@ Data Encryption
 User Authentication & Authorization
 
 ![](images/AWS2.png)
+
 # YCabal Software Specification
 
 > Design Document for YCabal

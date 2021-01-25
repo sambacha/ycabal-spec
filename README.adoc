@@ -663,7 +663,7 @@ Instead, when the `SendTx()` method is called on our backend, it will log the
 transaction to a Kafka topic for a downstream Transaction Emitter to handle.
 
 Different use cases may have different needs from transaction emitters.
-On one end of the spectrum, OpenRelay needs replicas strictly for watching for
+On one end of the spectrum, Maidenlane needs replicas strictly for watching for
 order fills and checking token balances, so no transaction emitters are
 necessary in the current workflow.
 Other applications may have high volumes of transactions that need to be
